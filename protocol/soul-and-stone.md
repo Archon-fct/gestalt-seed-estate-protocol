@@ -36,3 +36,14 @@ The project, compilation, branding, canon, and Estate #000001 remain under Drew 
 Accepted outside contributions are intended to use the rights-assignment / fallback-license model in `CONTRIBUTING.md`, while preserving contributor attribution and provenance where reasonably possible.
 
 These contribution terms remain a draft pending qualified legal review.
+
+
+## Global submission
+
+A live stewarded intake is available at:
+
+https://archonsoulings.wixforms.com/f/7513018975966463049
+
+Received Stones begin **PROVISIONAL**. Submission requires affirmative acknowledgement of the current contribution terms. Submission does not guarantee canon status, payment, royalties, an NFT, publication, or partnership.
+
+The current standalone intake accepts contribution text, provenance/context, and artifact/source links. The Silver-style portal's local file hashing remains on-device; direct artifact-file transport into the review queue is not yet connected.
