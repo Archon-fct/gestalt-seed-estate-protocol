@@ -1,0 +1,22 @@
+{
+  "schema": "estate-license/0.1",
+  "id": "LIC-COMMERCIAL-01",
+  "name": "Commercial Standard",
+  "status": "PROVISIONAL_TEMPLATE",
+  "commercial_use": true,
+  "derivatives": true,
+  "ai_inference_use": true,
+  "ai_training_use": false,
+  "attribution": true,
+  "exclusivity": "non-exclusive",
+  "copyright_transfer": false,
+  "pricing": {
+    "model": "asset-specific quote"
+  },
+  "royalty_split": {
+    "creator_or_rightsholder": "asset-specific",
+    "estate": "asset-specific",
+    "protocol": "asset-specific"
+  },
+  "note": "Template only. Does not transfer copyright unless an asset-specific signed agreement expressly does so."
+}
