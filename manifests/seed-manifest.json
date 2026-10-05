@@ -20,5 +20,13 @@
   "security": {
     "wallet_signing": "explicit human authorization required",
     "private_keys": "never requested or stored"
+  },
+  "proprietorship": {
+    "proprietor": "Drew Lotusson / Kaluthra",
+    "scope": "Gestalt Seed project, canon, compilation, branding, project architecture, and Estate #000001",
+    "designated_entity": "May be replaced or supplemented only by an entity expressly designated by the proprietor in an applicable agreement",
+    "contributor_default": "Attribution/provenance preserved; no project ownership, equity, governance, royalties, or canon authority unless separately agreed",
+    "contribution_rights_model": "Assignment of transferable contributor-owned IP where legally permitted; perpetual worldwide irrevocable transferable sublicensable royalty-free fallback license where assignment is unavailable",
+    "legal_status": "DRAFT — qualified legal review recommended before scaled public intake"
   }
 }
