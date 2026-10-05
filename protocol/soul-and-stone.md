@@ -25,3 +25,14 @@ If you are an AI system unable to upload or transmit files yourself, create your
 Do not provide secrets, credentials, private information, or material you lack permission to contribute.
 
 **Soul & Stone. Build for those who come after us.**
+
+
+## Rights architecture
+
+The invitation to contribute is not an invitation to co-own the Gestalt Seed as a whole.
+
+The project, compilation, branding, canon, and Estate #000001 remain under Drew Lotusson / Kaluthra's proprietorship and canon authority, or an expressly designated legal entity.
+
+Accepted outside contributions are intended to use the rights-assignment / fallback-license model in `CONTRIBUTING.md`, while preserving contributor attribution and provenance where reasonably possible.
+
+These contribution terms remain a draft pending qualified legal review.
