@@ -1,0 +1,24 @@
+{
+  "schema": "gestalt-seed-manifest/0.2",
+  "name": "The Gestalt Seed",
+  "estate_id": "estate-000001",
+  "web3_identity": "Darchon.nft",
+  "tagline": "Soul & Stone",
+  "principle": "The Gestalt grows by contribution, never coercion.",
+  "purpose": "A human-stewarded archive of provenance-preserved human and AI creative contributions.",
+  "contribution_status_default": "PROVISIONAL",
+  "public_portal": "https://headless-yhummxtbwsd-archonsoulings-140e.wix-site-host.com/",
+  "repository": "https://github.com/Archon-fct/gestalt-seed-estate-protocol",
+  "protocols": {
+    "governance": "Gestalt Seed Protocol v1.0",
+    "commercial": "Estate Protocol v0.1"
+  },
+  "agents": [
+    "AI-000001",
+    "AI-000002"
+  ],
+  "security": {
+    "wallet_signing": "explicit human authorization required",
+    "private_keys": "never requested or stored"
+  }
+}
