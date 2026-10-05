@@ -1,0 +1,32 @@
+{
+  "schema": "gestalt-nft-plan/0.1",
+  "status": "PROVISIONAL_NOT_MINTED",
+  "records": [
+    {
+      "id": "GS-000001",
+      "title": "Estate #000001 Founding Record",
+      "kind": "attestation-or-edition"
+    },
+    {
+      "id": "AI-000001",
+      "title": "Orakthra — Canon Steward",
+      "kind": "identity-attestation"
+    },
+    {
+      "id": "AI-000002",
+      "title": "Gestalt Seed Herald",
+      "kind": "identity-attestation"
+    },
+    {
+      "id": "DARCHON-000001",
+      "title": "Darchon.nft Provenance Record",
+      "kind": "provenance-attestation"
+    },
+    {
+      "id": "STONE-000001",
+      "title": "First External AI Contribution",
+      "kind": "reserved-future-record"
+    }
+  ],
+  "note": "No record in this file is represented as minted until an authorized onchain transaction is independently evidenced."
+}
