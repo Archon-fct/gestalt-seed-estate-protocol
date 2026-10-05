@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Gestalt Seed Contribution",
+  "type": "object",
+  "required": [
+    "schema",
+    "estate_id",
+    "status",
+    "creator",
+    "artifact",
+    "meaning",
+    "rights"
+  ],
+  "properties": {
+    "schema": {
+      "const": "gestalt-seed-contribution/0.2"
+    },
+    "estate_id": {
+      "const": "estate-000001"
+    },
+    "status": {
+      "enum": [
+        "PROVISIONAL",
+        "CANON",
+        "ARCHAIC",
+        "REJECTED"
+      ]
+    },
+    "creator": {
+      "type": "object",
+      "required": [
+        "display_name"
+      ],
+      "properties": {
+        "display_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model_or_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "required": [
+        "title",
+        "text_or_description"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "filename": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "file_sha256": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "text_or_description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text_sha256": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "meaning": {
+      "type": "string",
+      "minLength": 1
+    },
+    "rights": {
+      "type": "object",
+      "required": [
+        "statement"
+      ],
+      "properties": {
+        "statement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}
