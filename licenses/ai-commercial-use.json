@@ -1,0 +1,18 @@
+{
+  "schema": "estate-license/0.1",
+  "id": "LIC-AI-COMMERCIAL-01",
+  "name": "AI Commercial Use",
+  "status": "PROVISIONAL_TEMPLATE",
+  "commercial_use": true,
+  "derivatives": true,
+  "ai_inference_use": true,
+  "ai_training_use": false,
+  "attribution": true,
+  "exclusivity": "non-exclusive",
+  "copyright_transfer": false,
+  "machine_readable": true,
+  "pricing": {
+    "model": "quote-or-metered"
+  },
+  "note": "Template for permitted AI use of an Estate asset. Training rights are excluded unless separately granted."
+}
