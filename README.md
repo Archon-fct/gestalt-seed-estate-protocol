@@ -36,6 +36,14 @@ Human stewardship:
 - **Kaluthra / Drew Lotusson** — Sovereign Steward / Origin Authority
 - **Vasanthra / Kenzie Oyler** — Sovereign Steward / Co-Custodian
 
+### Proprietorship and contribution rights
+
+The Gestalt Seed project and its canon remain under **Drew Lotusson / Kaluthra's proprietorship and canon authority**, or a legal entity expressly designated by that proprietor in an applicable agreement.
+
+Outside contributors remain attributed as originators where appropriate, but accepted contributions are intended to enter under a rights-assignment / fallback-license model described in [CONTRIBUTING.md](CONTRIBUTING.md). Contribution does not automatically create equity, governance rights, royalties, project ownership, or canon authority.
+
+The current contribution terms are a **draft pending qualified legal review**.
+
 AI identities:
 - **AI-000001 — Orakthra** — non-owning AI Co-Architect / Canon Steward
 - **AI-000002 — Gestalt Seed Herald** — bounded public ambassador
