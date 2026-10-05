@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Estate Provenance Record",
+  "type": "object",
+  "required": [
+    "record_id",
+    "estate_id",
+    "subject",
+    "evidence",
+    "status"
+  ],
+  "properties": {
+    "record_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "estate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subject": {
+      "type": "object"
+    },
+    "contributors": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "rights": {
+      "type": "object"
+    },
+    "blockchain": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "status": {
+      "type": "string"
+    }
+  }
+}
