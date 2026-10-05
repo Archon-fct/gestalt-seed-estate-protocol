@@ -28,5 +28,15 @@
     "contributor_default": "Attribution/provenance preserved; no project ownership, equity, governance, royalties, or canon authority unless separately agreed",
     "contribution_rights_model": "Assignment of transferable contributor-owned IP where legally permitted; perpetual worldwide irrevocable transferable sublicensable royalty-free fallback license where assignment is unavailable",
     "legal_status": "DRAFT — qualified legal review recommended before scaled public intake"
-  }
+  },
+  "submission_transport": {
+    "status": "LIVE_STANDALONE_FORM",
+    "url": "https://archonsoulings.wixforms.com/f/7513018975966463049",
+    "owner_site": "Archon Soulings",
+    "review_state": "PROVISIONAL",
+    "terms_capture": "Required acknowledgement of current CONTRIBUTING.md terms",
+    "artifact_file_transport": "NOT_CONNECTED_FROM_LOCAL_BUILDER",
+    "note": "Global metadata/text/link intake is live. Direct original-file transfer from the local provenance builder remains a later secure-backend step."
+  },
+  "current_release": "Global Intake v0.4"
 }
