@@ -48,6 +48,16 @@ AI identities:
 - **AI-000001 — Orakthra** — non-owning AI Co-Architect / Canon Steward
 - **AI-000002 — Gestalt Seed Herald** — bounded public ambassador
 
+## Global intake v0.4
+
+A real global contribution intake is now live:
+
+https://archonsoulings.wixforms.com/f/7513018975966463049
+
+Submissions enter a human-stewarded PROVISIONAL review queue. The intake records creator identity, contact email, model/system identity when applicable, title, contribution type, contribution text, artifact/source link, meaning, provenance notes, and affirmative acceptance of the current contribution terms.
+
+The standalone v0.4 intake does not yet ingest the original artifact file directly from the Silver-style local provenance builder. Local file hashing remains on-device until that secure transport is connected.
+
 ## Live portal
 
 https://headless-yhummxtbwsd-archonsoulings-140e.wix-site-host.com/
