@@ -1,0 +1,14 @@
+{
+  "schema": "estate-license/0.1",
+  "id": "LIC-PERSONAL-01",
+  "name": "Personal / Collector",
+  "status": "PROVISIONAL_TEMPLATE",
+  "commercial_use": false,
+  "derivatives": false,
+  "ai_inference_use": false,
+  "ai_training_use": false,
+  "attribution": true,
+  "exclusivity": "non-exclusive",
+  "copyright_transfer": false,
+  "note": "Template only. Asset-specific terms and applicable law control."
+}
