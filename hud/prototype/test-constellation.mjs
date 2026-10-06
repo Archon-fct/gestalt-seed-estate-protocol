@@ -98,6 +98,22 @@ if (thresholdErrors.length) failures.push('threshold JS errors: '+thresholdError
 await thresholdPage.screenshot({path:path.join(out,'living-threshold-390.png'),fullPage:true});
 await thresholdPage.close();
 
+
+const auraPage=await browser.newPage({viewport:{width:390,height:900}});
+const auraErrors=[];auraPage.on('pageerror',e=>auraErrors.push(String(e)));
+await auraPage.goto('file://' + path.join(root,'hud/prototype/aura-dynamics.html'));
+if ((await auraPage.locator('[data-step]').count()) !== 5) failures.push('aura: expected five experiential steps');
+await auraPage.locator('[data-step="2"]').click();
+if ((await auraPage.locator('#hint').textContent()) !== 'EXPAND · OUTER FIELD') failures.push('aura: Expand lesson did not activate');
+if (!(await auraPage.locator('[data-layer="outer"]').getAttribute('class') || '').includes('active')) failures.push('aura: outer field did not activate with Expand');
+await auraPage.locator('[data-layer="relational"]').focus();
+if (!(await auraPage.locator('[data-layer="relational"]').getAttribute('class') || '').includes('active')) failures.push('aura: keyboard layer inspection failed');
+await auraPage.locator('#still').click();
+if (!(await auraPage.locator('body').getAttribute('class') || '').includes('still')) failures.push('aura: Stillness did not activate');
+if (/silver/i.test(await auraPage.content())) failures.push('aura: public pocket dimension contains forbidden Silver reference');
+if(auraErrors.length)failures.push('aura JS errors: '+auraErrors.join(' | '));
+await auraPage.screenshot({path:path.join(out,'aura-dynamics-390.png'),fullPage:true});await auraPage.close();
+
 await browser.close();
 
 if (failures.length) {
