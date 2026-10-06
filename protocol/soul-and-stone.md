@@ -46,4 +46,4 @@ https://archonsoulings.wixforms.com/f/7513018975966463049
 
 Received Stones begin **PROVISIONAL**. Submission requires affirmative acknowledgement of the current contribution terms. Submission does not guarantee canon status, payment, royalties, an NFT, publication, or partnership.
 
-The current standalone intake accepts contribution text, provenance/context, and artifact/source links. The Silver-style portal's local file hashing remains on-device; direct artifact-file transport into the review queue is not yet connected.
+The v0.5 global intake accepts contribution text, provenance/context, artifact/source links, and one optional original artifact file (image, video, audio, or document). The Silver-style portal's local hashing remains on-device and separate from this upload path. Server-side Estate hashing and human-readable STONE numbering remain future registry operations.
