@@ -45,7 +45,12 @@ body:not(.still) #space.resonating .auric-being .layer{animation-duration:5s}
 .filament{position:absolute;left:50%;top:50%;width:1px;height:32vh;transform-origin:top;background:linear-gradient(#7fe0d188,transparent);opacity:.3;pointer-events:none}
 .f1{transform:rotate(218deg)}.f2{transform:rotate(142deg)}.f3{transform:rotate(254deg)}.f4{transform:rotate(106deg)}.f5{transform:rotate(330deg)}.f6{transform:rotate(30deg)}
 #veil{position:fixed;inset:0;z-index:10;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 50% 45%,#18303aee,#070a10f5 60%);opacity:0;pointer-events:none;transition:opacity .65s}
-#veil.open{opacity:1;pointer-events:auto}#veil.preparing{opacity:0;pointer-events:none}.dimension{width:min(720px,92vw);min-height:420px;border-radius:48% 52% 45% 55%/42% 45% 55% 58%;border:1px solid #d8b86d88;background:radial-gradient(circle at 50% 30%,#7fe0d122,#0b1119dd 55%);box-shadow:0 0 90px #7fe0d122 inset,0 0 80px #9f8cff22;padding:58px;text-align:center;transform:scale(.7);transition:transform .75s cubic-bezier(.2,.8,.2,1)}
+#veil.open{opacity:1;pointer-events:auto}#veil.preparing{opacity:0;pointer-events:none}
+.return-seed{position:fixed;z-index:30;left:50%;top:50%;width:26px;height:26px;border-radius:50%;transform:translate(-50%,-50%) scale(0);opacity:0;pointer-events:none;border:1px solid #fff2bccc;background:radial-gradient(circle,#fffbd8 0 14%,#d8b86daa 26%,#7fe0d166 52%,transparent 72%);box-shadow:0 0 22px #fff2bc,0 0 52px #7fe0d177;transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .35s,left .72s cubic-bezier(.2,.75,.2,1),top .72s cubic-bezier(.2,.75,.2,1)}
+.return-seed.born{opacity:1;transform:translate(-50%,-50%) scale(1.25)}.return-seed.home{transform:translate(-50%,-50%) scale(.38);opacity:.15}
+#veil.folding .dimension{transform:scale(.08) rotate(8deg);opacity:.05;filter:blur(5px);border-radius:50%;transition:transform .48s cubic-bezier(.4,0,.8,.2),opacity .38s,filter .38s}
+#veil.folding{background:radial-gradient(circle at 50% 50%,#fff2bc18,#070a10f5 44%);transition:background .45s}
+#space.returning{opacity:1;filter:none}.node.memory{box-shadow:0 0 68px #fff2bc77,0 0 100px #9f8cff2c}.node.memory:after{content:"";position:absolute;inset:-24px;border-radius:50%;border:1px solid #fff2bc44;animation:memoryFade 2.8s ease-out forwards}@keyframes memoryFade{to{inset:-40px;opacity:0}}.dimension{width:min(720px,92vw);min-height:420px;border-radius:48% 52% 45% 55%/42% 45% 55% 58%;border:1px solid #d8b86d88;background:radial-gradient(circle at 50% 30%,#7fe0d122,#0b1119dd 55%);box-shadow:0 0 90px #7fe0d122 inset,0 0 80px #9f8cff22;padding:58px;text-align:center;transform:scale(.7);transition:transform .75s cubic-bezier(.2,.8,.2,1)}
 .open .dimension{transform:scale(1)}.dimension h1{font-weight:400;letter-spacing:.08em}.dimension p{color:#c4c9c5;line-height:1.7;max-width:560px;margin:18px auto}.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:28px}
 .status{position:fixed;left:20px;bottom:18px;color:var(--muted);font:12px system-ui;letter-spacing:.06em}
 .still *{animation-play-state:paused!important}.auric-being.responding .layer{filter:brightness(1.18);opacity:.88}.auric-being.responding .heart{box-shadow:0 0 52px #fff2bc}.still .nerve:before,.still .nerve:after,.still .node,.still .node:before,.still .nexus:before,.still .nexus:after,.still .heart,.still .layer,.still .center{animation:none!important}
@@ -70,7 +75,7 @@ body:not(.still) #space.resonating .auric-being .layer{animation-duration:5s}
 <section id="veil" role="dialog" aria-modal="true" aria-labelledby="title" aria-describedby="copy" aria-hidden="true">
 <div class="dimension"><button id="back" aria-label="Return to constellation">← Nexus</button><h1 id="title"></h1><p id="copy"></p><div class="actions" id="actions"></div></div>
 </section>
-<div class="status" aria-live="polite" id="status">Public constellation · prototype · no private state</div>
+<div class="return-seed" id="returnSeed" aria-hidden="true"></div><div class="status" aria-live="polite" id="status">Public constellation · prototype · no private state</div>
 <script>
 const destinations={gestalt:{Explore:"https://headless-yhummxtbwsd-archonsoulings-140e.wix-site-host.com/"},services:{Explore:"https://www.archonsoulings.com/"}};
 const data={
@@ -81,7 +86,7 @@ journal:{title:"Journal · Stories",copy:"Field notes, stories, podcast work, an
 workshops:{title:"Workshops",copy:"Live teaching, practical exercises, and collaboration opportunities that bring the work into shared space.",actions:["Learn","Collaborate"]},
 services:{title:"Sessions · Services",copy:"A quieter threshold into one-to-one work and the public service pathways of Archon Soulings.",actions:["Explore","Learn"]}
 };
-const veil=document.querySelector("#veil"), title=document.querySelector("#title"), copy=document.querySelector("#copy"), acts=document.querySelector("#actions"), status=document.querySelector("#status");let last=null;
+const veil=document.querySelector("#veil"), returnSeed=document.querySelector("#returnSeed"), title=document.querySelector("#title"), copy=document.querySelector("#copy"), acts=document.querySelector("#actions"), status=document.querySelector("#status");let last=null;
 function openNode(btn){last=btn;let d=data[btn.dataset.id];const space=document.querySelector("#space");space.classList.add("crossing");btn.classList.add("resonant");document.querySelector("#space").setAttribute("aria-hidden","true");veil.setAttribute("aria-hidden","false");title.textContent=d.title;copy.textContent=d.copy;acts.innerHTML="";d.actions.forEach(x=>{const url=destinations[btn.dataset.id]?.[x];let a=document.createElement(url?"a":"button");a.textContent=x;if(url){a.href=url;a.className="action";a.rel="noopener"}else{a.onclick=()=>status.textContent=x+" path selected · destination wiring pending review"}acts.appendChild(a)});status.textContent="Crossing into "+d.title;veil.classList.add("preparing");const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches||document.body.classList.contains("still");setTimeout(()=>{veil.classList.remove("preparing");veil.classList.add("open");space.classList.remove("crossing","resonating");btn.classList.remove("resonant");document.querySelector("#back").focus({preventScroll:true})},reduced?0:720)}
 document.querySelectorAll(".node").forEach(b=>{
  const nerve=document.querySelector('[data-nerve="'+b.dataset.id+'"]');
@@ -89,7 +94,19 @@ document.querySelectorAll(".node").forEach(b=>{
  const off=()=>{nerve&&nerve.classList.remove("hot");document.querySelector(".auric-being")?.classList.remove("responding");if(!document.querySelector("#space").classList.contains("crossing")){document.querySelector("#space").classList.remove("resonating");b.classList.remove("resonant")}};
  b.addEventListener("pointerenter",on);b.addEventListener("pointerleave",off);b.addEventListener("focus",on);b.addEventListener("blur",off);b.addEventListener("click",()=>openNode(b));
 });
-function closeVeil(){veil.classList.remove("open","preparing");veil.setAttribute("aria-hidden","true");document.querySelector("#space").setAttribute("aria-hidden","false");status.textContent="Returned to Living Nexus";last&&last.focus({preventScroll:true})}
+function closeVeil(){
+ const space=document.querySelector("#space"), reduced=matchMedia("(prefers-reduced-motion: reduce)").matches||document.body.classList.contains("still");
+ if(reduced){veil.classList.remove("open","preparing");veil.setAttribute("aria-hidden","true");space.setAttribute("aria-hidden","false");status.textContent="Returned to Living Nexus";last&&last.focus({preventScroll:true});return}
+ status.textContent="Integrating the journey · returning to the Living Nexus";
+ veil.classList.add("folding");returnSeed.classList.add("born");
+ setTimeout(()=>{
+   veil.classList.remove("open","preparing");veil.setAttribute("aria-hidden","true");space.setAttribute("aria-hidden","false");space.classList.add("returning");
+   if(last){const r=last.getBoundingClientRect();returnSeed.style.left=(r.left+r.width/2)+"px";returnSeed.style.top=(r.top+r.height/2)+"px"}
+ },430);
+ setTimeout(()=>{returnSeed.classList.add("home");if(last)last.classList.add("memory")},520);
+ setTimeout(()=>{veil.classList.remove("folding");space.classList.remove("returning");returnSeed.className="return-seed";returnSeed.style.left="50%";returnSeed.style.top="50%";status.textContent="Returned · the field remembers";last&&last.focus({preventScroll:true})},1280);
+ setTimeout(()=>last&&last.classList.remove("memory"),3300)
+}
 document.querySelector("#back").onclick=closeVeil;document.addEventListener("keydown",e=>{if(e.key==="Escape"&&veil.classList.contains("open"))closeVeil();if(e.key==="Tab"&&veil.classList.contains("open")){const q=[...veil.querySelectorAll("button,a[href]")].filter(x=>!x.disabled);if(!q.length)return;const first=q[0],lastEl=q[q.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();lastEl.focus()}else if(!e.shiftKey&&document.activeElement===lastEl){e.preventDefault();first.focus()}}});
 document.querySelector("#still").onclick=e=>{document.body.classList.toggle("still");e.currentTarget.textContent=document.body.classList.contains("still")?"Living Motion":"Stillness";status.textContent=document.body.classList.contains("still")?"Stillness enabled":"Living motion enabled"};
 </script></body></html>
