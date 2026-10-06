@@ -37,12 +37,14 @@ for (const width of widths) {
     if (b.w < 44 || b.h < 44) failures.push(width + ': node ' + i + ' touch target under 44px');
   });
 
+  if((await page.locator('#threadButton').textContent())!=='Living Thread · 0')failures.push(width+': Living Thread should begin empty');
   await page.locator('[data-id="aura"]').hover();
   if (!(await page.locator('[data-nerve="aura"]').getAttribute('class') || '').includes('hot')) failures.push(width + ': Aura nerve did not respond to hover');
   if (!(await page.locator('#space').getAttribute('class') || '').includes('resonating')) failures.push(width + ': world attraction resonance did not activate');
   if (!(await page.locator('[data-id="aura"]').getAttribute('class') || '').includes('resonant')) failures.push(width + ': selected world did not enter resonant state');
   await page.locator('[data-id="aura"]').click();
   await page.waitForTimeout(780);
+  if((await page.locator('#threadButton').textContent())!=='Living Thread · 1')failures.push(width+': Living Thread did not remember Aura visit');
   if (!(await page.locator('#veil').getAttribute('class') || '').includes('open')) failures.push(width + ': Aura dimension did not open');
   if ((await page.locator('#title').textContent()) !== 'Aura Dynamics') failures.push(width + ': Aura title mismatch');
   if ((await page.locator('#space').getAttribute('aria-hidden')) !== 'true') failures.push(width + ': Nexus not hidden from AT while dialog open');
@@ -56,6 +58,15 @@ for (const width of widths) {
   const focused = await page.evaluate(() => document.activeElement?.getAttribute('data-id'));
   if (focused !== 'aura') failures.push(width + ': focus did not return to origin node');
 
+  await page.locator('#threadButton').click();
+  if(!(await page.locator('#journeyPanel').getAttribute('class')||'').includes('open'))failures.push(width+': Living Thread panel did not open');
+  if((await page.locator('.journey-seed').count())!==1)failures.push(width+': Living Thread expected one journey seed');
+  await page.locator('#saveJourney').click();
+  const stored=await page.evaluate(()=>sessionStorage.getItem('archonLivingThread'));
+  if(!stored||!stored.includes('aura'))failures.push(width+': explicit session save did not persist journey');
+  await page.locator('#threadButton').click();await page.locator('#dissolveJourney').click();
+  if((await page.locator('#threadButton').textContent())!=='Living Thread · 0')failures.push(width+': dissolve did not clear journey');
+  if(await page.evaluate(()=>sessionStorage.getItem('archonLivingThread')))failures.push(width+': dissolve did not clear saved session journey');
   await page.locator('#still').click();
   if (!(await page.locator('body').getAttribute('class') || '').includes('still')) failures.push(width + ': Stillness did not activate');
 
