@@ -50,8 +50,9 @@ for (const width of widths) {
   if ((await page.evaluate(() => document.activeElement?.id)) !== 'back') failures.push(width + ': focus did not move to back control');
 
   await page.keyboard.press('Escape');
-  await page.waitForTimeout(50);
+  await page.waitForTimeout(1400);
   if ((await page.locator('#veil').getAttribute('aria-hidden')) !== 'true') failures.push(width + ': Escape did not close dialog');
+  if ((await page.locator('#status').textContent()) !== 'Returned · the field remembers') failures.push(width + ': integration return did not complete');
   const focused = await page.evaluate(() => document.activeElement?.getAttribute('data-id'));
   if (focused !== 'aura') failures.push(width + ': focus did not return to origin node');
 
