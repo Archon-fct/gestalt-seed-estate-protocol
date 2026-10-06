@@ -158,6 +158,35 @@ const conv=await browser.newPage({viewport:{width:390,height:900}});const convEr
 
 const tongue=await browser.newPage({viewport:{width:390,height:900}});const tongueErrors=[];tongue.on('pageerror',e=>tongueErrors.push(String(e)));await tongue.goto('file://' + path.join(root,'hud/prototype/living-tongue.html'));if((await tongue.locator('.word').count())!==6)failures.push('tongue: expected six prototype language nodes');await tongue.locator('[data-word="tharavel"]').click();if((await tongue.locator('#canon').textContent())!=='ADOPTED')failures.push('tongue: Tharavel canon status mismatch');if(!(await tongue.locator('#note').textContent()).includes('Do not split'))failures.push('tongue: Tharavel audit warning missing');await tongue.locator('#origin').click();if(!(await tongue.locator('#note').textContent()).includes('THARAVEL_KOSMATHRA_AUDIT'))failures.push('tongue: provenance gesture failed');await tongue.locator('[data-word="chant"]').click();if(!(await tongue.locator('#canon').textContent()).includes('PENDING LEXICAL RESOLUTION'))failures.push('tongue: unresolved chant status lost');await tongue.locator('#still').click();if(!(await tongue.locator('body').getAttribute('class')||'').includes('still'))failures.push('tongue: Stillness failed');if(/silver/i.test(await tongue.content()))failures.push('tongue: public language world contains forbidden Silver reference');if(tongueErrors.length)failures.push('tongue JS errors: '+tongueErrors.join(' | '));await tongue.screenshot({path:path.join(out,'living-tongue-390.png'),fullPage:true});await tongue.close();
 
+
+const journeyPage=await browser.newPage({viewport:{width:820,height:900}});
+const journeyErrors=[];journeyPage.on('pageerror',e=>journeyErrors.push(String(e)));
+await journeyPage.goto('file://' + path.join(root,'hud/prototype/index.html'));
+await journeyPage.locator('#guide').click();await journeyPage.locator('[data-intent="learn"]').click();
+if(!(await journeyPage.locator('[data-id="aureglossa"]').getAttribute('class')||'').includes('recommended'))failures.push('journey: Guide Me Learn did not recommend Aureglossa');
+await journeyPage.locator('#searchButton').click();await journeyPage.locator('#searchInput').fill('boundaries');await journeyPage.locator('#runSearch').click();
+if(!(await journeyPage.locator('[data-id="aura"]').getAttribute('class')||'').includes('search-hit'))failures.push('journey: search did not resonate Aura');
+await journeyPage.goto('file://' + path.join(root,'hud/prototype/aura-dynamics.html'));
+await journeyPage.locator('[data-step="4"]').click();
+let p=await journeyPage.evaluate(()=>JSON.parse(sessionStorage.getItem('archonPassport.v1')||'[]'));
+if(!p.includes('entered-living-field')||!p.includes('integrated-aura'))failures.push('journey: Aura passport traces missing');
+await journeyPage.goto('file://' + path.join(root,'hud/prototype/living-tongue.html'));
+await journeyPage.locator('[data-word="tharavel"]').click();await journeyPage.locator('#origin').click();
+p=await journeyPage.evaluate(()=>JSON.parse(sessionStorage.getItem('archonPassport.v1')||'[]'));
+if(!p.includes('discovered-tharavel')||!p.includes('checked-provenance'))failures.push('journey: Aureglossa passport traces missing');
+await journeyPage.goto('file://' + path.join(root,'hud/prototype/living-archive.html'));
+await journeyPage.locator('[data-rel="EXTENDS"]').click();
+if((await journeyPage.locator('#title').textContent())!=='EXTENDS')failures.push('journey: Gestalt relationship exploration failed');
+await journeyPage.goto('file://' + path.join(root,'hud/prototype/index.html'));
+const shared=await journeyPage.evaluate(()=>JSON.parse(sessionStorage.getItem('archonLivingThread.session.v1')||'[]'));
+if(!shared.includes('aura'))failures.push('journey: shared thread lost Aura across pages');
+await journeyPage.locator('#passportButton').click();
+if((await journeyPage.locator('.journey-seed').count())<2)failures.push('journey: Field Journal did not render accumulated marks');
+await journeyPage.locator('#threadButton').click();await journeyPage.locator('#dissolveJourney').click();
+if(await journeyPage.evaluate(()=>sessionStorage.getItem('archonLivingThread.session.v1')))failures.push('journey: dissolve did not clear shared thread');
+if(journeyErrors.length)failures.push('journey JS errors: '+journeyErrors.join(' | '));
+await journeyPage.screenshot({path:path.join(out,'integrated-journey-820.png'),fullPage:true});await journeyPage.close();
+
 await browser.close();
 
 if (failures.length) {
