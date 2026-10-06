@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gestalt-public-estate-graph/0.2",
+  "title": "Gestalt Seed Public Estate Graph",
+  "type": "object",
+  "required": [
+    "schema",
+    "generated_at",
+    "estate_id",
+    "nodes",
+    "edges",
+    "sources",
+    "health"
+  ],
+  "properties": {
+    "schema": {
+      "const": "gestalt-public-estate-graph/0.2"
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "kind",
+          "state",
+          "canon",
+          "description",
+          "source_ids",
+          "x",
+          "y",
+          "z"
+        ]
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "from",
+          "to",
+          "type"
+        ]
+      }
+    },
+    "sources": {
+      "type": "array"
+    },
+    "health": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}
