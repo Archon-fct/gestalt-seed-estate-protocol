@@ -72,7 +72,7 @@ function setStage(i){
  document.querySelectorAll("[data-stage]").forEach((b,n)=>{if(n===i)b.setAttribute("aria-current","step");else b.removeAttribute("aria-current")});
 }
 document.querySelectorAll("[data-stage]").forEach(b=>b.onclick=()=>setStage(Number(b.dataset.stage)));setStage(0);
-function enter(){approach.classList.remove("active");threshold.classList.add("active");setTimeout(()=>document.querySelector("#openForm").focus({preventScroll:true}),40)}
+function enter(){approach.classList.remove("active");threshold.classList.add("active");document.querySelector("#openForm").focus({preventScroll:true})}
 function leave(){threshold.classList.remove("active");approach.classList.add("active");form.src="about:blank";cover.classList.remove("hidden");setStage(0);setTimeout(()=>document.querySelector("#enter").focus({preventScroll:true}),40)}
 document.querySelector("#enter").onclick=enter;document.querySelector("#return").onclick=leave;
 document.querySelector("#openForm").onclick=()=>{form.src=FORM_URL;cover.classList.add("hidden");statusStones[0].classList.add("on")};
