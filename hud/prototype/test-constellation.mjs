@@ -67,6 +67,23 @@ const animation = await reduced.locator('.node').first().evaluate(el => getCompu
 if (animation !== 'none') failures.push('reduced-motion: node animation still active: ' + animation);
 await reduced.close();
 
+
+const thresholdPage = await browser.newPage({ viewport:{ width:390,height:900 } });
+await thresholdPage.goto('file://' + path.join(root, 'hud/prototype/living-threshold.html'));
+const thresholdErrors=[]; thresholdPage.on('pageerror',e=>thresholdErrors.push(String(e)));
+await thresholdPage.locator('#enter').click();
+if (!(await thresholdPage.locator('#threshold').getAttribute('class') || '').includes('active')) failures.push('threshold: pocket dimension did not open');
+if ((await thresholdPage.evaluate(()=>document.activeElement?.id)) !== 'openForm') failures.push('threshold: focus did not enter chamber');
+const thresholdText=await thresholdPage.content();
+if (/silver/i.test(thresholdText)) failures.push('threshold: public prototype contains forbidden Silver reference');
+await thresholdPage.locator('#still').click();
+if (!(await thresholdPage.locator('body').getAttribute('class') || '').includes('still')) failures.push('threshold: Stillness did not activate');
+await thresholdPage.keyboard.press('Escape');
+if (!(await thresholdPage.locator('#approach').getAttribute('class') || '').includes('active')) failures.push('threshold: Escape did not return to approach');
+if (thresholdErrors.length) failures.push('threshold JS errors: '+thresholdErrors.join(' | '));
+await thresholdPage.screenshot({path:path.join(out,'living-threshold-390.png'),fullPage:true});
+await thresholdPage.close();
+
 await browser.close();
 
 if (failures.length) {
