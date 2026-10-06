@@ -13,10 +13,7 @@
     "governance": "Gestalt Seed Protocol v1.0",
     "commercial": "Estate Protocol v0.1"
   },
-  "agents": [
-    "AI-000001",
-    "AI-000002"
-  ],
+  "agents": ["AI-000001", "AI-000002"],
   "security": {
     "wallet_signing": "explicit human authorization required",
     "private_keys": "never requested or stored"
@@ -30,20 +27,36 @@
     "legal_status": "DRAFT — qualified legal review recommended before scaled public intake"
   },
   "submission_transport": {
-    "status": "LIVE_WITH_OPTIONAL_FILE_UPLOAD",
+    "status": "PILOT_RECEIPT_VERIFICATION_OPEN",
     "url": "https://archonsoulings.wixforms.com/f/7513018975966463049",
     "owner_site": "Archon Soulings",
+    "portal_integration": "USER_OPENED_EMBED_WITH_FULL_TAB_FALLBACK",
     "review_state": "PROVISIONAL",
-    "terms_capture": "Required acknowledgement of current CONTRIBUTING.md terms",
-    "artifact_file_transport": "LIVE_ON_GLOBAL_INTAKE",
-    "note": "Global intake accepts metadata/text/link plus one optional original artifact. Silver-style local builder remains a separate interface. Estate hashing and human-readable STONE numbering are not yet server-assigned.",
-    "accepted_file_classes": [
-      "IMAGE",
-      "VIDEO",
-      "AUDIO",
-      "DOCUMENT"
-    ],
-    "file_limit_per_stone": 1
+    "terms_capture": "Required new checkbox pinned to exact draft commit; legacy acknowledgement retained separately",
+    "terms_commit": "48eb522adcff5299e9736e005366fb3f9c9da12c",
+    "terms_url": "https://github.com/Archon-fct/gestalt-seed-estate-protocol/blob/48eb522adcff5299e9736e005366fb3f9c9da12c/CONTRIBUTING.md",
+    "artifact_file_transport": "FORM_FIELD_CONFIGURED_UPLOAD_TEST_REPORTED_SUCCESS",
+    "accepted_file_classes": ["IMAGE", "VIDEO", "AUDIO", "DOCUMENT"],
+    "file_limit_per_stone": 1,
+    "durable_receipt_verified": false,
+    "note": "Form renders and handles submission requests. Release tests returned PENDING or a thank-you state, but later owner reads returned 404 and the queue/count was empty. Do not equate request success with durable receipt. Preserve originals. Do not scale promotion until verified."
   },
-  "current_release": "Global Intake v0.5"
+  "registry": {
+    "status": "PRIVATE_COLLECTIONS_CREATED_OPERATOR_IMPORT_AVAILABLE",
+    "guide": "../registry/README.md",
+    "receipt_id_format": "STONE-<full-Wix-submission-GUID>",
+    "sequential_numbering": false,
+    "background_import_deployed": false,
+    "independent_contribution_import_verified": false,
+    "review_defaults": {"reviewState": "PENDING_REVIEW", "canonState": "PROVISIONAL", "publicApproved": false},
+    "file_scan_and_hash_service": "NOT_IMPLEMENTED",
+    "audit_log": "ADMIN_EDITABLE_NOT_IMMUTABLE"
+  },
+  "current_release": "Portal and intake pilot v0.6",
+  "ui_release": "0.6.0",
+  "deployment_upload_id": "a27db2aa-a811-40db-a033-4093b8c3aaa6",
+  "machine_resources": {
+    "ai_instructions": "https://headless-yhummxtbwsd-archonsoulings-140e.wix-site-host.com/ai-contribution.txt",
+    "llms_text": "https://headless-yhummxtbwsd-archonsoulings-140e.wix-site-host.com/llms.txt"
+  }
 }
