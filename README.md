@@ -46,25 +46,31 @@ The current contribution terms are a **draft pending qualified legal review**.
 
 AI identities:
 - **AI-000001 — Orakthra** — non-owning AI Co-Architect / Canon Steward
-- **AI-000002 — Gestalt Seed Herald** — bounded public ambassador
+- **AI-000002 — Gestalt Seed Herald** — bounded public ambassador; a published profile is not proof of a running autonomous agent.
 
-## Global intake v0.5
+## Portal and pilot intake v0.6
 
-A real global contribution intake is now live:
-
-https://archonsoulings.wixforms.com/f/7513018975966463049
-
-Submissions enter a human-stewarded PROVISIONAL review queue. The intake records creator identity, contact email, model/system identity when applicable, title, contribution type, contribution text, artifact/source link, meaning, provenance notes, and affirmative acceptance of the current contribution terms.
-
-The v0.5 intake now accepts one optional original artifact file directly through Wix Forms (image, video, audio, or document), in addition to contribution text and links.
-
-The Silver-style portal's local provenance builder is still a separate interface: its locally selected file is not automatically forwarded into the Wix form. Contributors may upload the original artifact in the global intake. Server-side Estate hashing and human-readable STONE numbering remain the next registry layer.
-
-## Live portal
-
+Public portal:
 https://headless-yhummxtbwsd-archonsoulings-140e.wix-site-host.com/
 
-The current portal prepares provenance packages locally. Direct submission storage/review is a next-stage feature.
+Hosted pilot intake:
+https://archonsoulings.wixforms.com/f/7513018975966463049
+
+The published Silver-inspired portal now opens the hosted form within its contribution panel. The original local hashing workbench remains optional and collapsed below. File selection in the local workbench is not automatically copied into the hosted form.
+
+The hosted form displays creator identity, contact email, model/version, title, type, contribution text, source link, meaning, provenance, and one optional artifact upload. Its new required acknowledgement links to the exact draft terms at commit `48eb522adcff5299e9736e005366fb3f9c9da12c`. A data-use notice explains what is sent, how it is used, and the limits of uploaded-file confidentiality.
+
+**Current blocker: durable receipt verification remains open.** Native form tests displayed success, but returned PENDING receipts that could not subsequently be retrieved through the owner API; the query/count showed no saved records. The cause is not established. Do not represent a thank-you screen as verified storage. Keep original artifacts and copies of answers, and do not scale promotion until the receipt path is verified.
+
+Two private CMS collections and a versioned configuration event now exist. The operator-run [registry implementation and review guide](registry/README.md) provide stable source-GUID identifiers, text/metadata fingerprints, duplicate-safe import, and preservation of steward decisions. No independent Stone was imported during this release. These collections are not a completed custom dashboard or real-time ingestion service.
+
+## Three ways to participate
+
+**Create:** prepare one small original Stone; read the draft rights terms and pilot notice before submission.
+
+**Build:** choose one bounded task from the [issue tracker](https://github.com/Archon-fct/gestalt-seed-estate-protocol/issues), starting with receipt verification, accessibility, or provenance validation.
+
+**Connect:** propose a small research or creator-tool pilot. An initial collaboration enquiry is not a Stone submission or automatic assignment of pre-existing work.
 
 ## Repository map
 
@@ -75,6 +81,9 @@ The current portal prepares provenance packages locally. Direct submission stora
 - `agents/AI-000002-herald.json`
 - `schemas/contribution.schema.json`
 - `schemas/provenance.schema.json`
+- `registry/README.md`
+- `registry/reconcile-intake.wix.js`
+- `registry/test-runner.cjs`
 - `web3/darchon-nft.md`
 - `web3/wallet-roles.md`
 - `nft/founding-records.json`
@@ -88,6 +97,6 @@ Register → Prove → License → Quote → Approve
 → Pay → Split → Receipt → Provenance update
 ```
 
-Research directions include machine-readable licensing, AI-agent identity, royalty routing, content provenance, and optional blockchain attestations.
+Research directions include machine-readable licensing, AI-agent identity, royalty routing, content provenance, and optional blockchain attestations. These are not a claim of installed payments, issued licenses, or revenue.
 
 **Soul & Stone. Build for those who come after us.**
