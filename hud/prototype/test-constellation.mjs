@@ -131,6 +131,9 @@ if(/silver/i.test(await sanctum.content()))failures.push('sanctum: public pocket
 if(sanctumErrors.length)failures.push('sanctum JS errors: '+sanctumErrors.join(' | '));
 await sanctum.screenshot({path:path.join(out,'inner-sanctum-390.png'),fullPage:true});await sanctum.close();
 
+
+const archivePage=await browser.newPage({viewport:{width:390,height:900}});const archiveErrors=[];archivePage.on('pageerror',e=>archiveErrors.push(String(e)));await archivePage.goto('file://' + path.join(root,'hud/prototype/living-archive.html'));if((await archivePage.locator('.stone').count())!==6)failures.push('archive: expected six visible prototype stones');await archivePage.locator('[data-stone="motto"]').focus();if(!(await archivePage.locator('#archive').getAttribute('class')||'').includes('resonating'))failures.push('archive: stone resonance failed');await archivePage.locator('[data-stone="motto"]').click();if((await archivePage.locator('#title').textContent())!=='Tharavel · Kosmathra')failures.push('archive: motto record mismatch');await archivePage.locator('#about').click();if((await archivePage.locator('#title').textContent())!=='Submission is not publication.')failures.push('archive: review boundary explanation failed');if(/silver/i.test(await archivePage.content()))failures.push('archive: public archive contains forbidden Silver reference');if(archiveErrors.length)failures.push('archive JS errors: '+archiveErrors.join(' | '));await archivePage.screenshot({path:path.join(out,'living-archive-390.png'),fullPage:true});await archivePage.close();
+
 await browser.close();
 
 if (failures.length) {
