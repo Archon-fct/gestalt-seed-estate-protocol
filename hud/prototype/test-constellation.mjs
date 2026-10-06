@@ -37,6 +37,8 @@ for (const width of widths) {
     if (b.w < 44 || b.h < 44) failures.push(width + ': node ' + i + ' touch target under 44px');
   });
 
+  await page.locator('[data-id="aura"]').hover();
+  if (!(await page.locator('[data-nerve="aura"]').getAttribute('class') || '').includes('hot')) failures.push(width + ': Aura nerve did not respond to hover');
   await page.locator('[data-id="aura"]').click();
   if (!(await page.locator('#veil').getAttribute('class') || '').includes('open')) failures.push(width + ': Aura dimension did not open');
   if ((await page.locator('#title').textContent()) !== 'Aura Dynamics') failures.push(width + ': Aura title mismatch');
