@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Archon Soulings — Project Constellation Prototype</title>
+<style>
+:root{--bg:#05070b;--ink:#e9e3d4;--muted:#9ea8ad;--gold:#d8b86d;--aqua:#7fe0d1;--violet:#9f8cff}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% 42%,#17232b 0,#0a1017 28%,#05070b 65%);color:var(--ink);font-family:Georgia,serif}
+body{overflow:hidden}.sky{position:fixed;inset:0;background-image:radial-gradient(circle,#fff8 0 1px,transparent 1.4px);background-size:97px 113px;opacity:.13;pointer-events:none}
+header{position:fixed;z-index:8;top:18px;left:22px;right:22px;display:flex;justify-content:space-between;align-items:center}
+.brand{letter-spacing:.18em;font-size:13px;text-transform:uppercase}.controls{display:flex;gap:8px}
+button,a.action{font:inherit;color:var(--ink);background:#0b1219cc;border:1px solid #d8b86d66;border-radius:999px;padding:10px 14px;text-decoration:none;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:2px solid var(--aqua);outline-offset:3px}
+#space{position:fixed;inset:0;perspective:1000px;transition:opacity .7s,filter .7s}
+.orbit{position:absolute;left:50%;top:50%;width:min(76vw,820px);height:min(76vw,820px);transform:translate(-50%,-50%) rotateX(66deg);border:1px solid #d8b86d33;border-radius:50%;box-shadow:0 0 80px #7fe0d115 inset}
+.nexus{position:absolute;left:50%;top:50%;width:190px;height:190px;transform:translate(-50%,-50%);border-radius:50%;border:1px solid #d8b86d99;background:radial-gradient(circle at 45% 42%,#fffbd8 0 2%,#7fe0d155 9%,#162934cc 35%,#090d14 72%);box-shadow:0 0 35px #7fe0d166,0 0 90px #9f8cff22;display:grid;place-items:center;text-align:center;z-index:3}
+.nexus:before,.nexus:after{content:"";position:absolute;border:1px solid #d8b86d66;border-radius:50%;inset:-18px;animation:spin 24s linear infinite}.nexus:after{inset:-34px;border-style:dotted;animation-direction:reverse}
+.nexus strong{font-size:17px;letter-spacing:.12em}.nexus small{display:block;color:var(--aqua);margin-top:7px;letter-spacing:.12em}
+.node{position:absolute;width:118px;height:118px;border-radius:50%;border:1px solid #d8b86d77;background:radial-gradient(circle at 42% 35%,#7fe0d166,#111a25 42%,#070a10 74%);box-shadow:0 0 28px #7fe0d133;display:grid;place-items:center;text-align:center;padding:12px;cursor:pointer;color:var(--ink);min-width:44px;min-height:44px;animation:breathe 5s ease-in-out infinite;transition:transform .55s,box-shadow .55s,opacity .55s}
+.node:hover,.node:focus-visible{transform:scale(1.08);box-shadow:0 0 48px #d8b86d66}
+.node span{font-size:12px;letter-spacing:.08em}.n1{left:13%;top:20%}.n2{right:13%;top:20%}.n3{left:7%;top:57%}.n4{right:7%;top:57%}.n5{left:31%;bottom:7%}.n6{right:31%;bottom:7%}
+.filament{position:absolute;left:50%;top:50%;width:1px;height:32vh;transform-origin:top;background:linear-gradient(#7fe0d188,transparent);opacity:.3;pointer-events:none}
+.f1{transform:rotate(218deg)}.f2{transform:rotate(142deg)}.f3{transform:rotate(254deg)}.f4{transform:rotate(106deg)}.f5{transform:rotate(330deg)}.f6{transform:rotate(30deg)}
+#veil{position:fixed;inset:0;z-index:10;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 50% 45%,#18303aee,#070a10f5 60%);opacity:0;pointer-events:none;transition:opacity .65s}
+#veil.open{opacity:1;pointer-events:auto}.dimension{width:min(720px,92vw);min-height:420px;border-radius:48% 52% 45% 55%/42% 45% 55% 58%;border:1px solid #d8b86d88;background:radial-gradient(circle at 50% 30%,#7fe0d122,#0b1119dd 55%);box-shadow:0 0 90px #7fe0d122 inset,0 0 80px #9f8cff22;padding:58px;text-align:center;transform:scale(.7);transition:transform .75s cubic-bezier(.2,.8,.2,1)}
+.open .dimension{transform:scale(1)}.dimension h1{font-weight:400;letter-spacing:.08em}.dimension p{color:#c4c9c5;line-height:1.7;max-width:560px;margin:18px auto}.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:28px}
+.status{position:fixed;left:20px;bottom:18px;color:var(--muted);font:12px system-ui;letter-spacing:.06em}
+.still *{animation-play-state:paused!important}.still .node,.still .nexus:before,.still .nexus:after{animation:none!important}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes breathe{50%{box-shadow:0 0 44px #7fe0d155;filter:brightness(1.12)}}
+@media(max-width:650px){.orbit{width:96vw;height:96vw}.nexus{width:132px;height:132px}.node{width:88px;height:88px;padding:7px}.node span{font-size:10px}.n1{left:4%;top:21%}.n2{right:4%;top:21%}.n3{left:2%;top:57%}.n4{right:2%;top:57%}.n5{left:22%;bottom:9%}.n6{right:22%;bottom:9%}.dimension{padding:42px 25px}.brand{max-width:180px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition-duration:.01ms!important}}
+</style>
+</head><body>
+<div class="sky"></div>
+<header><div class="brand">Archon Soulings · Living Constellation</div><div class="controls"><button id="still">Stillness</button></div></header>
+<main id="space" aria-label="Public project constellation">
+<div class="orbit"></div>
+<div class="filament f1"></div><div class="filament f2"></div><div class="filament f3"></div><div class="filament f4"></div><div class="filament f5"></div><div class="filament f6"></div>
+<div class="nexus" aria-hidden="true"><div><strong>ARCHON<br>SOULINGS</strong><small>LIVING NEXUS</small></div></div>
+<button class="node n1" data-id="aura"><span>AURA<br>DYNAMICS</span></button>
+<button class="node n2" data-id="aureglossa"><span>AUREGLOSSA</span></button>
+<button class="node n3" data-id="gestalt"><span>GESTALT<br>SOUL & STONE</span></button>
+<button class="node n4" data-id="journal"><span>JOURNAL<br>STORIES</span></button>
+<button class="node n5" data-id="workshops"><span>WORKSHOPS</span></button>
+<button class="node n6" data-id="services"><span>SESSIONS<br>SERVICES</span></button>
+</main>
+<section id="veil" role="dialog" aria-modal="true" aria-labelledby="title">
+<div class="dimension"><button id="back" aria-label="Return to constellation">← Nexus</button><h1 id="title"></h1><p id="copy"></p><div class="actions" id="actions"></div></div>
+</section>
+<div class="status" aria-live="polite" id="status">Public constellation · prototype · no private state</div>
+<script>
+const data={
+aura:{title:"Aura Dynamics",copy:"Enter the Living Field: training, experiential exercises, and ways to explore awareness through the Archon Soulings framework.",actions:["Learn","Collaborate"]},
+aureglossa:{title:"Aureglossa",copy:"Explore the constructed language and its growing canonical corpus. Canonical glyphs belong here; invented pseudo-script does not.",actions:["Learn","Contribute"]},
+gestalt:{title:"Gestalt Seed · Soul & Stone",copy:"A provenance-aware collaborative creation project. Explore what exists, understand the contribution model, then choose one bounded way to help.",actions:["Explore","Contribute","Collaborate"]},
+journal:{title:"Journal · Stories",copy:"Field notes, stories, podcast work, and public reflections from the frontier of the wider project.",actions:["Explore","Learn"]},
+workshops:{title:"Workshops",copy:"Live teaching, practical exercises, and collaboration opportunities that bring the work into shared space.",actions:["Learn","Collaborate"]},
+services:{title:"Sessions · Services",copy:"A quieter threshold into one-to-one work and the public service pathways of Archon Soulings.",actions:["Explore","Learn"]}
+};
+const veil=document.querySelector("#veil"), title=document.querySelector("#title"), copy=document.querySelector("#copy"), acts=document.querySelector("#actions"), status=document.querySelector("#status");let last=null;
+function openNode(btn){last=btn;let d=data[btn.dataset.id];title.textContent=d.title;copy.textContent=d.copy;acts.innerHTML="";d.actions.forEach(x=>{let a=document.createElement("button");a.textContent=x;a.onclick=()=>status.textContent=x+" path selected · destination wiring pending review";acts.appendChild(a)});status.textContent="Entering "+d.title;veil.classList.add("open");setTimeout(()=>document.querySelector("#back").focus(),30)}
+document.querySelectorAll(".node").forEach(b=>b.addEventListener("click",()=>openNode(b)));
+function closeVeil(){veil.classList.remove("open");status.textContent="Returned to Living Nexus";setTimeout(()=>last&&last.focus(),30)}
+document.querySelector("#back").onclick=closeVeil;document.addEventListener("keydown",e=>{if(e.key==="Escape"&&veil.classList.contains("open"))closeVeil()});
+document.querySelector("#still").onclick=e=>{document.body.classList.toggle("still");e.currentTarget.textContent=document.body.classList.contains("still")?"Living Motion":"Stillness";status.textContent=document.body.classList.contains("still")?"Stillness enabled":"Living motion enabled"};
+</script></body></html>
