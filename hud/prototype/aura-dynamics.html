@@ -39,7 +39,8 @@ document.querySelectorAll("[data-layer]").forEach(l=>{const go=()=>activate(l.da
 document.querySelectorAll("[data-step]").forEach(b=>b.onclick=()=>{step=Number(b.dataset.step);render()});document.querySelector("#next").onclick=()=>{step=Math.min(4,step+1);render()};document.querySelector("#prev").onclick=()=>{step=Math.max(0,step-1);render()};
 document.querySelector("#still").onclick=e=>{document.body.classList.toggle("still");e.currentTarget.textContent=document.body.classList.contains("still")?"Living Motion":"Stillness"};
 document.querySelector("#return").onclick=()=>history.back();render();
+function passport(){try{return JSON.parse(sessionStorage.getItem("archonPassport.v1")||"[]")}catch{return[]}}function markPassport(id){const p=passport();if(!p.includes(id))p.push(id);sessionStorage.setItem("archonPassport.v1",JSON.stringify(p))}
 function journey(){try{return JSON.parse(sessionStorage.getItem("archonLivingThread.session.v1")||"[]")}catch{return[]}}function remember(id){const j=journey();if(!j.includes(id))j.push(id);sessionStorage.setItem("archonLivingThread.session.v1",JSON.stringify(j));}
-remember("aura");
-document.querySelectorAll("[data-step]").forEach(b=>b.addEventListener("click",()=>{if(b.dataset.step==="4")sessionStorage.setItem("archonPassport.aura.integrated","true")}));
+remember("aura");markPassport("entered-living-field");
+document.querySelectorAll("[data-step]").forEach(b=>b.addEventListener("click",()=>{if(b.dataset.step==="4")markPassport("integrated-aura")}));
 </script></body></html>
