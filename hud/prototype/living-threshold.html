@@ -32,6 +32,12 @@ main{position:fixed;inset:0;display:grid;place-items:center;padding:72px 18px 42
 @keyframes turn{to{transform:rotate(360deg)}}@keyframes drift{50%{transform:translateY(-18px) scale(1.4);opacity:.55}}
 @media(max-width:650px){header{left:12px;right:12px;top:12px}.brand{max-width:185px}.portal{width:88vw}.portal-copy{padding:24px}.chamber{height:82vh;width:96vw;padding:28px 14px;border-radius:36px}.frame{min-height:430px}.foot{font-size:9px}.stones{gap:12px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition-duration:.01ms!important}}
+.stage-nav{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:12px 0 0}.stage-nav button{font-size:10px;letter-spacing:.08em;padding:8px 11px}.stage-nav button[aria-current="step"]{border-color:#fff0bd;box-shadow:0 0 18px #e0bd7355;color:#fff0bd}
+.stage-caption{text-align:center;min-height:38px;margin-top:7px;color:#aeb9b7;font-size:11px;letter-spacing:.08em}.stage-caption strong{color:var(--aqua);font-weight:400}
+body.stage-threshold{background:radial-gradient(circle at 50% 48%,#18333a 0,#0b1118 34%,#05070c 70%)}body.stage-stone{background:radial-gradient(circle at 50% 50%,#302616 0,#15110d 33%,#05070c 70%)}body.stage-memory{background:radial-gradient(circle at 50% 45%,#201a35 0,#0d0c18 35%,#05070c 72%)}body.stage-covenant{background:radial-gradient(circle at 50% 45%,#302914 0,#13110b 35%,#05070c 72%)}
+body.stage-stone .chamber{border-radius:22% 78% 31% 69%/67% 28% 72% 33%;box-shadow:inset 0 0 120px #e0bd7320,0 0 120px #e0bd7318}body.stage-memory .chamber{border-radius:52% 48% 58% 42%/39% 61% 39% 61%;box-shadow:inset 0 0 140px #a18cff1f,0 0 120px #a18cff1c}body.stage-covenant .chamber{border-radius:34px;box-shadow:inset 0 0 100px #e0bd7324,0 0 100px #e0bd7320}
+body.stage-stone .mist{background:conic-gradient(from 0deg,transparent,#e0bd731c,transparent,#7ce2d312,transparent)}body.stage-memory .mist{background:radial-gradient(ellipse at center,#a18cff1b,transparent 58%)}body.stage-covenant .mist{background:repeating-conic-gradient(from 0deg,#e0bd7318 0 1deg,transparent 1deg 30deg);filter:blur(10px)}
+@media(prefers-reduced-motion:reduce){.stage-nav button{transition:none!important}}
 </style></head>
 <body>
 <div class="sky"></div><div class="mist"></div>
@@ -43,7 +49,7 @@ main{position:fixed;inset:0;display:grid;place-items:center;padding:72px 18px 42
 </section>
 <section class="realm" id="threshold" aria-label="Soul and Stone contribution threshold">
 <div class="chamber">
-<div class="chamber-head"><div class="kicker">The Living Threshold</div><h1>Leave a Stone</h1><div class="stones" aria-label="Four threshold stages"><span class="stone on"></span><span class="stone"></span><span class="stone"></span><span class="stone"></span></div></div>
+<div class="chamber-head"><div class="kicker">The Living Threshold</div><h1 id="stageTitle">I · The Threshold</h1><div class="stones" aria-label="Four threshold stages"><span class="stone on"></span><span class="stone"></span><span class="stone"></span><span class="stone"></span></div><div class="stage-nav" aria-label="Preview the four environments"><button class="pill" data-stage="0" aria-current="step">Threshold</button><button class="pill" data-stage="1">Stone</button><button class="pill" data-stage="2">Memory</button><button class="pill" data-stage="3">Covenant</button></div><div class="stage-caption" id="stageCaption"><strong>Who enters?</strong> Identity gathers at the edge of the field.</div></div>
 <div class="frame"><div class="frame-cover" id="cover"><div><strong>The threshold is ready.</strong><p>The secure contribution form opens here. Four stages carry your Stone from identity to artifact, memory, and covenant.</p><button class="pill" id="openForm">Open the Four Thresholds</button></div></div><iframe id="form" title="Soul & Stone contribution form" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
 <div class="foot"><button class="pill" id="return">← Return to the Constellation</button><span>Review before publication · provenance preserved · no automatic acceptance</span></div>
 </div>
@@ -52,8 +58,22 @@ main{position:fixed;inset:0;display:grid;place-items:center;padding:72px 18px 42
 <script>
 const approach=document.querySelector("#approach"),threshold=document.querySelector("#threshold"),form=document.querySelector("#form"),cover=document.querySelector("#cover"),statusStones=[...document.querySelectorAll(".stone")];
 const FORM_URL="https://archonsoulings.wixforms.com/f/7513018975966463049";
+const stages=[
+ {cls:"stage-threshold",title:"I · The Threshold",caption:"<strong>Who enters?</strong> Identity gathers at the edge of the field."},
+ {cls:"stage-stone",title:"II · The Stone",caption:"<strong>What are you carrying?</strong> The field condenses around the artifact."},
+ {cls:"stage-memory",title:"III · The Memory",caption:"<strong>Why should this remain?</strong> The chamber deepens into provenance and remembrance."},
+ {cls:"stage-covenant",title:"IV · The Covenant",caption:"<strong>How shall it be carried?</strong> Gold geometry resolves around consent, terms, and stewardship."}
+];
+let stageIndex=0;
+function setStage(i){
+ stageIndex=i;document.body.classList.remove(...stages.map(s=>s.cls));document.body.classList.add(stages[i].cls);
+ document.querySelector("#stageTitle").textContent=stages[i].title;document.querySelector("#stageCaption").innerHTML=stages[i].caption;
+ statusStones.forEach((s,n)=>s.classList.toggle("on",n<=i));
+ document.querySelectorAll("[data-stage]").forEach((b,n)=>{if(n===i)b.setAttribute("aria-current","step");else b.removeAttribute("aria-current")});
+}
+document.querySelectorAll("[data-stage]").forEach(b=>b.onclick=()=>setStage(Number(b.dataset.stage)));setStage(0);
 function enter(){approach.classList.remove("active");threshold.classList.add("active");setTimeout(()=>document.querySelector("#openForm").focus({preventScroll:true}),40)}
-function leave(){threshold.classList.remove("active");approach.classList.add("active");form.src="about:blank";cover.classList.remove("hidden");setTimeout(()=>document.querySelector("#enter").focus({preventScroll:true}),40)}
+function leave(){threshold.classList.remove("active");approach.classList.add("active");form.src="about:blank";cover.classList.remove("hidden");setStage(0);setTimeout(()=>document.querySelector("#enter").focus({preventScroll:true}),40)}
 document.querySelector("#enter").onclick=enter;document.querySelector("#return").onclick=leave;
 document.querySelector("#openForm").onclick=()=>{form.src=FORM_URL;cover.classList.add("hidden");statusStones[0].classList.add("on")};
 document.querySelector("#still").onclick=e=>{document.body.classList.toggle("still");e.currentTarget.textContent=document.body.classList.contains("still")?"Living Motion":"Stillness"};
