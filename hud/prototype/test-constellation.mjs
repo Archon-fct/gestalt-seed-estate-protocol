@@ -39,7 +39,10 @@ for (const width of widths) {
 
   await page.locator('[data-id="aura"]').hover();
   if (!(await page.locator('[data-nerve="aura"]').getAttribute('class') || '').includes('hot')) failures.push(width + ': Aura nerve did not respond to hover');
+  if (!(await page.locator('#space').getAttribute('class') || '').includes('resonating')) failures.push(width + ': world attraction resonance did not activate');
+  if (!(await page.locator('[data-id="aura"]').getAttribute('class') || '').includes('resonant')) failures.push(width + ': selected world did not enter resonant state');
   await page.locator('[data-id="aura"]').click();
+  await page.waitForTimeout(780);
   if (!(await page.locator('#veil').getAttribute('class') || '').includes('open')) failures.push(width + ': Aura dimension did not open');
   if ((await page.locator('#title').textContent()) !== 'Aura Dynamics') failures.push(width + ': Aura title mismatch');
   if ((await page.locator('#space').getAttribute('aria-hidden')) !== 'true') failures.push(width + ': Nexus not hidden from AT while dialog open');
