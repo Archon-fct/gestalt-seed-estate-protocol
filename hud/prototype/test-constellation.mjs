@@ -114,6 +114,23 @@ if (/silver/i.test(await auraPage.content())) failures.push('aura: public pocket
 if(auraErrors.length)failures.push('aura JS errors: '+auraErrors.join(' | '));
 await auraPage.screenshot({path:path.join(out,'aura-dynamics-390.png'),fullPage:true});await auraPage.close();
 
+
+const sanctum=await browser.newPage({viewport:{width:390,height:900}});
+const sanctumErrors=[];sanctum.on('pageerror',e=>sanctumErrors.push(String(e)));
+await sanctum.goto('file://' + path.join(root,'hud/prototype/inner-sanctum.html'));
+if((await sanctum.locator('.path').count())!==4)failures.push('sanctum: expected four pathways');
+await sanctum.locator('[data-path="clarity"]').focus();
+if(!(await sanctum.locator('#paths').getAttribute('class')||'').includes('resonating'))failures.push('sanctum: pathway resonance failed');
+await sanctum.locator('[data-path="clarity"]').click();
+if(!(await sanctum.locator('#detail').getAttribute('class')||'').includes('open'))failures.push('sanctum: detail chamber did not open');
+if((await sanctum.locator('#detailKicker').textContent())!=='CLARITY')failures.push('sanctum: clarity content mismatch');
+await sanctum.keyboard.press('Escape');
+if((await sanctum.locator('#detail').getAttribute('class')||'').includes('open'))failures.push('sanctum: Escape did not close detail');
+await sanctum.locator('#still').click();if(!(await sanctum.locator('body').getAttribute('class')||'').includes('still'))failures.push('sanctum: Stillness failed');
+if(/silver/i.test(await sanctum.content()))failures.push('sanctum: public pocket dimension contains forbidden Silver reference');
+if(sanctumErrors.length)failures.push('sanctum JS errors: '+sanctumErrors.join(' | '));
+await sanctum.screenshot({path:path.join(out,'inner-sanctum-390.png'),fullPage:true});await sanctum.close();
+
 await browser.close();
 
 if (failures.length) {
