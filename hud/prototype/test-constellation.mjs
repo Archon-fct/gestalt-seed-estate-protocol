@@ -78,6 +78,7 @@ for (const width of widths) {
       dialogOpacity: dialogStyle.opacity, dialogRect: dialog.getBoundingClientRect().toJSON() };
   });
   console.log('SOUL_CONSENT_DIAGNOSTICS', width, JSON.stringify(consentDiagnostics));
+  console.log('SOUL_SCRIPT_DIAGNOSTICS', width, JSON.stringify(await page.evaluate(() => ({ moduleCount: document.querySelectorAll('script[type=module]').length, scripts: [...document.scripts].map(s => s.src || s.type || 'classic'), soulModuleLoaded: Boolean(document.querySelector('#soulButton')?.onclick), performance: performance.getEntriesByType('resource').filter(x => /soul|atmosphere|event-souls/.test(x.name)).map(x => x.name) }))));
   await page.screenshot({ path: path.join(out, 'soul-consent-' + width + '.png'), fullPage: true });
   await page.locator('#confirmSoul').click({ timeout: 5000 });
   const soulState=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('archonSoul.v1')||'null'));
