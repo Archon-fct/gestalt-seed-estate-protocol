@@ -39,6 +39,13 @@ for (const width of widths) {
   });
 
   if((await page.locator('#threadButton').textContent())!=='Living Thread · 0')failures.push(width+': Living Thread should begin empty');
+  if((await page.locator('#soulButton').textContent())!=='Create My Soul')failures.push(width+': Soul should begin as explicit opt-in');
+  page.once('dialog', async dialog => { if(dialog.type()==='confirm') await dialog.accept(); else await dialog.dismiss(); });
+  await page.locator('#soulButton').click();
+  const soulState=await page.evaluate(()=>JSON.parse(localStorage.getItem('archonSoul.v1')||'null'));
+  if(!soulState||!/^soul_[0-9a-f]{32}$/.test(soulState.id||''))failures.push(width+': Soul creation did not create a valid local Soul ID');
+  if(soulState?.chain!==null||soulState?.economic!==false)failures.push(width+': Soul v0.1 must remain off-chain and non-economic');
+  if(!(await page.locator('#soulButton').textContent()).startsWith('My Soul · '))failures.push(width+': Soul control did not reflect created identity');
   await page.locator('#searchButton').click();await page.locator('#searchInput').fill('boundaries');await page.locator('#runSearch').click();if(!(await page.locator('[data-id="aura"]').getAttribute('class')||'').includes('search-hit'))failures.push(width+': constellation search did not illuminate Aura for boundaries');if(!(await page.locator('[data-id="workshops"]').getAttribute('class')||'').includes('search-neighbor'))failures.push(width+': constellation search did not reveal related Workshops world');await page.locator('#searchButton').click();await page.locator('#clearSearch').click();
   await page.locator('#guide').click();await page.locator('[data-intent="learn"]').click();
   if(!(await page.locator('[data-id="aura"]').getAttribute('class')||'').includes('recommended'))failures.push(width+': Guide Me did not recommend Aura for Learn');
