@@ -66,11 +66,11 @@ for (const width of widths) {
   if(!(await page.locator('#journeyPanel').getAttribute('class')||'').includes('open'))failures.push(width+': Living Thread panel did not open');
   if((await page.locator('.journey-seed').count())!==1)failures.push(width+': Living Thread expected one journey seed');
   await page.locator('#saveJourney').click();
-  const stored=await page.evaluate(()=>sessionStorage.getItem('archonLivingThread'));
+  const stored=await page.evaluate(()=>sessionStorage.getItem('archonLivingThread.v1'));
   if(!stored||!stored.includes('aura'))failures.push(width+': explicit session save did not persist journey');
   await page.locator('#threadButton').click();await page.locator('#dissolveJourney').click();
   if((await page.locator('#threadButton').textContent())!=='Living Thread · 0')failures.push(width+': dissolve did not clear journey');
-  if(await page.evaluate(()=>sessionStorage.getItem('archonLivingThread')))failures.push(width+': dissolve did not clear saved session journey');
+  if(await page.evaluate(()=>sessionStorage.getItem('archonLivingThread.v1')||sessionStorage.getItem('archonLivingThread.session.v1')))failures.push(width+': dissolve did not clear saved/session journey');
   await page.locator('#still').click();
   if (!(await page.locator('body').getAttribute('class') || '').includes('still')) failures.push(width + ': Stillness did not activate');
 
