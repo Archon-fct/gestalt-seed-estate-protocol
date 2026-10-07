@@ -20,6 +20,17 @@ jobs:
           node-version: '22'
       - name: Verify package routes and private-material boundary
         run: node scripts/check-living-nexus-package.mjs
+      - name: Validate inline JavaScript syntax
+        run: |
+          python3 - <<'PY'
+          import re, pathlib
+          html=pathlib.Path('hud/prototype/index.html').read_text()
+          for i,m in enumerate(re.finditer(r'<script(?:\\s[^>]*)?>(.*?)</script>',html,re.S)):
+              suffix='.mjs' if 'type="module"' in m.group(0).split('>')[0] else '.js'
+              pathlib.Path('/tmp/living-hud-inline-'+str(i)+suffix).write_text(m.group(1))
+              print('/tmp/living-hud-inline-'+str(i)+suffix)
+          PY
+          for file in /tmp/living-hud-inline-*.js /tmp/living-hud-inline-*.mjs; do [ -f "$file" ] && node --check "$file"; done
       - name: Install browser capture dependency
         run: npm install --no-save --no-package-lock playwright && npx playwright install --with-deps chromium
       - name: Serve existing prototype
