@@ -65,7 +65,21 @@ for (const width of widths) {
   await page.locator('#soulButton').click();
   if(!(await page.locator('#soulConsent').getAttribute('open')!==null))failures.push(width+': Soul consent chamber did not open as a modal');
   if((await page.evaluate(()=>document.activeElement?.id))!=='confirmSoul')failures.push(width+': Soul consent focus did not move to explicit confirmation');
-  await page.locator('#confirmSoul').click();
+  const consentDiagnostics = await page.evaluate(() => {
+    const dialog = document.querySelector('#soulConsent');
+    const button = document.querySelector('#confirmSoul');
+    const rect = button.getBoundingClientRect();
+    const style = getComputedStyle(button);
+    const dialogStyle = getComputedStyle(dialog);
+    return { open: dialog.open, active: document.activeElement?.id,
+      buttonRect: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
+      buttonDisplay: style.display, buttonVisibility: style.visibility,
+      dialogDisplay: dialogStyle.display, dialogVisibility: dialogStyle.visibility,
+      dialogOpacity: dialogStyle.opacity, dialogRect: dialog.getBoundingClientRect().toJSON() };
+  });
+  console.log('SOUL_CONSENT_DIAGNOSTICS', width, JSON.stringify(consentDiagnostics));
+  await page.screenshot({ path: path.join(out, 'soul-consent-' + width + '.png'), fullPage: true });
+  await page.locator('#confirmSoul').click({ timeout: 5000 });
   const soulState=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('archonSoul.v1')||'null'));
   if(!soulState||!/^soul_[0-9a-f]{32}$/.test(soulState.id||''))failures.push(width+': Soul creation did not create a valid local Soul ID');
   if(soulState?.chain!==null||soulState?.economic!==false)failures.push(width+': Soul v0.1 must remain off-chain and non-economic');
