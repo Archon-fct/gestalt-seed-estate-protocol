@@ -1,3 +1,4 @@
+// Release gate: full Living Nexus integration journey
 import { chromium } from 'playwright';
 import fs from 'node:fs';
 import path from 'node:path';
