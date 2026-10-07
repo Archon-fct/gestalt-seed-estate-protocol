@@ -1,0 +1,41 @@
+name: Soul and Souls Contracts
+
+on:
+  pull_request:
+    paths:
+      - "contracts/**"
+      - ".github/workflows/souls-contracts.yml"
+  push:
+    branches:
+      - feature/public-project-constellation
+    paths:
+      - "contracts/**"
+      - ".github/workflows/souls-contracts.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  forge-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: contracts
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+
+      - name: Install pinned dependencies
+        run: |
+          forge install OpenZeppelin/openzeppelin-contracts@v5.4.0 --no-commit
+          forge install foundry-rs/forge-std --no-commit
+
+      - name: Build
+        run: forge build --sizes
+
+      - name: Test
+        run: forge test -vv
