@@ -1,5 +1,5 @@
 // Archon Soulings — shared public journey state v0.1
-// Privacy contract: no server write, no sensitive profiling, no Silver/private state.
+// Privacy contract: no server write, no sensitive profiling, no private state.
 const KEY='archonLivingThread.v1';
 const SESSION='archonLivingThread.session.v1';
 const validWorlds=['nexus','aura','aureglossa','services','workshops','gestalt','journal'];
