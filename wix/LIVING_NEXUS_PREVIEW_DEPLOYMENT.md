@@ -2,6 +2,14 @@
 
 Status: PREVIEW-ONLY package. Do not replace primary navigation or publish as the main Archon Soulings experience until the integration suite is green and device checks pass.
 
+## Mandatory continuation contract
+
+Before any Living Nexus implementation, deployment, or visual change, read and follow:
+
+- `wix/LIVING_NEXUS_CONTINUATION.md`
+
+That file is a release constraint, not optional design guidance. A green functional test suite does not permit visual regression, and visual polish does not permit architecture regression. If the deployed result becomes a generic dashboard, card grid, conventional landing page, simplified prototype, or fantasy landscape rather than the established living auric operating environment, the build has failed even if automated tests pass.
+
 ## Target
 
 Site: Archon Soulings
@@ -57,6 +65,8 @@ The living operating environment is the authority, not fantasy-landscape concept
 - canonical Aureglossa only; abstract geometry where canonical glyph assets are not loaded;
 - **THARAVEL ~ KOSMATHRA** remains the governing inscription.
 
+The visual authority must be preserved together with the tested architecture. The utilitarian/prototype presentation is not an acceptable substitute for the established Living Nexus environment merely because it is easier to deploy.
+
 ## Device gate
 
 Test at minimum:
@@ -73,7 +83,8 @@ Verify:
 - Stillness works;
 - Atmosphere is opt-in and Silence immediate;
 - crossing and return preserve focus;
-- Field Journal is non-gamified and clearable.
+- Field Journal is non-gamified and clearable;
+- the living constellation composition remains recognizably intact rather than collapsing into a generic card/stacked-dashboard layout.
 
 ## Release rule
 
@@ -83,5 +94,6 @@ Only after the preview passes:
 3. actual iPad Safari test,
 4. custom contribution receipt/read-back,
 5. later persistence read-back,
+6. visual non-regression against `wix/LIVING_NEXUS_CONTINUATION.md`,
 
 may the Living Nexus be considered for primary navigation or homepage replacement.
