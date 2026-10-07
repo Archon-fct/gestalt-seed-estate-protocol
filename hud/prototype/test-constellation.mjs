@@ -2,9 +2,31 @@
 import { chromium } from 'playwright';
 import fs from 'node:fs';
 import path from 'node:path';
+import http from 'node:http';
+import { readFile } from 'node:fs/promises';
 
 const root = process.cwd();
-const file = 'file://' + path.join(root, 'hud/prototype/index.html');
+const siteRoot = path.join(root, 'hud/prototype');
+const mime = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml' };
+const server = http.createServer(async (req, res) => {
+  try {
+    const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
+    const target = path.resolve(siteRoot, '.' + pathname);
+    if (target !== siteRoot && !target.startsWith(siteRoot + path.sep)) {
+      res.writeHead(403); res.end(); return;
+    }
+    const filename = pathname === '/' ? path.join(siteRoot, 'index.html') : target;
+    const data = await readFile(filename);
+    res.writeHead(200, { 'Content-Type': mime[path.extname(filename)] || 'application/octet-stream', 'Cache-Control': 'no-store' });
+    res.end(data);
+  } catch (error) {
+    res.writeHead(error.code === 'ENOENT' ? 404 : 500);
+    res.end('Resource unavailable');
+  }
+});
+await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+const origin = 'http://127.0.0.1:' + server.address().port;
+const file = origin + '/index.html';
 const out = path.join(root, 'hud/prototype/test-artifacts');
 fs.mkdirSync(out, { recursive: true });
 
@@ -43,7 +65,7 @@ for (const width of widths) {
   await page.locator('#soulButton').click();
   if(!(await page.locator('#soulConsent').getAttribute('open')!==null))failures.push(width+': Soul consent chamber did not open as a modal');
   if((await page.evaluate(()=>document.activeElement?.id))!=='confirmSoul')failures.push(width+': Soul consent focus did not move to explicit confirmation');
-  await page.locator('#confirmSoul').dispatchEvent('click');
+  await page.locator('#confirmSoul').click();
   const soulState=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('archonSoul.v1')||'null'));
   if(!soulState||!/^soul_[0-9a-f]{32}$/.test(soulState.id||''))failures.push(width+': Soul creation did not create a valid local Soul ID');
   if(soulState?.chain!==null||soulState?.economic!==false)failures.push(width+': Soul v0.1 must remain off-chain and non-economic');
@@ -205,6 +227,7 @@ if(journeyErrors.length)failures.push('journey JS errors: '+journeyErrors.join('
 await journeyPage.screenshot({path:path.join(out,'integrated-journey-820.png'),fullPage:true});await journeyPage.close();
 
 await browser.close();
+await new Promise((resolve, reject) => server.close(error => error ? reject(error) : resolve()));
 
 if (failures.length) {
   console.error('FAIL\n' + failures.join('\n'));
