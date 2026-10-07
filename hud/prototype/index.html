@@ -61,7 +61,8 @@ body:not(.still) #space.resonating .auric-being .layer{animation-duration:5s}
 @keyframes threadSeed{50%{box-shadow:0 0 28px #fff2bc88,0 0 44px #7fe0d144;transform:translate(-50%,-50%) scale(1.16)}}@keyframes spin{to{transform:rotate(360deg)}}@keyframes breathe{50%{box-shadow:0 0 44px #7fe0d155;filter:brightness(1.12)}}
 @media(max-width:900px){.auric-being{width:min(72vw,560px);height:min(76vh,700px)}.orbit{width:min(88vw,760px);height:min(88vw,760px)}.n1{left:7%;top:22%}.n2{right:7%;top:22%}.n3{left:4%;top:57%}.n4{right:4%;top:57%}.n5{left:25%;bottom:8%}.n6{right:25%;bottom:8%}}
 @media(max-width:650px){header{top:12px;left:12px;right:12px;align-items:flex-start}.controls{max-width:52vw;justify-content:flex-end;flex-wrap:wrap}.controls button{padding:9px 11px;font-size:12px}.auric-being{width:82vw;height:68vh;top:48%}.orbit{width:94vw;height:94vw;top:49%}.nexus{width:126px;height:126px;top:49%}.nexus strong{font-size:14px}.node{width:82px;height:82px;padding:6px}.node span{font-size:9px}.node span em{font-size:7px}.n1{left:3%;top:24%}.n2{right:3%;top:24%}.n3{left:1%;top:57%}.n4{right:1%;top:57%}.n5{left:20%;bottom:11%}.n6{right:20%;bottom:11%}.dimension{padding:42px 25px}.brand{max-width:155px;font-size:11px}.thread-toggle{right:12px;bottom:12px;max-width:76vw;justify-content:flex-end;flex-wrap:wrap}.thread-toggle button{font-size:11px;padding:9px 11px}.status{left:12px;bottom:12px;max-width:22vw;font-size:9px}.journey-panel{right:12px;bottom:74px;width:calc(100vw - 24px)}}
-.auric-being.responding{filter:drop-shadow(0 0 34px #fff2bc66) drop-shadow(0 0 60px #7fe0d133)}\n@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition-duration:.01ms!important}}
+.auric-being.responding{filter:drop-shadow(0 0 34px #fff2bc66) drop-shadow(0 0 60px #7fe0d133)}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition-duration:.01ms!important}}
 </style>
 </head><body>
 <div class="sky"></div>
@@ -121,7 +122,8 @@ document.querySelector("#guide").onclick=()=>{document.querySelector("#passportB
 document.querySelector("#still").onclick=e=>{document.body.classList.toggle("still");e.currentTarget.textContent=document.body.classList.contains("still")?"Living Motion":"Stillness";status.textContent=document.body.classList.contains("still")?"Stillness enabled":"Living motion enabled"};
 </script>
 <script type="module">
-import { createSoul, loadSoul } from "./soul.js";\nimport { enterAtmosphere, silence } from "./spatial-atmosphere.js";
+import { createSoul, loadSoul } from "./soul.js";
+import { enterAtmosphere, silence } from "./spatial-atmosphere.js";
 
 const soulButton = document.querySelector("#soulButton");
 const atmosphereButton = document.querySelector("#atmosphere");
