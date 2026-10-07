@@ -41,7 +41,7 @@ for (const width of widths) {
   if((await page.locator('#threadButton').textContent())!=='Living Thread · 0')failures.push(width+': Living Thread should begin empty');
   if((await page.locator('#soulButton').textContent())!=='Create My Soul')failures.push(width+': Soul should begin as explicit opt-in');
   await page.locator('#soulButton').click();
-  if(!(await page.locator('#soulConsent').getAttribute('class')||'').includes('open'))failures.push(width+': Soul consent chamber did not open');
+  if(!(await page.locator('#soulConsent').getAttribute('open')!==null))failures.push(width+': Soul consent chamber did not open as a modal');
   if((await page.evaluate(()=>document.activeElement?.id))!=='confirmSoul')failures.push(width+': Soul consent focus did not move to explicit confirmation');
   await page.locator('#confirmSoul').click();
   const soulState=await page.evaluate(()=>JSON.parse(localStorage.getItem('archonSoul.v1')||'null'));
