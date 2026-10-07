@@ -30,7 +30,16 @@ jobs:
               pathlib.Path('/tmp/living-hud-inline-'+str(i)+suffix).write_text(m.group(1))
               print('/tmp/living-hud-inline-'+str(i)+suffix)
           PY
-          find /tmp -maxdepth 1 -name 'living-hud-inline-*' -type f -print -exec node --check {} \\;
+          python3 - <<'PY'
+          import pathlib, subprocess, sys
+          files=sorted(pathlib.Path('/tmp').glob('living-hud-inline-*'))
+          for file in files:
+              p=subprocess.run(['node','--check',str(file)],capture_output=True,text=True)
+              print(f'{file}: exit {p.returncode}')
+              if p.stdout: print(p.stdout)
+              if p.stderr: print(p.stderr)
+              if p.returncode: sys.exit(p.returncode)
+          PY
       - name: Install browser capture dependency
         run: npm install --no-save --no-package-lock playwright && npx playwright install --with-deps chromium
       - name: Serve existing prototype
