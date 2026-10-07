@@ -1,0 +1,36 @@
+{
+  "schema": "archon.living-nexus.preview-bundle.v1",
+  "status": "preview-only",
+  "entry": "index.html",
+  "required": [
+    "index.html",
+    "soul.js",
+    "soul-currency.js",
+    "spatial-atmosphere.js",
+    "aura-dynamics.html",
+    "inner-sanctum.html",
+    "living-tongue.html",
+    "living-archive.html",
+    "living-threshold.html",
+    "astral-journal.html",
+    "convergence.html",
+    "public-provenance.json",
+    "public-relationship-graph.json",
+    "physical-thresholds.json"
+  ],
+  "releaseGates": [
+    "Project Constellation CI green",
+    "Soul and Souls Contracts CI green",
+    "zero public Silver/private leakage",
+    "390px responsive gate",
+    "820px iPad portrait gate",
+    "1280px desktop gate",
+    "reduced-motion gate",
+    "Atmosphere opt-in and immediate Silence",
+    "Living Thread Dissolve clears relevant journey state",
+    "all pocket dimensions return to Nexus",
+    "Living Threshold submission test before production contribution replacement",
+    "owner iPad Safari review before production promotion"
+  ],
+  "productionPromotion": false
+}
