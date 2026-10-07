@@ -14,181 +14,53 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      SOURCE_SHA: b82ea0d0c1a73d73b2984f62cb6f74e036cf81df
+      SOURCE_SHA: 1024f97e787b16eb5d58c551781f2af8601e9330
       MODE: stage
       TARGET_URL: https://headless-mfewrcffiie-archonsoulings-140e.wix-site-host.com/
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: b82ea0d0c1a73d73b2984f62cb6f74e036cf81df
+          ref: 1024f97e787b16eb5d58c551781f2af8601e9330
           persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Recover unchanged deployment and acceptance scripts from pinned revision
+        run: |
+          mkdir -p deployment-evidence .preview-tools
+          python3 -m pip install --quiet PyYAML
+          python3 - <<'PY'
+          import pathlib,yaml
+          source=pathlib.Path('.github/workflows/living-nexus-preview-transfer.yml').read_text()
+          config=yaml.safe_load(source)
+          names={
+              'Package only the approved public runtime':'package.sh',
+              'Stage an expiring public-only transfer bundle or select existing preview':'stage.sh',
+              'Test deployed resources and browser interactions without changing the source':'smoke.sh'
+          }
+          for step in config['jobs']['preview']['steps']:
+              if step.get('name') in names:
+                  pathlib.Path('.preview-tools',names[step['name']]).write_text(step['run'])
+          assert all(pathlib.Path('.preview-tools',p).is_file() for p in names.values())
+          PY
+      - name: Package only the approved public runtime
+        run: bash -eo pipefail .preview-tools/package.sh 2>&1 | tee deployment-evidence/package.log
       - name: Install browser test engines
         run: |
-          npm init -y
-          npm install --save-dev playwright
-          npx playwright install --with-deps chromium webkit
+          npm init -y > /tmp/preview-npm-init.log
+          npm install --save-dev playwright > /tmp/preview-npm-install.log 2>&1 || { tail -80 /tmp/preview-npm-install.log; exit 1; }
+          npx playwright install --with-deps chromium webkit > /tmp/preview-browser-install.log 2>&1 || { tail -80 /tmp/preview-browser-install.log; exit 1; }
       - name: Run unchanged release-candidate integration suite
-        run: node hud/prototype/test-constellation.mjs
-      - name: Package only the approved public runtime
-        run: |
-          python3 - <<'PY'
-          import hashlib,json,os,pathlib,re,zipfile
-          from html.parser import HTMLParser
-          from urllib.parse import urlsplit,unquote
-          source=pathlib.Path('hud/prototype')
-          names='adaptive-guide.js astral-journal.html aura-dynamics.html aureglossa-commands.js constellation-passport.js constellation-search.js convergence.html index.html inner-sanctum.html living-archive.html living-thread-state.js living-threshold.html living-tongue.html physical-thresholds.json public-graph.json public-provenance.json public-relationships.json spatial-atmosphere.js'.split()
-          out=pathlib.Path('deployment-evidence');out.mkdir(exist_ok=True)
-          content={}
-          for name in names:
-              p=source/name
-              assert p.is_file() and not p.is_symlink(),name
-              data=p.read_bytes();text=data.decode('utf-8')
-              assert len(data)<3_000_000,name
-              assert not re.search(r'silver|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----|sk-proj-[A-Za-z0-9_-]{20,}|AKIA[A-Z0-9]{16}',text,re.I),'Public privacy gate: '+name
-              content[name]=data
-          class Links(HTMLParser):
-              def handle_starttag(self,tag,attrs):
-                  for key,value in attrs:
-                      if key in ('href','src') and value:
-                          u=urlsplit(value)
-                          if not u.scheme and not u.netloc and u.path:
-                              assert unquote(u.path).removeprefix('./') in content,'Missing relative asset: '+value
-          for name,data in content.items():
-              if name.endswith('.html'):Links().feed(data.decode())
-          content['robots.txt']=b'User-agent: *\nDisallow: /\n'
-          manifest={'sourceSha':os.environ['SOURCE_SHA'],'runtimeFilesUnmodified':True,'files':[{'path':n,'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()} for n,b in content.items()]}
-          with zipfile.ZipFile(out/'living-nexus-preview.zip','w',zipfile.ZIP_DEFLATED) as z:
-              for name,data in content.items():z.writestr(name,data)
-          manifest['zipSha256']=hashlib.sha256((out/'living-nexus-preview.zip').read_bytes()).hexdigest()
-          (out/'bundle-manifest.json').write_text(json.dumps(manifest,indent=2))
-          print('PUBLIC_PACKAGE_OK',len(content),'files',sum(len(x) for x in content.values()),'bytes')
-          PY
+        run: node hud/prototype/test-constellation.mjs 2>&1 | tee deployment-evidence/original-suite.log
       - name: Stage an expiring public-only transfer bundle or select existing preview
-        run: |
-          node --input-type=module <<'JS'
-          import fs from 'node:fs';
-          import crypto from 'node:crypto';
-          import {execFileSync} from 'node:child_process';
-          const out='deployment-evidence';
-          if(process.env.MODE==='verify') {
-            fs.writeFileSync(out+'/target.json',JSON.stringify({siteUrl:process.env.TARGET_URL,sourceSha:process.env.SOURCE_SHA,mode:'verify'}));
-          } else {
-            const anonymousId=crypto.randomUUID();
-            console.log('::add-mask::'+anonymousId);
-            const root='https://www.wixapis.com/headless-business-setup/v1/headless-business/anonymous/'+anonymousId;
-            async function post(url,body) {
-              const response=await fetch(url,{method:'POST',...(body?{headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:{})});
-              if(!response.ok)throw new Error('Wix transfer request failed: '+response.status+' '+await response.text());
-              return response.json();
-            }
-            const created=await post(root);
-            if(!created.metaSiteId)throw new Error('No anonymous transfer site ID');
-            const uploaded=JSON.parse(execFileSync('curl',['--fail-with-body','--silent','--show-error','--max-time','120','-X','POST',root+'/'+created.metaSiteId+'/upload?campaign=mcp&agent=chatgpt','-F','files=@'+out+'/living-nexus-preview.zip;filename=living-nexus-preview.zip'],{encoding:'utf8'}));
-            if(!uploaded.uploadId)throw new Error('No staged upload ID');
-            const released=await post(root+'/'+created.metaSiteId+'/release',{uploadId:uploaded.uploadId});
-            if(!released.siteUrl)throw new Error('No staged site URL');
-            const receipt={metaSiteId:created.metaSiteId,siteUrl:released.siteUrl,uploadId:uploaded.uploadId,sourceSha:process.env.SOURCE_SHA,mode:'temporary-transfer',createdAt:new Date().toISOString(),note:'Expires after one hour. Not the permanent user preview. No account credentials used or retained.'};
-            fs.writeFileSync(out+'/target.json',JSON.stringify(receipt,null,2));
-            console.log('TRANSFER_RECEIPT '+JSON.stringify(receipt));
-          }
-          JS
+        run: bash -eo pipefail .preview-tools/stage.sh 2>&1 | tee deployment-evidence/transfer.log
       - name: Test deployed resources and browser interactions without changing the source
-        run: |
-          cat > smoke-preview.mjs <<'JS'
-          import fs from 'node:fs';
-          import crypto from 'node:crypto';
-          import assert from 'node:assert/strict';
-          import {chromium,webkit} from 'playwright';
-          const out='deployment-evidence';
-          const target=JSON.parse(fs.readFileSync(out+'/target.json'));
-          const base=target.siteUrl.replace(/\/$/,'')+'/';
-          if(!new URL(base).hostname.endsWith('.wix-site-host.com'))throw new Error('Refusing non-isolated preview host');
-          const manifest=JSON.parse(fs.readFileSync(out+'/bundle-manifest.json'));
-          const results=[];
-          async function check(name,fn){try{await fn();results.push({name,status:'PASS'});}catch(error){results.push({name,status:'FAIL',detail:String(error.message||error).slice(0,1800)});}}
-          for(const file of manifest.files)await check('HTTP and exact bytes: '+file.path,async()=>{
-            const r=await fetch(new URL(file.path,base));assert.equal(r.status,200);
-            const bytes=Buffer.from(await r.arrayBuffer());
-            assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),file.sha256);
-          });
-          for(const [engineName,engine] of [['Chromium',chromium],['WebKit',webkit]]){
-            const browser=await engine.launch({headless:true});
-            for(const width of [390,820,1280]){
-              const context=await browser.newContext({viewport:{width,height:width===820?1180:900},hasTouch:width<1280,isMobile:width<1280});
-              const page=await context.newPage();page.setDefaultTimeout(7000);
-              const errors=[];page.on('pageerror',e=>errors.push(String(e)));
-              const prefix=engineName+' '+width+': ';
-              await check(prefix+'Nexus, Guide Me, Search, crossing and return',async()=>{
-                await page.goto(base,{waitUntil:'networkidle'});
-                assert.equal(await page.locator('.node').count(),6);
-                assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
-                await page.locator('#guide').click();await page.locator('[data-intent="learn"]').click();
-                assert.match(await page.locator('[data-id="aura"]').getAttribute('class'),/recommended/);
-                await page.locator('#searchButton').click();await page.locator('#searchInput').fill('boundaries');await page.locator('#runSearch').click();
-                assert.match(await page.locator('[data-id="aura"]').getAttribute('class'),/search-hit/);
-                await page.locator('[data-id="aura"]').click();await page.waitForTimeout(850);
-                assert.equal(await page.evaluate(()=>document.activeElement?.id),'back');
-                await page.locator('#back').click();await page.waitForTimeout(1450);
-                assert.equal(await page.evaluate(()=>document.activeElement?.dataset.id),'aura');
-              });
-              await check(prefix+'All pocket dimensions, paths, privacy and horizontal layout',async()=>{
-                for(const file of manifest.files.filter(f=>f.path.endsWith('.html'))){
-                  await page.goto(new URL(file.path,base).href,{waitUntil:'networkidle'});
-                  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,file.path+' overflows');
-                  assert.doesNotMatch(await page.content(),/silver/i);
-                  if(file.path!=='index.html')assert.ok(await page.locator('a[href="index.html"],a[href="./index.html"]').count(),file.path+' missing Nexus link');
-                }
-              });
-              await check(prefix+'Aura, Aureglossa provenance, Gestalt relationship and local journals',async()=>{
-                await page.goto(new URL('aura-dynamics.html',base).href);
-                await page.locator('[data-step="4"]').click();
-                await page.goto(new URL('living-tongue.html',base).href);
-                await page.locator('[data-word="tharavel"]').click();await page.locator('#origin').click();
-                assert.match(await page.locator('#note').textContent(),/THARAVEL_KOSMATHRA_AUDIT/);
-                await page.goto(new URL('living-archive.html',base).href);
-                await page.locator('[data-rel="EXTENDS"]').click();assert.equal(await page.locator('#title').textContent(),'EXTENDS');
-                await page.goto(base);
-                await page.locator('#passportButton').click();assert.ok(await page.locator('#passportMarks .journey-seed').count()>=2);
-                await page.locator('#clearPassport').click();
-                assert.equal(await page.evaluate(()=>sessionStorage.getItem('archonPassport.v1')),null);
-                await page.locator('#threadButton').click();await page.locator('#saveJourney').click();
-                assert.ok(await page.evaluate(()=>sessionStorage.getItem('archonLivingThread.v1')));
-                await page.locator('#threadButton').click();await page.locator('#dissolveJourney').click();
-                assert.equal(await page.evaluate(()=>sessionStorage.getItem('archonLivingThread.v1')||sessionStorage.getItem('archonLivingThread.session.v1')||sessionStorage.getItem('archonLivingThread')),null);
-                await page.reload();assert.equal(await page.locator('#threadButton').textContent(),'Living Thread · 0');
-              });
-              await check(prefix+'Stillness and reduced motion',async()=>{
-                await page.goto(base);await page.locator('#still').click();assert.match(await page.locator('body').getAttribute('class'),/still/);
-                await page.emulateMedia({reducedMotion:'reduce'});assert.equal(await page.locator('.node').first().evaluate(e=>getComputedStyle(e).animationName),'none');
-              });
-              await check(prefix+'Atmosphere and immediate Silence controls present',async()=>{
-                await page.goto(base);
-                assert.ok(await page.getByRole('button',{name:/^Atmosphere$/i}).count(),'Atmosphere control is not wired into the current Nexus');
-                await page.getByRole('button',{name:/^Atmosphere$/i}).click();
-                await page.getByRole('button',{name:/^Silence$/i}).waitFor({state:'visible'});
-                await page.getByRole('button',{name:/^Silence$/i}).click();
-                await page.getByRole('button',{name:/^Atmosphere$/i}).waitFor({state:'visible'});
-              });
-              await check(prefix+'No browser JavaScript errors',async()=>assert.deepEqual(errors,[]));
-              await page.screenshot({path:out+'/'+engineName.toLowerCase()+'-'+width+'.png',fullPage:true});
-              await context.close();
-            }
-            await browser.close();
-          }
-          const report={sourceSha:manifest.sourceSha,url:base,testedAt:new Date().toISOString(),actualIPadSafariTested:false,customSubmissionTested:false,results,passed:results.filter(x=>x.status==='PASS').length,failed:results.filter(x=>x.status==='FAIL').length};
-          fs.writeFileSync(out+'/smoke-results.json',JSON.stringify(report,null,2));
-          console.log('SMOKE_RESULT '+JSON.stringify(report));
-          if(report.failed)process.exitCode=1;
-          JS
-          node smoke-preview.mjs
+        run: bash -eo pipefail .preview-tools/smoke.sh 2>&1 | tee deployment-evidence/smoke.log
       - name: Save package and evidence even when an acceptance check fails
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: living-nexus-preview-evidence
           path: deployment-evidence/
-          if-no-files-found: warn
           retention-days: 14
+          if-no-files-found: error
