@@ -40,8 +40,10 @@ for (const width of widths) {
 
   if((await page.locator('#threadButton').textContent())!=='Living Thread · 0')failures.push(width+': Living Thread should begin empty');
   if((await page.locator('#soulButton').textContent())!=='Create My Soul')failures.push(width+': Soul should begin as explicit opt-in');
-  page.once('dialog', async dialog => { if(dialog.type()==='confirm') await dialog.accept(); else await dialog.dismiss(); });
   await page.locator('#soulButton').click();
+  if(!(await page.locator('#soulConsent').getAttribute('class')||'').includes('open'))failures.push(width+': Soul consent chamber did not open');
+  if((await page.evaluate(()=>document.activeElement?.id))!=='confirmSoul')failures.push(width+': Soul consent focus did not move to explicit confirmation');
+  await page.locator('#confirmSoul').click();
   const soulState=await page.evaluate(()=>JSON.parse(localStorage.getItem('archonSoul.v1')||'null'));
   if(!soulState||!/^soul_[0-9a-f]{32}$/.test(soulState.id||''))failures.push(width+': Soul creation did not create a valid local Soul ID');
   if(soulState?.chain!==null||soulState?.economic!==false)failures.push(width+': Soul v0.1 must remain off-chain and non-economic');
