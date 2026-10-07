@@ -44,7 +44,7 @@ for (const width of widths) {
   if(!(await page.locator('#soulConsent').getAttribute('open')!==null))failures.push(width+': Soul consent chamber did not open as a modal');
   if((await page.evaluate(()=>document.activeElement?.id))!=='confirmSoul')failures.push(width+': Soul consent focus did not move to explicit confirmation');
   await page.locator('#confirmSoul').press('Enter');
-  const soulState=await page.evaluate(()=>JSON.parse(localStorage.getItem('archonSoul.v1')||'null'));
+  const soulState=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('archonSoul.v1')||'null'));
   if(!soulState||!/^soul_[0-9a-f]{32}$/.test(soulState.id||''))failures.push(width+': Soul creation did not create a valid local Soul ID');
   if(soulState?.chain!==null||soulState?.economic!==false)failures.push(width+': Soul v0.1 must remain off-chain and non-economic');
   if(!(await page.locator('#soulButton').textContent()).startsWith('My Soul · '))failures.push(width+': Soul control did not reflect created identity');
