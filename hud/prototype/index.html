@@ -169,12 +169,14 @@ function refreshSoulButton() {
   if (soul) soulButton.title = "A browser-local Soul exists. No wallet or cryptocurrency was created.";
 }
 
-const soulConsent = document.querySelector("#soulConsent");\nconst soulBackdrop = document.querySelector("#soulBackdrop");
+const soulConsent = document.querySelector("#soulConsent");
+const soulBackdrop = document.querySelector("#soulBackdrop");
 const confirmSoul = document.querySelector("#confirmSoul");
 const cancelSoul = document.querySelector("#cancelSoul");
 
 function closeSoulConsent() {
-  soulConsent.classList.remove("open");\n  soulBackdrop.classList.remove("open");
+  soulConsent.classList.remove("open");
+  soulBackdrop.classList.remove("open");
   document.body.classList.remove("soul-consenting");
   soulConsent.setAttribute("aria-hidden", "true");
   soulButton.focus({ preventScroll: true });
@@ -189,7 +191,8 @@ soulButton.addEventListener("click", () => {
     return;
   }
   document.body.classList.add("soul-consenting");
-  soulBackdrop.classList.add("open");\n  soulConsent.classList.add("open");
+  soulBackdrop.classList.add("open");
+  soulConsent.classList.add("open");
   soulConsent.setAttribute("aria-hidden", "false");
   confirmSoul.focus({ preventScroll: true });
 });
