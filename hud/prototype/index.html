@@ -65,7 +65,7 @@ body:not(.still) #space.resonating .auric-being .layer{animation-duration:5s}
 </style>
 </head><body>
 <div class="sky"></div>
-<header><div class="brand">ARCHON SOULINGS<br><span style="font-size:9px;color:var(--gold);letter-spacing:.22em">THARAVEL ~ KOSMATHRA</span></div><div class="controls"><button id="searchButton">Search</button><button id="guide">Guide Me</button><button id="still">Stillness</button></div></header>
+<header><div class="brand">ARCHON SOULINGS<br><span style="font-size:9px;color:var(--gold);letter-spacing:.22em">THARAVEL ~ KOSMATHRA</span></div><div class="controls"><button id="searchButton">Search</button><button id="guide">Guide Me</button><button id="atmosphere">Atmosphere</button><button id="silence">Silence</button><button id="still">Stillness</button></div></header>
 <main id="space" aria-label="Public project constellation" aria-hidden="false">
 <div class="nerve-field" aria-hidden="true"><i class="nerve n-aura" data-nerve="aura"></i><i class="nerve n-aureglossa" data-nerve="aureglossa"></i><i class="nerve n-gestalt" data-nerve="gestalt"></i><i class="nerve n-journal" data-nerve="journal"></i><i class="nerve n-workshops" data-nerve="workshops"></i><i class="nerve n-services" data-nerve="services"></i></div><div class="auric-being" aria-hidden="true"><span class="layer l3"></span><span class="layer l2"></span><span class="layer l1"></span><span class="head"></span><span class="wing left"></span><span class="wing right"></span><span class="torso"></span><span class="meridian"></span><span class="axis"></span><span class="center c1"></span><span class="center c2"></span><span class="center c3"></span><span class="center c4"></span><span class="center c5"></span><span class="center c6"></span><span class="heart"></span></div><div class="orbit"></div>
 <div class="filament f1"></div><div class="filament f2"></div><div class="filament f3"></div><div class="filament f4"></div><div class="filament f5"></div><div class="filament f6"></div>
@@ -121,9 +121,27 @@ document.querySelector("#guide").onclick=()=>{document.querySelector("#passportB
 document.querySelector("#still").onclick=e=>{document.body.classList.toggle("still");e.currentTarget.textContent=document.body.classList.contains("still")?"Living Motion":"Stillness";status.textContent=document.body.classList.contains("still")?"Stillness enabled":"Living motion enabled"};
 </script>
 <script type="module">
-import { createSoul, loadSoul } from "./soul.js";
+import { createSoul, loadSoul } from "./soul.js";\nimport { enterAtmosphere, silence } from "./spatial-atmosphere.js";
 
 const soulButton = document.querySelector("#soulButton");
+const atmosphereButton = document.querySelector("#atmosphere");
+const silenceButton = document.querySelector("#silence");
+
+atmosphereButton.addEventListener("click", async () => {
+  try {
+    const active = await enterAtmosphere("nexus");
+    status.textContent = active
+      ? "Atmosphere · opt-in meeting-field resonance"
+      : "Atmosphere unavailable";
+  } catch {
+    status.textContent = "Atmosphere could not start · Silence remains available";
+  }
+});
+
+silenceButton.addEventListener("click", () => {
+  silence();
+  status.textContent = "Silence · atmosphere stopped immediately";
+});
 
 function passportSelection() {
   try {
