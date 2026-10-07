@@ -4,6 +4,7 @@ on:
     paths:
       - 'hud/prototype/**'
       - 'scripts/capture-living-hud.mjs'
+      - 'scripts/check-living-nexus-package.mjs'
       - '.github/workflows/living-hud-preview-evidence.yml'
   workflow_dispatch:
 permissions:
@@ -17,6 +18,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Verify package routes and private-material boundary
+        run: node scripts/check-living-nexus-package.mjs
       - name: Install browser capture dependency
         run: npm install --no-save --no-package-lock playwright && npx playwright install --with-deps chromium
       - name: Serve existing prototype
