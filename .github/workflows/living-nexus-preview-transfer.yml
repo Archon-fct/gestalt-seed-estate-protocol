@@ -14,13 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      SOURCE_SHA: a8ccc9f08e9ae0462dc2efdec721db8bed8c6308
+      SOURCE_SHA: b82ea0d0c1a73d73b2984f62cb6f74e036cf81df
       MODE: stage
       TARGET_URL: https://headless-mfewrcffiie-archonsoulings-140e.wix-site-host.com/
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: a8ccc9f08e9ae0462dc2efdec721db8bed8c6308
+          ref: b82ea0d0c1a73d73b2984f62cb6f74e036cf81df
           persist-credentials: false
       - uses: actions/setup-node@v4
         with:
@@ -167,7 +167,10 @@ jobs:
               await check(prefix+'Atmosphere and immediate Silence controls present',async()=>{
                 await page.goto(base);
                 assert.ok(await page.getByRole('button',{name:/^Atmosphere$/i}).count(),'Atmosphere control is not wired into the current Nexus');
-                assert.ok(await page.getByRole('button',{name:/^Silence$/i}).count(),'Silence control is not wired into the current Nexus');
+                await page.getByRole('button',{name:/^Atmosphere$/i}).click();
+                await page.getByRole('button',{name:/^Silence$/i}).waitFor({state:'visible'});
+                await page.getByRole('button',{name:/^Silence$/i}).click();
+                await page.getByRole('button',{name:/^Atmosphere$/i}).waitFor({state:'visible'});
               });
               await check(prefix+'No browser JavaScript errors',async()=>assert.deepEqual(errors,[]));
               await page.screenshot({path:out+'/'+engineName.toLowerCase()+'-'+width+'.png',fullPage:true});
