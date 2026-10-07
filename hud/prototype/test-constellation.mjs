@@ -46,6 +46,10 @@ for (const width of widths) {
   if(!soulState||!/^soul_[0-9a-f]{32}$/.test(soulState.id||''))failures.push(width+': Soul creation did not create a valid local Soul ID');
   if(soulState?.chain!==null||soulState?.economic!==false)failures.push(width+': Soul v0.1 must remain off-chain and non-economic');
   if(!(await page.locator('#soulButton').textContent()).startsWith('My Soul · '))failures.push(width+': Soul control did not reflect created identity');
+  if(!(await page.locator('body').getAttribute('class')||'').includes('has-soul'))failures.push(width+': Soul did not alter the living Nexus field');
+  if((await page.locator('.nexus-membrane').count())!==3)failures.push(width+': central Nexus membranes missing');
+  const nexusText=(await page.locator('.nexus').innerText()).toUpperCase();
+  if(!nexusText.includes('NEXUS')||!nexusText.includes('MEETING FIELD')||!nexusText.includes('THARAVEL'))failures.push(width+': visual authority inscription missing from Nexus');
   await page.locator('#searchButton').click();await page.locator('#searchInput').fill('boundaries');await page.locator('#runSearch').click();if(!(await page.locator('[data-id="aura"]').getAttribute('class')||'').includes('search-hit'))failures.push(width+': constellation search did not illuminate Aura for boundaries');if(!(await page.locator('[data-id="workshops"]').getAttribute('class')||'').includes('search-neighbor'))failures.push(width+': constellation search did not reveal related Workshops world');await page.locator('#searchButton').click();await page.locator('#clearSearch').click();
   await page.locator('#guide').click();await page.locator('[data-intent="learn"]').click();
   if(!(await page.locator('[data-id="aura"]').getAttribute('class')||'').includes('recommended'))failures.push(width+': Guide Me did not recommend Aura for Learn');
