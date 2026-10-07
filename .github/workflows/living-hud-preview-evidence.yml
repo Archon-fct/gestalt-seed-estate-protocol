@@ -30,7 +30,7 @@ jobs:
               pathlib.Path('/tmp/living-hud-inline-'+str(i)+suffix).write_text(m.group(1))
               print('/tmp/living-hud-inline-'+str(i)+suffix)
           PY
-          for file in /tmp/living-hud-inline-*.js /tmp/living-hud-inline-*.mjs; do [ -f "$file" ] && node --check "$file"; done
+          find /tmp -maxdepth 1 -name 'living-hud-inline-*' -type f -print -exec node --check {} \\;
       - name: Install browser capture dependency
         run: npm install --no-save --no-package-lock playwright && npx playwright install --with-deps chromium
       - name: Serve existing prototype
