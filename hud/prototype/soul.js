@@ -38,7 +38,7 @@ export function deriveAura(id) {
 
 export function loadSoul() {
   try {
-    const value = JSON.parse(localStorage.getItem(SOUL_KEY) || "null");
+    const value = JSON.parse(sessionStorage.getItem(SOUL_KEY) || "null");
     return value && value.version === SOUL_VERSION ? value : null;
   } catch {
     return null;
@@ -59,7 +59,7 @@ export function createSoul({ journey = [], marks = [], relationships = [] } = {}
     chain: null,
     economic: false
   };
-  localStorage.setItem(SOUL_KEY, JSON.stringify(soul));
+  sessionStorage.setItem(SOUL_KEY, JSON.stringify(soul));
   return soul;
 }
 
@@ -69,7 +69,7 @@ export function updateSoulSelection({ journey, marks, relationships } = {}) {
   if (Array.isArray(journey)) soul.journey = [...new Set(journey)].slice(0, 24);
   if (Array.isArray(marks)) soul.marks = [...new Set(marks)].slice(0, 48);
   if (Array.isArray(relationships)) soul.relationships = [...new Set(relationships)].slice(0, 96);
-  localStorage.setItem(SOUL_KEY, JSON.stringify(soul));
+  sessionStorage.setItem(SOUL_KEY, JSON.stringify(soul));
   return soul;
 }
 
@@ -90,5 +90,5 @@ export function soulReceipt(soul = loadSoul()) {
 }
 
 export function dissolveLocalSoul() {
-  localStorage.removeItem(SOUL_KEY);
+  sessionStorage.removeItem(SOUL_KEY);
 }
