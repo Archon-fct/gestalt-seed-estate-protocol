@@ -1,0 +1,42 @@
+name: Living HUD preview evidence
+on:
+  pull_request:
+    paths:
+      - 'hud/prototype/**'
+      - 'scripts/capture-living-hud.mjs'
+      - '.github/workflows/living-hud-preview-evidence.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser capture dependency
+        run: npm install --no-save --no-package-lock playwright && npx playwright install --with-deps chromium
+      - name: Serve existing prototype
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/living-hud-http.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:8765/hud/prototype/ > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/living-hud-http.log
+          exit 1
+      - name: Capture mobile, iPad, desktop evidence
+        run: node scripts/capture-living-hud.mjs http://127.0.0.1:8765/hud/prototype/ living-hud-evidence
+      - name: Upload screenshots and machine report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: living-hud-evidence
+          path: living-hud-evidence/
+          if-no-files-found: warn
+          retention-days: 30
+# This workflow captures evidence and basic runtime failures only.
+# It does NOT certify visual fidelity, actual iPad Safari, Wix deployment, privacy or launch readiness.
