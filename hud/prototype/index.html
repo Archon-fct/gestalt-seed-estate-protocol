@@ -58,7 +58,7 @@ body:not(.still) #space.resonating .auric-being .layer{animation-duration:5s}
 .still *{animation-play-state:paused!important}.auric-being.responding .layer{filter:brightness(1.18);opacity:.88}.auric-being.responding .heart{box-shadow:0 0 52px #fff2bc}.still .nerve:before,.still .nerve:after,.still .node,.still .node:before,.still .nexus:before,.still .nexus:after,.still .heart,.still .layer,.still .center{animation:none!important}
 @keyframes spin{to{transform:rotate(360deg)}}@keyframes breathe{50%{box-shadow:0 0 44px #7fe0d155;filter:brightness(1.12)}}
 @media(max-width:650px){header{top:12px;left:12px;right:12px}.controls button{padding:10px 12px}.orbit{width:96vw;height:96vw}.nexus{width:132px;height:132px}.node{width:88px;height:88px;padding:7px}.node span{font-size:10px}.n1{left:4%;top:21%}.n2{right:4%;top:21%}.n3{left:2%;top:57%}.n4{right:2%;top:57%}.n5{left:22%;bottom:9%}.n6{right:22%;bottom:9%}.dimension{padding:42px 25px}.brand{max-width:180px}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition-duration:.01ms!important}}
+.auric-being.responding{filter:drop-shadow(0 0 34px #fff2bc66) drop-shadow(0 0 60px #7fe0d133)}\n@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition-duration:.01ms!important}}
 </style>
 </head><body>
 <div class="sky"></div>
@@ -77,7 +77,7 @@ body:not(.still) #space.resonating .auric-being .layer{animation-duration:5s}
 <section id="veil" role="dialog" aria-modal="true" aria-labelledby="title" aria-describedby="copy" aria-hidden="true">
 <div class="dimension"><button id="back" aria-label="Return to constellation">← Nexus</button><h1 id="title"></h1><p id="copy"></p><div class="actions" id="actions"></div></div>
 </section>
-<div class="return-seed" id="returnSeed" aria-hidden="true"></div><div class="journey-orbit" id="journeyOrbit" aria-label="Your temporary constellation"></div><div class="journey-panel" id="journeyPanel" role="dialog" aria-modal="false" aria-labelledby="journeyTitle"><div class="kicker" style="color:var(--aqua);font-size:9px;letter-spacing:.18em">THE LIVING THREAD</div><h2 id="journeyTitle">This is the path you made today.</h2><p id="journeyCopy">The field remembers only this visit unless you explicitly choose to save it.</p><div class="journey-seeds" id="journeySeeds"></div><div id="passportBox" style="display:none"><div class="journey-seeds" id="passportMarks"></div><p style="font-size:11px;color:var(--muted)">These are traces of public experiences you completed in this browser session—not points, ranks, or a personality score.</p><div class="journey-actions"><button id="clearPassport">Let these marks dissolve</button></div></div><div id="searchBox" style="display:none"><input id="searchInput" aria-label="Search the constellation" placeholder="boundaries, hypnosis, language…" style="width:100%;min-height:44px;border-radius:999px;border:1px solid #d8b86d66;background:#071018;color:var(--ink);padding:10px 14px;font:inherit"><div class="journey-actions" style="margin-top:8px"><button id="runSearch">Reveal relationships</button><button id="clearSearch">Clear</button></div></div><div id="guideChoices" class="journey-actions" style="display:none"><button data-intent="learn">Learn</button><button data-intent="experience">Experience</button><button data-intent="work">Work</button><button data-intent="create">Create</button><button data-intent="contribute">Contribute</button></div><div class="journey-actions"><button id="continueJourney">Continue the path</button><button id="saveJourney">Save this journey</button><button id="dissolveJourney">Let it dissolve</button></div></div><div class="thread-toggle"><button id="passportButton">Field Journal</button><button id="threadButton">Living Thread · 0</button></div><div class="status" aria-live="polite" id="status">Public constellation · prototype · no private state</div>
+<div class="return-seed" id="returnSeed" aria-hidden="true"></div><div class="journey-orbit" id="journeyOrbit" aria-label="Your temporary constellation"></div><div class="journey-panel" id="journeyPanel" role="dialog" aria-modal="false" aria-labelledby="journeyTitle"><div class="kicker" style="color:var(--aqua);font-size:9px;letter-spacing:.18em">THE LIVING THREAD</div><h2 id="journeyTitle">This is the path you made today.</h2><p id="journeyCopy">The field remembers only this visit unless you explicitly choose to save it.</p><div class="journey-seeds" id="journeySeeds"></div><div id="passportBox" style="display:none"><div class="journey-seeds" id="passportMarks"></div><p style="font-size:11px;color:var(--muted)">These are traces of public experiences you completed in this browser session—not points, ranks, or a personality score.</p><div class="journey-actions"><button id="clearPassport">Let these marks dissolve</button></div></div><div id="searchBox" style="display:none"><input id="searchInput" aria-label="Search the constellation" placeholder="boundaries, hypnosis, language…" style="width:100%;min-height:44px;border-radius:999px;border:1px solid #d8b86d66;background:#071018;color:var(--ink);padding:10px 14px;font:inherit"><div class="journey-actions" style="margin-top:8px"><button id="runSearch">Reveal relationships</button><button id="clearSearch">Clear</button></div></div><div id="guideChoices" class="journey-actions" style="display:none"><button data-intent="learn">Learn</button><button data-intent="experience">Experience</button><button data-intent="work">Work</button><button data-intent="create">Create</button><button data-intent="contribute">Contribute</button></div><div class="journey-actions"><button id="continueJourney">Continue the path</button><button id="saveJourney">Save this journey</button><button id="dissolveJourney">Let it dissolve</button></div></div><div class="thread-toggle"><button id="soulButton">Create My Soul</button><button id="passportButton">Field Journal</button><button id="threadButton">Living Thread · 0</button></div><div class="status" aria-live="polite" id="status">Public constellation · prototype · no private state</div>
 <script>
 const JOURNEY_SESSION="archonLivingThread.session.v1",JOURNEY_SAVED="archonLivingThread.v1";let journey=[];try{journey=JSON.parse(sessionStorage.getItem(JOURNEY_SESSION)||sessionStorage.getItem(JOURNEY_SAVED)||"[]")}catch{journey=[]}const labels={aura:"Aura Dynamics",aureglossa:"Aureglossa",gestalt:"Gestalt",journal:"Journal",workshops:"Workshops",services:"Sessions"};function remember(id){if(!journey.includes(id))journey.push(id);sessionStorage.setItem(JOURNEY_SESSION,JSON.stringify(journey));document.querySelector('[data-id="'+id+'"]')?.classList.add("visited");threadButton.textContent="Living Thread · "+journey.length;renderJourney()}function renderJourney(){journeySeeds.innerHTML="";journeyOrbit.innerHTML="";journey.forEach((id,i)=>{const s=document.createElement("span");s.className="journey-seed";s.textContent=labels[id]||id;journeySeeds.appendChild(s);const angle=(-90+(i*360/Math.max(journey.length,1)))*Math.PI/180,r=118;const p=document.createElement("button");p.className="path-seed";p.title=labels[id];p.style.left=(Math.cos(angle)*r)+"px";p.style.top=(Math.sin(angle)*r)+"px";p.onclick=()=>journeyPanel.classList.add("open");journeyOrbit.appendChild(p);if(i>0){const prevAngle=(-90+((i-1)*360/Math.max(journey.length,1)))*Math.PI/180;const x1=Math.cos(prevAngle)*r,y1=Math.sin(prevAngle)*r,x2=Math.cos(angle)*r,y2=Math.sin(angle)*r,line=document.createElement("i");line.className="path-line";line.style.left=x1+"px";line.style.top=y1+"px";const dx=x2-x1,dy=y2-y1;line.style.width=Math.hypot(dx,dy)+"px";line.style.transform="rotate("+Math.atan2(dy,dx)+"rad)";journeyOrbit.prepend(line)}});document.querySelector("#journeyCopy").textContent=journey.length?"Your current path touches "+journey.map(id=>labels[id]).join(" · ")+". Nothing here is a diagnosis or hidden profile.":"No worlds have been gathered into this visit yet."}const destinations={aura:{Learn:"aura-dynamics.html"},aureglossa:{Learn:"living-tongue.html",Contribute:"living-tongue.html"},services:{Explore:"inner-sanctum.html"},journal:{Explore:"astral-journal.html",Learn:"astral-journal.html"},workshops:{Learn:"convergence.html",Collaborate:"convergence.html"},gestalt:{Explore:"living-archive.html",Contribute:"living-threshold.html"}};
 const data={
@@ -116,4 +116,56 @@ const intentMap={learn:["aura","aureglossa","journal"],experience:["aura","servi
 const searchTerms={aura:["aura","boundaries","attention","connection","energy","field"],aureglossa:["language","words","ritual","canon","tharavel","kosmathra"],services:["clarity","change","hypnosis","deep","exploration","guidance"],workshops:["class","teach","host","collaborate","practice","community"],gestalt:["contribute","provenance","stone","archive","collaboration","build"],journal:["stories","field","notes","teaching","insights","podcast","writing"]};const rels=[["aura","workshops"],["aura","journal"],["aureglossa","gestalt"],["journal","workshops"],["gestalt","journal"],["services","aura"]];function runConstellationSearch(q){q=String(q||"").toLowerCase().trim();const hits=Object.keys(searchTerms).filter(id=>searchTerms[id].some(t=>q.split(/\s+/).some(w=>t.includes(w)||w.includes(t))));const neighbors=new Set();rels.forEach(([a,b])=>{if(hits.includes(a))neighbors.add(b);if(hits.includes(b))neighbors.add(a)});document.querySelectorAll(".node").forEach(n=>{n.classList.remove("search-hit","search-neighbor","search-dim");if(hits.includes(n.dataset.id))n.classList.add("search-hit");else if(neighbors.has(n.dataset.id))n.classList.add("search-neighbor");else n.classList.add("search-dim")});status.textContent=hits.length?"Search resonance · "+hits.map(id=>labels[id]).join(" · "):"No direct resonance yet · try another public concept";journeyPanel.classList.remove("open")}document.querySelector("#searchButton").onclick=()=>{document.querySelector("#passportBox").style.display="none";journeyPanel.classList.add("open");document.querySelector("#searchBox").style.display="block";document.querySelector("#guideChoices").style.display="none";document.querySelector("#journeyTitle").textContent="What are you looking for?";document.querySelector("#journeyCopy").textContent="Search reorganizes the public constellation instead of profiling you."};document.querySelector("#runSearch").onclick=()=>runConstellationSearch(document.querySelector("#searchInput").value);document.querySelector("#clearSearch").onclick=()=>{document.querySelectorAll(".node").forEach(n=>n.classList.remove("search-hit","search-neighbor","search-dim"));document.querySelector("#searchInput").value="";status.textContent="Search resonance cleared"};
 document.querySelector("#guide").onclick=()=>{document.querySelector("#passportBox").style.display="none";document.querySelector("#searchBox").style.display="none";journeyPanel.classList.add("open");document.querySelector("#guideChoices").style.display="flex";document.querySelector("#journeyTitle").textContent=journey.length?"This is the path you made today.":"Where would you like to begin?";document.querySelector("#journeyCopy").textContent=journey.length?"These are the worlds you chose to touch. Continue, save for this browser session, or let the path dissolve.":"Begin with a world that calls your attention. Nothing here is a diagnosis; the constellation reorganizes only around choices you make."};
 document.querySelector("#still").onclick=e=>{document.body.classList.toggle("still");e.currentTarget.textContent=document.body.classList.contains("still")?"Living Motion":"Stillness";status.textContent=document.body.classList.contains("still")?"Stillness enabled":"Living motion enabled"};
+</script>
+<script type="module">
+import { createSoul, loadSoul } from "./soul.js";
+
+const soulButton = document.querySelector("#soulButton");
+
+function passportSelection() {
+  try {
+    return JSON.parse(sessionStorage.getItem("archonPassport.v1") || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function refreshSoulButton() {
+  const soul = loadSoul();
+  soulButton.textContent = soul ? "My Soul · " + soul.id.slice(-6).toUpperCase() : "Create My Soul";
+  if (soul) soulButton.title = "A browser-local Soul exists. No wallet or cryptocurrency was created.";
+}
+
+soulButton.addEventListener("click", () => {
+  const existing = loadSoul();
+  if (existing) {
+    status.textContent = "Your Soul is present in this browser · identity/provenance only · no wallet or monetary token";
+    document.querySelector(".auric-being")?.classList.add("responding");
+    setTimeout(() => document.querySelector(".auric-being")?.classList.remove("responding"), 1800);
+    return;
+  }
+
+  const wantsSoul = window.confirm(
+    "Create your browser-local Soul?\n\n" +
+    "This creates a random identity/provenance object from the journey and Field Journal marks you chose to keep. " +
+    "It does not create a wallet, cryptocurrency, financial asset, psychological profile, or ownership claim. " +
+    "Nothing is written to a blockchain."
+  );
+  if (!wantsSoul) {
+    status.textContent = "Soul creation cancelled · nothing was stored.";
+    return;
+  }
+
+  const soul = createSoul({
+    journey: [...journey],
+    marks: passportSelection(),
+    relationships: journey.map(id => "TOUCHED:" + id)
+  });
+  document.documentElement.style.setProperty("--soul-pulse", soul.aura.pulseMs + "ms");
+  document.querySelector(".auric-being")?.classList.add("responding");
+  status.textContent = "Soul created · " + soul.id.slice(-8).toUpperCase() + " · browser-local provenance";
+  refreshSoulButton();
+});
+
+refreshSoulButton();
 </script></body></html>
