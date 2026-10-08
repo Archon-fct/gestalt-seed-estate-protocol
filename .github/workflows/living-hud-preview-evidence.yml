@@ -1,0 +1,65 @@
+name: Living HUD preview evidence
+on:
+  pull_request:
+    paths:
+      - 'hud/prototype/**'
+      - 'scripts/capture-living-hud.mjs'
+      - 'scripts/check-living-nexus-package.mjs'
+      - '.github/workflows/living-hud-preview-evidence.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify package routes and private-material boundary
+        run: node scripts/check-living-nexus-package.mjs
+      - name: Validate inline JavaScript syntax
+        run: |
+          python3 - <<'PY'
+          import re, pathlib
+          html=pathlib.Path('hud/prototype/index.html').read_text()
+          for i,m in enumerate(re.finditer(r'<script(?:\\s[^>]*)?>(.*?)</script>',html,re.S)):
+              suffix='.mjs' if 'type="module"' in m.group(0).split('>')[0] else '.js'
+              pathlib.Path('/tmp/living-hud-inline-'+str(i)+suffix).write_text(m.group(1))
+              print('/tmp/living-hud-inline-'+str(i)+suffix)
+          PY
+          python3 - <<'PY'
+          import pathlib, subprocess, sys
+          files=sorted(pathlib.Path('/tmp').glob('living-hud-inline-*'))
+          for file in files:
+              p=subprocess.run(['node','--check',str(file)],capture_output=True,text=True)
+              print(f'{file}: exit {p.returncode}')
+              if p.stdout: print(p.stdout)
+              if p.stderr: print(p.stderr)
+              if p.returncode: sys.exit(p.returncode)
+          PY
+      - name: Install browser capture dependency
+        run: npm install --no-save --no-package-lock playwright && npx playwright install --with-deps chromium
+      - name: Serve existing prototype
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/living-hud-http.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:8765/hud/prototype/ > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/living-hud-http.log
+          exit 1
+      - name: Capture mobile, iPad, desktop evidence
+        run: node scripts/capture-living-hud.mjs http://127.0.0.1:8765/hud/prototype/ living-hud-evidence
+      - name: Upload screenshots and machine report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: living-hud-evidence
+          path: living-hud-evidence/
+          if-no-files-found: warn
+          retention-days: 30
+# This workflow captures evidence and basic runtime failures only.
+# It does NOT certify visual fidelity, actual iPad Safari, Wix deployment, privacy or launch readiness.
