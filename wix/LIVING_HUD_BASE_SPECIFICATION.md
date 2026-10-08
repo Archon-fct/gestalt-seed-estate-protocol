@@ -9,6 +9,10 @@ Status: OWNER-APPROVED IMPLEMENTATION AUTHORITY. Use alongside LIVING_NEXUS_CONT
 
 These are design touchstones, **not evidence of functioning code**. Do not replace actual validation with visual resemblance.
 
+## Approved motion reference extension (2026-10-08)
+The owner added two YouTube motion-study links, now registered with verification and rights caveats in [LIVING_MOTION_REFERENCE_REGISTER.md](LIVING_MOTION_REFERENCE_REGISTER.md). Apply their **spatial particle / volumetric flow direction** as a kinetic reference only. They do not supersede the three owner-approved structural images, the six-world constellation, accessible interaction, or public/privacy boundaries. Public Archon Soulings should remain luminous and welcoming; the more intense eldritch-horror interpretation belongs exclusively to separately secured private derivative modules.
+
+
 ## Component architecture
 LivingHUD
 - AtmosphereLayer: CosmicBackdrop, OrganicEnergyField, ConstellationConnections
