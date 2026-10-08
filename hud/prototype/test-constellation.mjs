@@ -39,6 +39,9 @@ for (const width of widths) {
   const jsErrors = [];
   page.on('pageerror', e => jsErrors.push(String(e)));
   await page.goto(file);
+  await page.waitForTimeout(400);
+  // Visual acceptance baseline: capture BEFORE Guide/Search/Stillness intentionally dim nodes.
+  await page.screenshot({ path: path.join(out, 'idle-' + width + '.png'), fullPage: true });
   await page.waitForTimeout(150);
   console.log('INITIAL_MODULE_ERRORS', width, JSON.stringify(jsErrors));
 
