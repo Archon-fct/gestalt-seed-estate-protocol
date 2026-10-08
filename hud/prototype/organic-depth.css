@@ -556,3 +556,38 @@ body.still .organic-depth-field .organ-world-sheen {animation:none!important;}
   .organic-depth-field .organ-corona-ray{animation:none!important}
 }
 body.still .organic-depth-field .organ-corona-ray{animation:none!important}
+
+/* Auric Fidelity v0.7.1 — review corrections for dark discs and
+   lower-world clashes at 390px / iPad portrait. */
+#space>.node {
+  background:
+    radial-gradient(circle at 43% 24%,rgba(255,255,228,.38),transparent 26%),
+    radial-gradient(ellipse 88% 82% at 46% 46%,
+      color-mix(in srgb,var(--world-light),transparent 72%) 0%,
+      rgba(11,26,48,.39) 50%,rgba(2,6,18,.66) 95%);
+  box-shadow:
+    inset -7px -14px 25px rgba(2,4,14,.58),
+    inset 11px 12px 29px var(--world-shadow),
+    0 0 34px var(--world-shadow),
+    0 0 54px color-mix(in srgb,var(--world-light),transparent 88%);
+}
+header .brand{
+  font-size:clamp(13px,1.4vw,20px);
+  letter-spacing:.21em;
+  line-height:1.45;
+  text-shadow:0 1px 12px #000;
+}
+header .controls button{
+  font-family:system-ui,sans-serif;
+  font-size:12px;
+  letter-spacing:.04em;
+}
+@media(min-width:651px) and (max-width:999px){
+  #space>.node[data-id="journal"]{bottom:14%}
+  .organic-depth-field .organ-breathscape{opacity:.25}
+}
+@media(max-width:650px){
+  #space>.node[data-id="journal"]{bottom:14%}
+  header .brand{font-size:11px}
+  .organic-depth-field .organ-breathscape{opacity:.14}
+}
