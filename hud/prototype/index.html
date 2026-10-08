@@ -63,12 +63,46 @@ body:not(.still) #space.resonating .auric-being .layer{animation-duration:5s}
 @media(max-width:650px){header{top:12px;left:12px;right:12px;align-items:flex-start}.controls{max-width:52vw;justify-content:flex-end;flex-wrap:wrap}.controls button{padding:9px 11px;font-size:12px}.auric-being{width:82vw;height:68vh;top:48%}.orbit{width:94vw;height:94vw;top:49%}.nexus{width:126px;height:126px;top:49%}.nexus strong{font-size:14px}.node{width:82px;height:82px;padding:6px}.node span{font-size:9px}.node span em{font-size:7px}.n1{left:3%;top:24%}.n2{right:3%;top:24%}.n3{left:1%;top:57%}.n4{right:1%;top:57%}.n5{left:20%;bottom:11%}.n6{right:20%;bottom:11%}.dimension{padding:42px 25px}.brand{max-width:155px;font-size:11px}.thread-toggle{right:12px;bottom:12px;max-width:76vw;justify-content:flex-end;flex-wrap:wrap}.thread-toggle button{font-size:11px;padding:9px 11px}.status{left:12px;bottom:12px;max-width:22vw;font-size:9px}.journey-panel{right:12px;bottom:74px;width:calc(100vw - 24px)}}
 .auric-being.responding{filter:drop-shadow(0 0 34px #fff2bc66) drop-shadow(0 0 60px #7fe0d133)}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition-duration:.01ms!important}}
+
+/* Living atmosphere: decorative SVG is isolated from interactive HTML nodes. */
+.living-filament-field{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:visible;opacity:.84;contain:paint}
+.living-filament-field .energy-streams{stroke-dasharray:14 24;animation:livingFlow 19s linear infinite;filter:drop-shadow(0 0 5px #f6dcac77)}
+.living-filament-field .energy-glow{opacity:.64;animation:livingGlow 8s ease-in-out infinite}
+#space>.node,#space>.nexus{z-index:3}
+#space>.node{isolation:isolate}
+#space>.node:before{content:"";position:absolute;inset:-11px;border-radius:46% 54% 53% 47%/52% 43% 57% 48%;background:radial-gradient(ellipse at 46% 42%,#fff0c721,#80e0d119 34%,#a88bff0b 62%,transparent 78%);border:1px solid #e8d7ad38;box-shadow:inset 0 0 26px #d9f8ee20,0 0 23px #91e6dd27;pointer-events:none;animation:livingShell 8s ease-in-out infinite}
+#space>.node:nth-of-type(3n):before{animation-duration:9.5s;border-color:#b6a1ff55}
+#space>.node.visited:before{box-shadow:0 0 32px #ffe7b76b,inset 0 0 30px #92eadb3d}
+.nexus{isolation:isolate;box-shadow:0 0 45px #ffe9ae72,0 0 105px #7fe0d14d,0 0 155px #9f8cff2b}
+.nexus-membrane{box-shadow:0 0 24px #7fe0d13b,inset 0 0 25px #fff2bc22}
+@keyframes livingFlow{to{stroke-dashoffset:-304}}
+@keyframes livingGlow{50%{opacity:.94}}
+@keyframes livingShell{50%{opacity:.67;transform:scale(1.045) rotate(2deg)}}
+@media(max-width:650px){.living-filament-field{opacity:.55}#space>.node:before{inset:-6px}.nexus{box-shadow:0 0 32px #ffe9ae77,0 0 65px #7fe0d13b}}
+@media(prefers-reduced-motion:reduce){.living-filament-field .energy-streams,.living-filament-field .energy-glow,#space>.node:before{animation:none!important}}
+body.still .living-filament-field .energy-streams,body.still .living-filament-field .energy-glow,body.still #space>.node:before{animation:none!important}
 </style>
 </head><body>
 <div class="sky"></div>
 <header><div class="brand">ARCHON SOULINGS<br><span style="font-size:9px;color:var(--gold);letter-spacing:.22em">THARAVEL ~ KOSMATHRA</span></div><div class="controls"><button id="searchButton">Search</button><button id="guide">Guide Me</button><button id="atmosphere">Atmosphere</button><button id="silence">Silence</button><button id="still">Stillness</button></div></header>
 <main id="space" aria-label="Public project constellation" aria-hidden="false">
-<div class="nerve-field" aria-hidden="true"><i class="nerve n-aura" data-nerve="aura"></i><i class="nerve n-aureglossa" data-nerve="aureglossa"></i><i class="nerve n-gestalt" data-nerve="gestalt"></i><i class="nerve n-journal" data-nerve="journal"></i><i class="nerve n-workshops" data-nerve="workshops"></i><i class="nerve n-services" data-nerve="services"></i></div><div class="auric-being" aria-hidden="true"><span class="layer l3"></span><span class="layer l2"></span><span class="layer l1"></span><span class="head"></span><span class="wing left"></span><span class="wing right"></span><span class="torso"></span><span class="meridian"></span><span class="axis"></span><span class="center c1"></span><span class="center c2"></span><span class="center c3"></span><span class="center c4"></span><span class="center c5"></span><span class="center c6"></span><span class="heart"></span></div><div class="orbit"></div>
+<div class="nerve-field" aria-hidden="true"><i class="nerve n-aura" data-nerve="aura"></i><i class="nerve n-aureglossa" data-nerve="aureglossa"></i><i class="nerve n-gestalt" data-nerve="gestalt"></i><i class="nerve n-journal" data-nerve="journal"></i><i class="nerve n-workshops" data-nerve="workshops"></i><i class="nerve n-services" data-nerve="services"></i></div><div class="auric-being" aria-hidden="true"><span class="layer l3"></span><span class="layer l2"></span><span class="layer l1"></span><span class="head"></span><span class="wing left"></span><span class="wing right"></span><span class="torso"></span><span class="meridian"></span><span class="axis"></span><span class="center c1"></span><span class="center c2"></span><span class="center c3"></span><span class="center c4"></span><span class="center c5"></span><span class="center c6"></span><span class="heart"></span></div><svg class="living-filament-field" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+<defs>
+<linearGradient id="livingGold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8be6d9" stop-opacity=".12"/><stop offset=".48" stop-color="#fff1c1" stop-opacity=".78"/><stop offset="1" stop-color="#b7a1ff" stop-opacity=".12"/></linearGradient>
+<linearGradient id="livingViolet" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#7bd8f2" stop-opacity=".14"/><stop offset=".52" stop-color="#c6a4ff" stop-opacity=".62"/><stop offset="1" stop-color="#f8dba0" stop-opacity=".12"/></linearGradient>
+<filter id="livingGlow" x="-70%" y="-70%" width="240%" height="240%"><feGaussianBlur stdDeviation="7"/></filter>
+</defs>
+<g class="energy-glow" filter="url(#livingGlow)" fill="none" stroke-width="13">
+<path d="M600 455 C420 360 420 205 340 242 S180 350 340 420 S505 465 600 455 C750 330 810 210 900 242 S1060 350 900 420 S710 470 600 455" stroke="url(#livingGold)"/>
+<path d="M600 455 C390 510 365 590 340 620 S435 770 600 455 C780 530 820 590 900 620 S775 790 600 455" stroke="url(#livingViolet)"/>
+</g>
+<g class="energy-streams" fill="none" stroke-linecap="round">
+<path d="M600 455 C450 320 420 190 340 242 S210 340 340 420 S520 465 600 455 C740 310 815 200 900 242 S1040 360 900 420 S710 465 600 455" stroke="url(#livingGold)" stroke-width="2.5"/>
+<path d="M600 455 C420 505 375 575 340 620 S460 770 600 455 C740 510 825 575 900 620 S760 790 600 455" stroke="url(#livingViolet)" stroke-width="2.5"/>
+<path d="M600 455 Q455 300 340 242 Q410 405 600 455 Q770 300 900 242 Q800 420 600 455 Q465 510 340 620 Q530 565 600 455 Q755 515 900 620 Q690 550 600 455" stroke="url(#livingGold)" stroke-width="1.2" opacity=".7"/>
+</g>
+</svg>
+<div class="orbit"></div>
 <div class="filament f1"></div><div class="filament f2"></div><div class="filament f3"></div><div class="filament f4"></div><div class="filament f5"></div><div class="filament f6"></div>
 <div class="nexus" aria-hidden="true"><span class="nexus-membrane m1"></span><span class="nexus-membrane m2"></span><span class="nexus-membrane m3"></span><div class="nexus-core"><strong>NEXUS</strong><small>THE MEETING FIELD</small><small style="color:var(--gold);font-size:8px;margin-top:10px">THARAVEL · KOSMATHRA</small></div></div>
 <button class="node n1" data-id="aura"><span>AURA DYNAMICS<em>The Living Field · Enter →</em></span></button>
