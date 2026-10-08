@@ -1,12 +1,15 @@
 # Archon Soulings Living Environment — Wix Preview Deployment v0.1
 
-Status: PREVIEW-ONLY package. Do not replace primary navigation or publish as the main Archon Soulings experience until the integration suite is green and device checks pass.
+Status: PREVIEW-ONLY package. **VISUAL ACCEPTANCE HOLD**: passing CI is necessary but insufficient. Do not promote or label this implementation visually approved until the three owner touchstones have been compared against screenshots of the actual rendered build. Do not replace production navigation or the homepage.
 
 ## Mandatory continuation contract
 
 Before any Living Nexus implementation, deployment, or visual change, read and follow:
 
 - `wix/LIVING_NEXUS_CONTINUATION.md`
+- `wix/LIVING_HUD_BASE_SPECIFICATION.md`
+- `wix/VISUAL_TOUCHSTONE_CHECKLIST.md`
+- `wix/LIVING_NEXUS_PRODUCT_NORTH_STAR.md`
 
 That file is a release constraint, not optional design guidance. A green functional test suite does not permit visual regression, and visual polish does not permit architecture regression. If the deployed result becomes a generic dashboard, card grid, conventional landing page, simplified prototype, or fantasy landscape rather than the established living auric operating environment, the build has failed even if automated tests pass.
 
@@ -97,3 +100,18 @@ Only after the preview passes:
 6. visual non-regression against `wix/LIVING_NEXUS_CONTINUATION.md`,
 
 may the Living Nexus be considered for primary navigation or homepage replacement.
+
+
+## Visual acceptance record — required before any release-candidate claim
+
+The reviewer must compare **actual build screenshots** at 390px, 820px, and 1280px against the three approved references:
+
+1. Organic energy (6FC5F009…jpeg): layered translucent irregular energy, moving filaments, dark negative space.
+2. Spatial constellation (22C3AFC1…jpeg): central Nexus, six interconnected auric worlds, relational hierarchy.
+3. Operational HUD (0B966560…jpeg): functional navigation, responsive Living Thread, Continue/Save/Dissolve, privacy and accessibility.
+
+Record each dimension as **PASS / FAIL / NOT VERIFIED**, with screenshot evidence and specific defects. Do not treat descriptive CSS, a mockup, or a green browser test as evidence of visual fidelity.
+
+**Fail-closed rule:** if visual fidelity is not verified, deployment may only be a clearly labeled internal experiment; it must not be called the owner-approved Living Nexus preview or promoted publicly.
+
+The Nexus must remain the operating center. No conventional dashboard/card-grid substitution. Keep the interaction engine separate from decorative animation and preserve reduced-motion and keyboard alternatives.
