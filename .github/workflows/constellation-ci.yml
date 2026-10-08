@@ -22,6 +22,8 @@ jobs:
           npm init -y
           npm install --save-dev playwright
           npx playwright install --with-deps chromium
+      - name: Validate public-facing copy
+        run: node tests/test-public-client-copy.mjs
       - name: Run responsive and interaction checks
         run: node hud/prototype/test-constellation.mjs
       - name: Test isolated Nexus kinetic continuity study 04
