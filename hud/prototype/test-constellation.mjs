@@ -56,10 +56,16 @@ for (const width of widths) {
       connections:svg?.querySelectorAll('.organ-connection').length||0,
       shells:svg?.querySelectorAll('.organ-core-membrane').length||0,
       wisps:svg?.querySelectorAll('.organ-wisp').length||0,
+      // Five visual references: spectral rivers, living tissue, and responsive lenses.
+      spectralRivers:svg?.querySelectorAll('.organ-river-sheet').length||0,
+      tissueRibbons:svg?.querySelectorAll('.organ-tissue-ribbon').length||0,
+      volumes:svg?.querySelectorAll('.organ-world-volume').length||0,
+      apertures:svg?.querySelectorAll('.organ-aperture').length||0,
+      centralVessels:svg?.querySelectorAll('.organ-heart-matrix').length||0,
       viewbox:svg?.getAttribute('viewBox')||''};
   });
   console.log('ORGANIC_DEPTH',width,JSON.stringify(organic));
-  if(!organic.present||organic.aria!=='true'||organic.pointer!=='none'||organic.cells!==6||organic.connections!==6||organic.shells!==3||organic.wisps<9)
+  if(!organic.present||organic.aria!=='true'||organic.pointer!=='none'||organic.cells!==6||organic.connections!==6||organic.shells!==3||organic.wisps<9||organic.spectralRivers!==6||organic.tissueRibbons!==6||organic.volumes!==6||organic.apertures!==6||organic.centralVessels!==1)
     failures.push(width+': organic depth layer incomplete or intercepts input '+JSON.stringify(organic));
 
   const overflow = await page.evaluate(() => ({
