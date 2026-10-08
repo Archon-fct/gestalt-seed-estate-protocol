@@ -62,10 +62,12 @@ for (const width of widths) {
       volumes:svg?.querySelectorAll('.organ-world-volume').length||0,
       apertures:svg?.querySelectorAll('.organ-aperture').length||0,
       centralVessels:svg?.querySelectorAll('.organ-heart-matrix').length||0,
+      spectralVeils:svg?.querySelectorAll('.organ-spectral-veil').length||0,
+      worldSheens:svg?.querySelectorAll('.organ-world-sheen').length||0,
       viewbox:svg?.getAttribute('viewBox')||''};
   });
   console.log('ORGANIC_DEPTH',width,JSON.stringify(organic));
-  if(!organic.present||organic.aria!=='true'||organic.pointer!=='none'||organic.cells!==6||organic.connections!==6||organic.shells!==3||organic.wisps<9||organic.spectralRivers!==6||organic.tissueRibbons!==6||organic.volumes!==6||organic.apertures!==6||organic.centralVessels!==1)
+  if(!organic.present||organic.aria!=='true'||organic.pointer!=='none'||organic.cells!==6||organic.connections!==6||organic.shells!==3||organic.wisps<9||organic.spectralRivers!==6||organic.tissueRibbons!==6||organic.volumes!==6||organic.apertures!==6||organic.centralVessels!==1||organic.spectralVeils!==6||organic.worldSheens!==6)
     failures.push(width+': organic depth layer incomplete or intercepts input '+JSON.stringify(organic));
 
   const overflow = await page.evaluate(() => ({
