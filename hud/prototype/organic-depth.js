@@ -57,6 +57,30 @@ if(space && nexus && nodes.length===6){
       r(a.x+dx*.73-nx*bend*.62)+" "+r(a.y+dy*.73-ny*bend*.62)+" "+
       r(b.x)+" "+r(b.y);
   }
+  // ORGANIC_TAPERED_BANDS_V05 — volumetric prismatic ribbons from IMG_2741.
+  // Filled, tapered contours replace constant-width diagram-like pipes.
+  function ribbonShape(a,b,bend,thickness,phase=0){
+    const dx=b.x-a.x,dy=b.y-a.y,L=Math.max(1,Math.hypot(dx,dy));
+    const nx=-dy/L,ny=dx/L;
+    const p1={x:a.x+dx*.30+nx*bend,y:a.y+dy*.30+ny*bend};
+    const p2={x:a.x+dx*.73-nx*bend*.62,y:a.y+dy*.73-ny*bend*.62};
+    const sides=[[],[]];
+    for(let i=0;i<=32;i++){
+      const t=i/32,inv=1-t;
+      const x=inv*inv*inv*a.x+3*inv*inv*t*p1.x+3*inv*t*t*p2.x+t*t*t*b.x;
+      const y=inv*inv*inv*a.y+3*inv*inv*t*p1.y+3*inv*t*t*p2.y+t*t*t*b.y;
+      const tx=3*inv*inv*(p1.x-a.x)+6*inv*t*(p2.x-p1.x)+3*t*t*(b.x-p2.x);
+      const ty=3*inv*inv*(p1.y-a.y)+6*inv*t*(p2.y-p1.y)+3*t*t*(b.y-p2.y);
+      const mag=Math.max(1,Math.hypot(tx,ty));
+      const taper=Math.pow(Math.max(0,Math.sin(Math.PI*t)),.83);
+      const swell=.79+.16*Math.sin(2*Math.PI*t+phase)+.07*Math.cos(5*Math.PI*t+phase*.63);
+      const w=thickness*taper*swell;
+      sides[0].push([r(x-ty/mag*w),r(y+tx/mag*w)]);
+      sides[1].push([r(x+ty/mag*w),r(y-tx/mag*w)]);
+    }
+    const sequence=sides[0].concat(sides[1].reverse());
+    return "M"+sequence.map(p=>p[0]+" "+p[1]).join(" L")+" Z";
+  }
   function defBlock(){
     const defs=[
       '<defs>',
@@ -116,6 +140,8 @@ if(space && nexus && nodes.length===6){
       const river=nerve(start,end,bend*1.85);
       const tributary=nerve(start,end,-bend*1.15);
       const riverStroke='url(#organRiver-'+item.id+')';
+      const silk=ribbonShape(start,end,bend*1.32,Math.min(28,16+len*.055),anchors[item.id]||0);
+      all.push('<path class="organ-spectral-veil" fill="'+riverStroke+'" d="'+silk+'"/>');
       all.push('<path class="organ-river-halo" stroke="'+riverStroke+'" d="'+river+'"/>');
       all.push('<path class="organ-river-sheet" stroke="'+riverStroke+'" d="'+river+'"/>');
       all.push('<path class="organ-river-light" stroke="#ffefc7" d="'+river+'"/>');
@@ -197,6 +223,8 @@ if(space && nexus && nodes.length===6){
       const across=nerve(sideA,sideB,-h*.56);
       const across2=nerve({x:item.x-w*.76,y:item.y+h*.35},
                            {x:item.x+w*.74,y:item.y-h*.27},h*.48);
+      const foldedSilk=ribbonShape(sideA,sideB,-h*.56,Math.min(23,item.rad*.32),key);
+      all.push('<path class="organ-world-sheen" fill="url(#organRiver-'+item.id+')" d="'+foldedSilk+'"/>');
       all.push('<path class="organ-tissue-glow" stroke="url(#organRiver-'+item.id+')" d="'+across+'"/>');
       all.push('<path class="organ-tissue-ribbon" stroke="url(#organRiver-'+item.id+')" d="'+across+'"/>');
       all.push('<path class="organ-wisp-bloom" stroke="'+c+'" d="'+across+'"/>');
