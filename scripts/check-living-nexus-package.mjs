@@ -5,7 +5,7 @@ import { readFile, stat } from 'node:fs/promises';
 import { join } from 'node:path';
 const root = 'hud/prototype';
 const required = [
-  'index.html','aura-dynamics.html','inner-sanctum.html','living-tongue.html',
+  'index.html','living-visual.css','living-filaments.js','aura-dynamics.html','inner-sanctum.html','living-tongue.html',
   'living-archive.html','living-threshold.html','astral-journal.html','convergence.html'
 ];
 let failures = 0;
