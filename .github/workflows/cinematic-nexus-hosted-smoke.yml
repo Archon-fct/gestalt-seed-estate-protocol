@@ -5,6 +5,7 @@ on:
     branches: [feature/public-project-constellation]
     paths:
       - '.github/workflows/cinematic-nexus-hosted-smoke.yml'
+      - 'hud/prototype/experiments/test-cinematic-hosted.mjs'
 permissions:
   contents: read
 jobs:
