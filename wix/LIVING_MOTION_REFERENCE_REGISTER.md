@@ -14,6 +14,16 @@
 
 **Verification:** These URLs were supplied by the owner. Frame-by-frame content, attribution, licensability, and exact effect timing have **not** been independently reviewed or approved here. Descriptions above indicate the **requested design interpretation**, not a certified description of either video's scenes or technical production. Obtain explicit visual/motion review before declaring fidelity. Do not copy frames, audio, animation assets, branding, or code without appropriate rights.
 
+## Source identification — independently checked 2026-10-08
+
+The linked public pages were resolved for **titles and provenance only**, not frame-by-frame visual acceptance:
+
+- **MOTION-01** resolves to *Lucy (2014) - Inspirational VFX videos*, uploaded by MatthiasM.de. The stated techniques include particle/VFX tooling. Use this as a reference for volumetric energy vocabulary, **not** as permission to copy film footage, VFX renders, source assets, or audio.
+- **MOTION-02** resolves to *The Space We Live In - FULL HD Video*, also uploaded by MatthiasM.de. It describes particle/volumetric methods. Use it to inform spatial depth, not to transplant the film or soundtrack.
+- **MOTION-03** resolves to *Most Visually Amazing Anime Fights (part 2)*, a compilation by DIEGUIN-FINITO. Its content type is **action-animation compilation**, not an approved Archon visual theme. Extract only the owner's requested tier of **fluid continuity, responsive transformation, controlled timing, and perceptible spatial causality**. Do not introduce battle scenes, violent effects, character imagery, anime iconography, frantic flashing, or copied animation.
+
+**Evidence boundary:** verified landing-page metadata does not validate individual motion frames or grant reuse rights. Actual motion fidelity and iPad Safari acceptance remain **NOT VERIFIED** pending side-by-side review of rendered motion, not screenshots alone.
+
 ## Shared motion vocabulary / implementation constraints
 
 1. **A living field, not a wallpaper.** Volumetric wisps and particle currents should have meaningful relationships to Nexus, worlds, routes, and gestures. Energy can coil, gather, dissipate, or leave a soft trace after interaction; avoid perpetual generic particle storms.
