@@ -78,6 +78,7 @@ try{
     failures.push(width+': return/focus failed '+JSON.stringify(home));
   await page.locator('#still').click();
   await page.waitForTimeout(80);
+  await page.screenshot({path:path.join(out,'study05-still-'+width+'.png'),fullPage:true,timeout:25000});
   const quiet=await page.evaluate(()=>window.__livingKinetic05.snapshot());
   if(quiet.motion!=='paused')failures.push(width+': Stillness failed '+JSON.stringify(quiet));
   await page.locator('#still').click();
@@ -88,6 +89,7 @@ try{
  // Reduced motion still allows genuine entry, exit and selected-world routing.
  const reduced=await browser.newPage({viewport:{width:390,height:844},reducedMotion:'reduce'});
  await reduced.goto(file,{waitUntil:'domcontentloaded',timeout:20000});
+ await reduced.screenshot({path:path.join(out,'study05-reduced-390.png'),fullPage:true,timeout:25000});
  const start=await reduced.evaluate(()=>window.__livingKinetic05.snapshot());
  if(start.motion!=='paused')failures.push('reduced-motion: kinetic field not paused');
  await reduced.locator('[data-id="aura"]').click();
