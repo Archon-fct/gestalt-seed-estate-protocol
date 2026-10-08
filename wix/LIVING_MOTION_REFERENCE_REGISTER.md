@@ -1,4 +1,4 @@
-# Living Nexus / Archon Soulings — Shared Motion Reference Register v1.0
+# Living Nexus / Archon Soulings — Shared Motion Reference Register v1.1
 
 **Status:** Owner-supplied **motion-direction reference**, subordinate to the approved Living Nexus continuation contract, three visual touchstones, functional acceptance gates, and accessibility/privacy requirements.
 
@@ -10,6 +10,7 @@
 |---|---|---|
 | MOTION-01 | https://youtu.be/JHRiaKEYeis | Motion study for dimensional atmosphere, energy dynamics, and the sense of a vast reactive field. |
 | MOTION-02 | https://youtu.be/a-11dtG7aK4 | Motion study for volumetric cosmic depth, flowing particle structures, and scale transitions. |
+| MOTION-03 | https://youtu.be/hazwBpkcMlg?is=Wx9USng7TSI_jMrU | **Tier-standard** for continuous organic flow, growth, transformation, responsive transitions, and spatial continuity. The user specifically assigns this reference a higher bar for the *quality of motion*, not a replacement visual style. |
 
 **Verification:** These URLs were supplied by the owner. Frame-by-frame content, attribution, licensability, and exact effect timing have **not** been independently reviewed or approved here. Descriptions above indicate the **requested design interpretation**, not a certified description of either video's scenes or technical production. Obtain explicit visual/motion review before declaring fidelity. Do not copy frames, audio, animation assets, branding, or code without appropriate rights.
 
@@ -22,7 +23,20 @@
 5. **Breathing cadence.** Preserve the slower established aura rhythm (roughly 6–10s breathing, 12–24s filament/connection flow, 180–300ms tactile response), using easing and spatial causality rather than constant spinning. Deep effects are subordinate to legible interaction.
 6. **Aureglossa integrity.** THARAVEL ~ KOSMATHRA remains the governing inscription; canonical/audited words and glyphs only. Abstract geometry may represent unknown strata; never generate pseudo-language to mimic occult art.
 7. **Accessible / efficient.** Functional HTML/SVG controls must work if WebGL/Canvas fails or is disabled. Honor reduced motion and Stillness; provide visible focus and 44px minimum touch targets. Atmosphere is off until opted in; Silence stops it immediately. Use device-aware quality limits, low-battery-friendly particle caps, and pause ambient rendering when hidden. Prefer steady device responsiveness over maximum particle count.
-8. **Source-aware design.** Preserve the three existing approved owner visual touchstones: organic-energy field; central six-world constellation; functional operating HUD. These videos **extend motion direction** and never supersede those structural authorities.
+8. **Source-aware design.** Preserve the three existing approved owner visual touchstones: organic-energy field; central six-world constellation; functional operating HUD. These three videos **extend motion direction** and never supersede those structural authorities.
+
+## MOTION-03 — Owner's higher-tier kinetic quality standard (2026-10-08)
+
+MOTION-03 is a **tier of acceptance**, not an animation asset or an instruction to emulate literal unverified frames. The owner wants visual matter and transitions to **flow and grow with the meaning of the experience**. Use this criterion in every living-HUD project:
+
+- **Continuity of substance:** a cocoon becomes a node, a filament becomes a path, and energy gathers/reconfigures instead of cutting abruptly between unrelated states.
+- **Growth responds to user action:** a tap or explicit selection grows, connects, sheds, or resolves the appropriate part of the scene. Never derive psychological status from motion, gaze, or dwell time.
+- **Transitions preserve spatial orientation:** approaching a dimension, entering it, and returning should share identifiable geometry and a stable conceptual focal point. Always provide a clear immediate Back/Return operation.
+- **Meaningful stages:** dormant → responsive → unfolding → stable, with progress indicated both visually and through accessible text. Avoid fake progress, forced waits, unskippable animated intros, or implying data was saved before confirmation.
+- **Quality threshold:** continuous easing, controlled noise, coherent parallax, organic nonuniform growth and contraction, soft light transport, no visible seam where responsive art meets functional HTML. Higher resolution must not mean excessive particle counts or loss of responsiveness.
+- **Performance/accessibility:** maintain touch input during transitions; offer a complete reduced-motion variant, Stillness, immediate Silence, and keyboard/pointer equivalents. Auto-quality scaling may reduce visual detail, but not meaning or controls.
+
+**Acceptance evidence:** Record reference-video inspection status, before/during/after transition screenshots or clips at 390/820/1280 widths, actual input response, reduced-motion behavior, and real iPad Safari observations. The reference URL has not been directly played or frame-analyzed here; implementation fidelity remains **NOT VERIFIED** until the owner and testers review motion side by side.
 
 ## Per-project interpretations
 
@@ -40,7 +54,7 @@ A darker high-definition, holographic, eldritch vocabulary may adapt the shared 
 
 ## Visual and functional acceptance extension
 
-Compare the actual interactive render to both original structural touchstones and the two motion-study links on desktop (~1280px), iPad portrait (~820px), and phone (~390px). Record **PASS / FAIL / NOT VERIFIED** separately for (a) structural fidelity, (b) temporal/kinetic fidelity, (c) functional navigation, (d) touch/keyboard accessibility, (e) reduced motion / Stillness / Silence, (f) performance, and (g) public/private boundary. Genuine iPad Safari review is an owner release gate. No green automated test substitutes for a reviewed running build.
+Compare the actual interactive render to the original structural touchstones and all three motion-study links on desktop (~1280px), iPad portrait (~820px), and phone (~390px). Record **PASS / FAIL / NOT VERIFIED** separately for (a) structural fidelity, (b) temporal/kinetic fidelity, (c) functional navigation, (d) touch/keyboard accessibility, (e) reduced motion / Stillness / Silence, (f) performance, and (g) public/private boundary. Genuine iPad Safari review is an owner release gate. No green automated test substitutes for a reviewed running build.
 
 ## Change governance
 
