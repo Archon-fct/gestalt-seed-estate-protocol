@@ -1,0 +1,148 @@
+/* Living Nexus — organic depth / auric membranes v0.2
+   Decorative only. No hit testing, state ownership, audio, or storage.
+   Source of truth: wix/LIVING_HUD_BASE_SPECIFICATION.md and approved touchstones.
+*/
+#space { isolation:isolate; }
+#space>.organic-depth-field {
+  position:absolute; inset:0; width:100%; height:100%; z-index:1;
+  overflow:hidden; pointer-events:none!important; user-select:none;
+  mix-blend-mode:screen; opacity:.97;
+}
+.organic-depth-field *, .organic-depth-field g, .organic-depth-field path {
+  pointer-events:none!important;
+}
+.organic-depth-field .organ-fog {
+  fill:none; stroke-width:17; opacity:.22; filter:url(#organSoftGlow);
+}
+.organic-depth-field .organ-fiber {
+  fill:none; stroke-width:1.55; stroke-linecap:round;
+  opacity:.55; filter:drop-shadow(0 0 4px rgba(238,225,177,.36));
+}
+.organic-depth-field .organ-neighbor { opacity:.22; stroke-width:1.05; }
+.organic-depth-field .organ-flow {
+  fill:none; stroke-width:2.2; stroke-dasharray:1 11 34 26;
+  stroke-linecap:round; opacity:.28;
+  animation:organTravel 22s linear infinite;
+}
+.organic-depth-field .organ-cell .organ-veil {
+  stroke-width:1; fill-opacity:.47; stroke-opacity:.25;
+  filter:drop-shadow(0 0 13px rgba(127,224,209,.08));
+}
+.organic-depth-field .organ-cell .organ-veil.outer {
+  fill-opacity:.23; stroke-opacity:.22;
+  animation:organEbb 11s ease-in-out infinite alternate;
+}
+.organic-depth-field .organ-cell .organ-veil.inner {
+  fill-opacity:.63; stroke-opacity:.46;
+  animation:organEbb 9s ease-in-out infinite alternate-reverse;
+}
+.organic-depth-field .organ-cell .organ-caustic {
+  fill:none; stroke-width:1.5; stroke-linecap:round;
+  stroke-dasharray:5 21 70 65; stroke-opacity:.65;
+  filter:drop-shadow(0 0 5px rgba(255,236,188,.36));
+  animation:organTravel 19s linear infinite reverse;
+}
+.organic-depth-field .organ-cell:nth-child(2n) .organ-veil { animation-delay:-3.7s; }
+.organic-depth-field .organ-cell:nth-child(3n) .organ-caustic { animation-delay:-8s; }
+.organic-depth-field .organ-core-membrane {
+  stroke-width:1.1; opacity:.69; fill-opacity:.15;
+  filter:drop-shadow(0 0 12px rgba(255,227,171,.12));
+}
+.organic-depth-field .organ-core-membrane.outer {
+  opacity:.31; fill-opacity:.08;
+  animation:organEbb 14s ease-in-out infinite alternate;
+}
+.organic-depth-field .organ-core-membrane.middle {
+  opacity:.53;
+  animation:organEbb 9s ease-in-out infinite alternate-reverse;
+}
+.organic-depth-field .organ-core-membrane.inner {
+  opacity:.8;
+  animation:organEbb 7.5s ease-in-out infinite alternate;
+}
+.organic-depth-field .organ-core-light {
+  fill:none; stroke-width:1.35; opacity:.45;
+  stroke-dasharray:2 16 43 30; animation:organTravel 23s linear infinite;
+}
+.organic-depth-field .organ-connection.is-responsive .organ-fiber,
+.organic-depth-field .organ-connection.is-responsive .organ-flow,
+.organic-depth-field .organ-cell.is-responsive .organ-caustic {
+  opacity:.98; stroke-width:2.3;
+  filter:drop-shadow(0 0 8px rgba(255,240,191,.85));
+}
+.organic-depth-field .organ-connection.is-muted,
+.organic-depth-field .organ-cell.is-muted { opacity:.4; }
+.organic-depth-field .organ-cell.is-visited .organ-veil.inner,
+.organic-depth-field .organ-connection.is-visited .organ-fiber {
+  stroke-opacity:.9; opacity:.94;
+}
+#space .orbit { opacity:.16; box-shadow:none; }
+#space .filament { opacity:.09; box-shadow:none; }
+#space .nerve-field .nerve { opacity:.075; transition:opacity .5s; }
+#space .nerve-field .nerve.hot { opacity:.77; }
+#space .relational-threads path { opacity:.29; }
+#space .relational-threads path.visited-thread { opacity:.68; }
+#space>.node {
+  border-color:color-mix(in srgb, var(--world-light, #a8d7df) 48%, transparent);
+  background:
+    radial-gradient(ellipse 70% 64% at 36% 29%,rgba(255,246,211,.16) 0%,transparent 72%),
+    radial-gradient(ellipse at 50% 53%,var(--world-shadow, #7fe0d138) 0%,#172431dc 42%,#040810f0 79%);
+  box-shadow:inset 0 0 29px var(--world-shadow, #7fe0d122), 0 0 24px var(--world-shadow, #7fe0d133);
+  backdrop-filter:blur(1px);
+}
+#space>.node:before {
+  border-radius:56% 44% 49% 51% / 44% 57% 43% 56%;
+  border-color:color-mix(in srgb, var(--world-light, #a8d7df) 42%, transparent);
+  box-shadow:0 0 20px var(--world-shadow, #7fe0d122),inset 0 0 18px var(--world-shadow, #7fe0d122);
+}
+#space>.node:after {
+  border-radius:43% 57% 52% 48% / 58% 44% 56% 42%;
+  border-color:color-mix(in srgb, var(--world-light, #a8d7df) 32%, transparent);
+  box-shadow:0 0 16px var(--world-shadow, #7fe0d122);
+}
+#space>.node span {
+  text-shadow:0 1px 9px #000,0 0 5px #000;
+  letter-spacing:.075em;
+}
+#space>.nexus {
+  border-color:#e9d5a4a0;
+  background:
+    radial-gradient(ellipse at 48% 38%,rgba(255,248,220,.62) 0%,rgba(251,225,158,.23) 8%,transparent 30%),
+    radial-gradient(ellipse at 45% 58%,rgba(104,225,205,.29),rgba(95,103,180,.14) 48%,#04070ef2 80%);
+  box-shadow:inset 0 0 56px #8ed9cf2c,0 0 44px #f4dcad47,0 0 96px #7fe0d12e;
+}
+#space>.nexus:before, #space>.nexus:after { opacity:.25; border-style:solid; }
+#space>.nexus .nexus-core { text-shadow:0 2px 12px #030609; }
+header .controls { gap:6px; }
+header .controls button, .thread-toggle button {
+  min-height:44px; padding:10px 13px;
+  background:linear-gradient(155deg,#101922a8,#060a11ba);
+  border-color:#d9c28a55;
+  box-shadow:inset 0 0 13px #92d9cc07;
+  backdrop-filter:blur(9px);
+}
+header .controls button:hover, .thread-toggle button:hover,
+header .controls button:focus-visible, .thread-toggle button:focus-visible {
+  border-color:#d8c894b0; box-shadow:0 0 20px #9bd8cf25;
+}
+@keyframes organTravel { to { stroke-dashoffset:-310; } }
+@keyframes organEbb { to { opacity:.47; filter:brightness(1.18); } }
+@media(max-width:900px){
+  #space>.organic-depth-field { opacity:.88; }
+  .organic-depth-field .organ-fog { stroke-width:12; opacity:.17; }
+  .organic-depth-field .organ-cell .organ-veil.outer { fill-opacity:.16; }
+}
+@media(max-width:650px){
+  #space>.organic-depth-field { opacity:.81; }
+  .organic-depth-field .organ-fog { stroke-width:9; opacity:.13; }
+  .organic-depth-field .organ-neighbor { opacity:.12; }
+  header .controls { gap:3px; }
+  header .controls button { padding:9px 10px; font-size:11px; }
+  .thread-toggle button { padding:9px 10px; font-size:11px; }
+  #space>.node span { letter-spacing:.035em; }
+}
+@media(prefers-reduced-motion:reduce){
+ .organic-depth-field * { animation:none!important; transition:none!important; }
+}
+body.still .organic-depth-field * { animation:none!important; transition:none!important; }
+body.still .organic-depth-field .organ-flow { opacity:.12; }
