@@ -54,6 +54,10 @@ The accepted Living Nexus presentation is the one characterized by:
 - typography and controls that feel embedded in the field;
 - responsive composition that remains a living constellation on mobile and iPad rather than collapsing into a generic stacked card interface.
 
+## Shared motion canon — additive, never substitutive
+
+The owner's October 2026 cosmic-particle / volumetric movement references for **Living Nexus** and **Archon Soulings** are registered in [LIVING_MOTION_REFERENCE_REGISTER.md](LIVING_MOTION_REFERENCE_REGISTER.md), including the original links and verification limitations. Motion, atmosphere, and holographic depth may enrich the approved auric operating environment; they must not erase its central Nexus, six functional worlds, human-readable controls, existing tested architecture, visual touchstones, or privacy boundaries. Never import dark private Ilyr Veyr styling or data into public pages by implication. The reference register adds a kinetic acceptance gate; it does not authorize deployment.
+
 ## Explicit non-regression rules
 
 Do NOT replace the accepted Living Nexus visual language with:
