@@ -416,3 +416,21 @@ body.still .organic-depth-field .organ-flow{
 }
 body.still .organic-depth-field .organ-spectral-veil,
 body.still .organic-depth-field .organ-world-sheen {animation:none!important;}
+
+
+/* OPTIONAL_LIVING_CHROMA_V06 — performance-capped volumetric background.
+   Procedural Canvas only; HTML/SVG retains functional pointer priority.
+*/
+#space>.living-chroma-canvas{
+  position:absolute;inset:0;z-index:1;width:100%;height:100%;
+  pointer-events:none!important;user-select:none;
+  mix-blend-mode:screen;opacity:.85;
+  contain:paint;
+}
+#space>.living-chroma-canvas[data-quality="low"]{opacity:.69;}
+@media(max-width:650px){
+  #space>.living-chroma-canvas{opacity:.72;}
+}
+@media(prefers-reduced-motion:reduce){
+  #space>.living-chroma-canvas{transition:none!important;}
+}
