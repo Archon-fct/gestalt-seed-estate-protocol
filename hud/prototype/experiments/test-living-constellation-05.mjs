@@ -110,5 +110,5 @@ try{
  await browser.close();
  await new Promise(resolve=>server.close(resolve));
 }
-if(failures.length){console.error('FAIL Study04\n'+failures.join('\n'));process.exit(1);}
-console.log('PASS Study04: 390/820/1280 kinetic continuity, original world/journey/Return/Stillness, reduced-motion and Aura Field 02 route');
+if(failures.length){console.error('FAIL Study05\n'+failures.join('\n'));process.exit(1);}
+console.log('PASS Study05: 390/820/1280 kinetic continuity, original world/journey/Return/Stillness, reduced-motion and Aura Field 02 route');
