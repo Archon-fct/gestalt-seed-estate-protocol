@@ -1,0 +1,38 @@
+name: Living Nexus Wix Preview Live Smoke
+on:
+  push:
+    branches: [feature/public-project-constellation]
+    paths:
+      - '.github/workflows/living-nexus-live-smoke.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  live-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PREVIEW_URL: https://headless-mfewrcffiie-archonsoulings-140e.wix-site-host.com/
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: c9be6c9573a6bccc61a8f9a57ec9ab917aff5a11
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Chromium + WebKit
+        run: |
+          npm init -y >/dev/null
+          npm install --save-dev playwright >/dev/null
+          npx playwright install --with-deps chromium webkit >/dev/null
+      - name: Read-only live-host checks against pinned source
+        run: node tests/test-deployed-living-nexus.mjs
+      - name: Upload actual hosted-browser screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: living-nexus-wix-live-smoke
+          path: hud/prototype/test-artifacts/live-smoke/
+          retention-days: 14
+          if-no-files-found: ignore
