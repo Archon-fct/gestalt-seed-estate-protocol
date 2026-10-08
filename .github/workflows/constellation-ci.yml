@@ -24,6 +24,8 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Run responsive and interaction checks
         run: node hud/prototype/test-constellation.mjs
+      - name: Check dimensional returns, portrait bounds and immediate Silence
+        run: node tests/test-living-release-gates.mjs
       - name: Upload screenshots
         if: always()
         uses: actions/upload-artifact@v4
