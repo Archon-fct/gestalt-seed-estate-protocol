@@ -230,21 +230,35 @@ window.addEventListener("archon:meaningful-event", event => {
 });
 const atmosphereButton = document.querySelector("#atmosphere");
 const silenceButton = document.querySelector("#silence");
+let audioRequestToken = 0;
 
 atmosphereButton.addEventListener("click", async () => {
+  const token = ++audioRequestToken;
   try {
     const active = await enterAtmosphere("nexus");
+    if (token !== audioRequestToken) return; // Silence always wins over an in-flight start.
+    atmosphereButton.setAttribute("aria-pressed", String(active));
     status.textContent = active
       ? "Atmosphere · opt-in meeting-field resonance"
       : "Atmosphere unavailable";
   } catch {
+    if (token !== audioRequestToken) return;
+    atmosphereButton.setAttribute("aria-pressed", "false");
     status.textContent = "Atmosphere could not start · Silence remains available";
   }
 });
 
 silenceButton.addEventListener("click", () => {
+  ++audioRequestToken;
   silence();
+  atmosphereButton.setAttribute("aria-pressed", "false");
   status.textContent = "Silence · atmosphere stopped immediately";
+});
+
+// Leaving or hiding the page must never leave a running atmosphere.
+window.addEventListener("pagehide", () => { ++audioRequestToken; atmosphereButton.setAttribute("aria-pressed", "false"); });
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) { ++audioRequestToken; atmosphereButton.setAttribute("aria-pressed", "false"); }
 });
 
 function passportSelection() {
