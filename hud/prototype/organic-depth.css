@@ -146,3 +146,33 @@ header .controls button:focus-visible, .thread-toggle button:focus-visible {
 }
 body.still .organic-depth-field * { animation:none!important; transition:none!important; }
 body.still .organic-depth-field .organ-flow { opacity:.12; }
+
+/* v0.3 visual non-regression refinement: energy veining, not extra rigid rings. */
+.organic-depth-field .organ-wisp-bloom {
+  fill:none; stroke-width:12; opacity:.20; stroke-linecap:round;
+  filter:url(#organSoftGlow);
+}
+.organic-depth-field .organ-wisp {
+  fill:none; stroke-width:1.4; opacity:.48; stroke-linecap:round;
+  filter:drop-shadow(0 0 4px rgba(254,239,196,.35));
+  animation:organShimmer 12s ease-in-out infinite alternate;
+}
+.organic-depth-field .organ-wisp.secondary { opacity:.25; stroke-width:.8; animation-delay:-5s; }
+.organic-depth-field .organ-cell.is-responsive .organ-wisp { opacity:.85; }
+.organic-depth-field .organ-core-wisp { stroke-width:1.7; opacity:.49; }
+#space .auric-being .head { opacity:.32; }
+#space .auric-being .axis { opacity:.38; }
+#space .auric-being .meridian { opacity:.36; }
+#space .auric-being .center { opacity:.4; }
+#space .auric-being .wing { opacity:.38; }
+@keyframes organShimmer { to { opacity:.68; filter:drop-shadow(0 0 9px rgba(255,237,183,.55)); } }
+@media(max-width:650px){
+  .organic-depth-field .organ-wisp-bloom { stroke-width:8; opacity:.14; }
+  #status { left:12px;right:12px;bottom:62px;max-width:calc(100vw - 24px);
+    font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    pointer-events:none; }
+}
+@media(prefers-reduced-motion:reduce){
+  .organic-depth-field .organ-wisp { animation:none!important; }
+}
+body.still .organic-depth-field .organ-wisp { animation:none!important; }
