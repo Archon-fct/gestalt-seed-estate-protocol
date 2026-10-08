@@ -164,7 +164,7 @@ function focusBridge(core,world,time){
    const strength=frozen?target:previous+(target-previous)*(1-Math.exp(-dt*2.5));
    focusStrength.set(item.id,strength);
    if(strength<.012)continue;
-   if(target)visibleFocus=item.id;
+   if(target&&!visibleFocus)visibleFocus=item.id; // stable first-match priority for multiworld recommendations
    const dx=item.x-core.x,dy=item.y-core.y;
    const distance=Math.max(1,Math.hypot(dx,dy));
    const ux=dx/distance,uy=dy/distance;
