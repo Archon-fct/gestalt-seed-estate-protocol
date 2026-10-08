@@ -1,0 +1,33 @@
+name: Cinematic Living Nexus — Hosted Smoke
+on:
+  workflow_dispatch:
+  push:
+    branches: [feature/public-project-constellation]
+    paths:
+      - '.github/workflows/cinematic-nexus-hosted-smoke.yml'
+permissions:
+  contents: read
+jobs:
+  hosted:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser test dependencies
+        run: |
+          npm init -y >/dev/null
+          npm install --no-audit --no-fund --save-dev playwright >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+      - name: Check deployed isolated Wix cinematic page
+        run: node hud/prototype/experiments/test-cinematic-hosted.mjs
+      - name: Capture actual hosted browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cinematic-living-nexus-hosted-evidence
+          path: hud/prototype/test-artifacts/cinematic-live/
+          retention-days: 7
+          if-no-files-found: ignore
