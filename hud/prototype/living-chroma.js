@@ -151,6 +151,44 @@ function particles(core,world,t){
 // FLOW_BRIDGE_20261008: reference-derived material continuity, no copied footage.
 // One coherent stream coalesces, braids and returns along an existing Nexus-world
 // relationship. The same control points persist while focus changes; no cuts.
+// OWNER_BLOOM_20261008: sampled general-Drive energy bloom, independently
+// rendered. This restrained auric unfolding belongs to the real selected
+// world, not the entire screen; no whiteout, input interception or fake state.
+function focusBloom(world,time){
+ const frozen=still()||document.hidden;
+ for(const item of world){
+   const strength=focusStrength.get(item.id)||0;
+   if(strength<.02)continue;
+   const eased=strength*strength*(3-2*strength);
+   const cs=colors[item.id]||colors.aura;
+   const rays=lowBudget()?5:9;
+   const spread=Math.min(item.r*1.8,92)*(0.42+0.58*eased);
+   for(let i=0;i<rays;i++){
+     const angle=i*Math.PI*2/rays+.11;
+     const twist=frozen?0:Math.sin(time*.31+i*.91)*.14;
+     const start=item.r*.62;
+     const reach=spread*(.76+.22*Math.sin(i*2.7+(frozen?0:time*.18)));
+     const x0=item.x+Math.cos(angle)*start;
+     const y0=item.y+Math.sin(angle)*start;
+     const x1=item.x+Math.cos(angle+twist)*reach;
+     const y1=item.y+Math.sin(angle+twist)*reach;
+     const tangent=angle+Math.PI/2;
+     const fold=reach*.17;
+     c.beginPath();c.moveTo(x0,y0);
+     c.bezierCurveTo(
+       x0+Math.cos(tangent)*fold,y0+Math.sin(tangent)*fold,
+       x1-Math.cos(tangent)*fold*.7,y1-Math.sin(tangent)*fold*.7,
+       x1,y1
+     );
+     c.lineWidth=i%3===0?1.05:.55;
+     c.strokeStyle=cs[i%3];
+     c.globalAlpha=eased*(i%3===0?.19:.10);
+     c.shadowColor=cs[0];c.shadowBlur=lowBudget()?3:7;
+     c.stroke();
+   }
+   c.shadowBlur=0;
+ }
+}
 function focusBridge(core,world,time){
  const now=performance.now();
  const dt=lastFocusTime?Math.min(.1,Math.max(0,(now-lastFocusTime)/1000)):.033;
@@ -222,6 +260,7 @@ function paint(time){
  }
  blossom(core,time);
  focusBridge(core,world,time);
+ focusBloom(world,time);
  particles(core,world,time);
  c.restore();
 }
