@@ -10,6 +10,7 @@ Before any Living Nexus implementation, deployment, or visual change, read and f
 - `wix/LIVING_HUD_BASE_SPECIFICATION.md`
 - `wix/VISUAL_TOUCHSTONE_CHECKLIST.md`
 - `wix/LIVING_NEXUS_PRODUCT_NORTH_STAR.md`
+- `wix/LIVING_MOTION_REFERENCE_REGISTER.md` (owner-supplied video motion studies; additive to approved static visual touchstones, not authority to redesign or publish)
 
 That file is a release constraint, not optional design guidance. A green functional test suite does not permit visual regression, and visual polish does not permit architecture regression. If the deployed result becomes a generic dashboard, card grid, conventional landing page, simplified prototype, or fantasy landscape rather than the established living auric operating environment, the build has failed even if automated tests pass.
 
