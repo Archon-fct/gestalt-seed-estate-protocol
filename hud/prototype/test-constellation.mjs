@@ -115,7 +115,22 @@ for (const width of widths) {
   const nexusText=(await page.locator('.nexus').innerText()).toUpperCase();
   if(!nexusText.includes('NEXUS')||!nexusText.includes('MEETING FIELD')||!nexusText.includes('THARAVEL'))failures.push(width+': visual authority inscription missing from Nexus');
   await page.locator('#searchButton').click();await page.locator('#searchInput').fill('boundaries');await page.locator('#runSearch').click();if(!(await page.locator('[data-id="aura"]').getAttribute('class')||'').includes('search-hit'))failures.push(width+': constellation search did not illuminate Aura for boundaries');if(!(await page.locator('[data-id="workshops"]').getAttribute('class')||'').includes('search-neighbor'))failures.push(width+': constellation search did not reveal related Workshops world');await page.locator('#searchButton').click();await page.locator('#clearSearch').click();
+  await page.evaluate(() => {
+    window.__organicAuraInitial = document.querySelector('.organic-depth-field .organ-connection[data-world="aura"]');
+  });
   await page.locator('#guide').click();await page.locator('[data-intent="learn"]').click();
+  await page.waitForTimeout(60);
+  const organicContinuity=await page.evaluate(() => {
+    const group=document.querySelector('.organic-depth-field .organ-connection[data-world="aura"]');
+    const flow=group?.querySelector('.organ-flow');
+    return {
+      originalElementPreserved:group===window.__organicAuraInitial,
+      responsive:group?.classList.contains('is-responsive')||false,
+      flowRunning:flow?getComputedStyle(flow).animationPlayState==='running':false
+    };
+  });
+  if(!organicContinuity.originalElementPreserved||!organicContinuity.responsive||!organicContinuity.flowRunning)
+    failures.push(width+': organic motion interrupted or failed to respond to Guide Me '+JSON.stringify(organicContinuity));
   if(!(await page.locator('[data-id="aura"]').getAttribute('class')||'').includes('recommended'))failures.push(width+': Guide Me did not recommend Aura for Learn');
   if(!(await page.locator('[data-id="services"]').getAttribute('class')||'').includes('deemphasized'))failures.push(width+': Guide Me did not reorganize non-learning world');
   await page.locator('[data-id="aura"]').hover();
