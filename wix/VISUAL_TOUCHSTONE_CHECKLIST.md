@@ -6,6 +6,10 @@ Use together with the two owner-approved Living Nexus visual touchstone images s
 
 This checklist does not authorize copying incidental image artifacts or decorative pseudo-language. It captures the structural qualities the implementation must preserve.
 
+## Motion reference acceptance (supplemental)
+
+Read [LIVING_MOTION_REFERENCE_REGISTER.md](LIVING_MOTION_REFERENCE_REGISTER.md) before animation or WebGL edits. The owner-supplied videos are additional temporal / spatial motion studies, **not** replacements for the approved visual touchstones. Evaluate actual rendered movement for coherent parallax, responsive particle currents, living membranes, spatial continuity on crossing/return, and device-appropriate performance. Record kinetic fidelity as **PASS / FAIL / NOT VERIFIED** separately from visual, accessibility, and functional acceptance. Do not claim video-accurate effects until reviewed against the actual footage. Public visuals must not drift into the private Living Veil's eldritch intensity.
+
 ## Central field
 
 - NEXUS / THE MEETING FIELD remains the compositional center.
