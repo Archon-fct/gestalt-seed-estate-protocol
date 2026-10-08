@@ -50,6 +50,15 @@ try {
    assert.ok(link.endsWith("/aura-dynamics.html"), "Real existing Aura route preserved");
    await page.screenshot({ path: path.join(output, "live-"+width+"-aura.png"), fullPage: true });
    await page.locator("#closePanel").click();
+   await page.locator(".world[data-world=sessions]").click({ force: true });
+   assert.match(await page.locator("#panelTitle").textContent(), /Sessions/);
+   const bookingLinks = await page.locator('#panelActions a[href*="booking-calendar"]').evaluateAll(
+     links => links.map(a => ({ label: a.textContent, href: a.href }))
+   );
+   assert.equal(bookingLinks.length, 2, "Two verified online-bookable services");
+   assert.ok(bookingLinks.some(a => a.href.endsWith("/booking-calendar/30-minutes-1") && a.label.includes("$100")));
+   assert.ok(bookingLinks.some(a => a.href.endsWith("/booking-calendar/60-minutes-1") && a.label.includes("$200")));
+   await page.locator("#closePanel").click();
    await page.locator("#thread").click();
    assert.match(await page.locator("#panelBody").textContent(), /Aura Dynamics/);
    await page.getByRole("button", { name: "Let it dissolve" }).click();
