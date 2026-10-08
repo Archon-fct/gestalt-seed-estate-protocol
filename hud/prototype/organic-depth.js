@@ -215,7 +215,34 @@ if(space && nexus && nodes.length===6){
       all.push('</g>');
     });
     all.push('</g>');
-    svg.innerHTML=all.join("");
+    // Keep the actual SVG nodes mounted during zoom, guide, search and layout transitions.
+    // Replacing innerHTML on every geometry sample resets CSS animation phases,
+    // creating visible jumps even though the numerical paths remain continuous.
+    const proposed=document.createElementNS(NS,"svg");
+    proposed.innerHTML=all.join("");
+    if(!svg.firstChild){
+      svg.replaceChildren(...proposed.childNodes);
+    }else{
+      const live=svg.querySelectorAll("*");
+      const fresh=proposed.querySelectorAll("*");
+      const compatible=live.length===fresh.length &&
+        Array.from(live).every((node,i)=>node.localName===fresh[i].localName);
+      if(!compatible){
+        // Structural variants are rare: a full replacement is safer than a
+        // partial misaligned render. Ordinary interaction never takes this path.
+        svg.replaceChildren(...proposed.childNodes);
+      }else{
+        live.forEach((node,i)=>{
+          const incoming=fresh[i];
+          for(const attr of Array.from(node.attributes)){
+            if(!incoming.hasAttribute(attr.name))node.removeAttribute(attr.name);
+          }
+          for(const attr of Array.from(incoming.attributes)){
+            if(node.getAttribute(attr.name)!==attr.value)node.setAttribute(attr.name,attr.value);
+          }
+        });
+      }
+    }
     svg.dataset.quality=(W<=650 || (navigator.hardwareConcurrency && navigator.hardwareConcurrency<=4))?"low":"full";
   }
   // A state change should never discard every SVG path and restart its
