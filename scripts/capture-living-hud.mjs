@@ -35,6 +35,8 @@ try {
     const metrics = await page.evaluate(() => ({
       horizontalOverflow: document.documentElement.scrollWidth > innerWidth + 1,
       title: document.title,
+      livingFilaments: document.querySelectorAll('svg.living-filaments path').length,
+      visibleWorlds: [...document.querySelectorAll('#space .node')].filter(el => {const r=el.getBoundingClientRect();return r.width>0&&r.height>0&&r.left<innerWidth&&r.right>0&&r.top<innerHeight&&r.bottom>0;}).length,
       buttons: [...document.querySelectorAll('button,a')].length,
       undersizedTargets: [...document.querySelectorAll('button,a')].filter(el => {
         const r = el.getBoundingClientRect();
@@ -50,5 +52,5 @@ try {
 }
 await writeFile(join(output, 'report.json'), JSON.stringify(report, null, 2));
 console.log(JSON.stringify(report, null, 2));
-if (report.results.some(r => r.httpStatus >= 400 || r.horizontalOverflow || r.errors.length)) process.exitCode = 1;
+if (report.results.some(r => r.httpStatus >= 400 || r.horizontalOverflow || r.errors.length || r.visibleWorlds !== 6 || r.livingFilaments < 30)) process.exitCode = 1;
 // Screenshot review against owner-approved imagery and actual iPad Safari remain mandatory.
