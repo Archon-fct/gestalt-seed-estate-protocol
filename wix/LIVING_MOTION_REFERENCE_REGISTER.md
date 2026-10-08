@@ -48,6 +48,22 @@ MOTION-03 is a **tier of acceptance**, not an animation asset or an instruction 
 
 **Acceptance evidence:** Record reference-video inspection status, before/during/after transition screenshots or clips at 390/820/1280 widths, actual input response, reduced-motion behavior, and real iPad Safari observations. The reference URL has not been directly played or frame-analyzed here; implementation fidelity remains **NOT VERIFIED** until the owner and testers review motion side by side.
 
+## Kinetic acceptance refinement — October 8 owner reference review
+
+**Authority boundary:** This is an additive observation from private owner-provided visual studies. Raw source videos, filenames, locations, links, and clips must remain private, are **not** included in this repository, and do **not** grant asset-reuse rights. Do not reinterpret the approved six-world composition or import unrelated private-project styling.
+
+**Observed motion language to demonstrate—not just describe:**
+
+1. **Coalescence before bloom:** Separate faint sparks and filaments drift toward selected luminous focal points; gathering intensifies localized light, not the entire screen. The resulting concentration may open into a hollow world boundary.
+2. **Persistent, branching material:** Fine strands twist, subdivide, join and drift between scales; irregular gaps and shadowed interiors remain present. The same visible matter evolves across successive frames. Do not substitute an unrelated composition after a navigation click.
+3. **Vortex / threshold continuity:** A dark central opening is surrounded by layered flowing light. An approached world opens from its original spatial anchor, enlarges through the same boundary, and reverses that geometry upon return.
+4. **Depth by distribution:** Subtle far-field specks, braided middle layers and selective near-field caustics move at distinct speeds with perspective and attenuation. A still frame must remain visually legible and close to the approved luminous constellation; animation cannot compensate for six generic discs.
+5. **Meaning-responsive light:** Only directly selected or adjacent worlds concentrate light for Guide Me, search, focus or return. Avoid endless global rotation, random particle storms, uniformly glowing outlines, or decorative flashes.
+6. **Calm by default:** Do not emulate video white-outs, rapid strobes, abrupt hard cuts or aggressive fiery/red scenes on public pages. Reduced motion / Stillness must stop background animation without disabling navigation.
+7. **Separation of reference types:** UI reference boards and browsing footage can inform restrained holographic controls but do not prove how a HUD animates. Do not import the source-site's visible toolbars, cards or ads into the operating environment.
+
+**Gate for the next isolated browser study:** Reuse one Nexus-to-Aura anchor relationship. Record meaningful source-preserving stages—idle, hovered/focused, gathering, unfolding, stable, reversing, returned—at 390px, 820px and 1280px; capture several real intermediate frames per transition. Verify no cut/seam, genuine Return and Dissolve behavior, pointer/keyboard accessibility, reduced motion, opt-in Atmosphere / immediate Silence, no public/private boundary leak and physical iPad Safari performance before propagation to all six worlds. Maintain functional control independently of the visual engine. **Owner visual acceptance remains open.** The kinetic reference changes neither production deployment permissions nor the required six-world baseline.
+
 ## Per-project interpretations
 
 ### Archon Soulings public Living Nexus
