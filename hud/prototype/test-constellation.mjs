@@ -40,6 +40,7 @@ for (const width of widths) {
   page.on('pageerror', e => jsErrors.push(String(e)));
   await page.goto(file);
   await page.waitForTimeout(150);
+  console.log('INITIAL_MODULE_ERRORS', width, JSON.stringify(jsErrors));
 
   const nodeCount = await page.locator('.node').count();
   if (nodeCount !== 6) failures.push(width + ': expected 6 public nodes, got ' + nodeCount);
@@ -78,6 +79,7 @@ for (const width of widths) {
       dialogOpacity: dialogStyle.opacity, dialogRect: dialog.getBoundingClientRect().toJSON() };
   });
   console.log('SOUL_CONSENT_DIAGNOSTICS', width, JSON.stringify(consentDiagnostics));
+  console.log('SOUL_PAGE_ERRORS', width, JSON.stringify(jsErrors));
   console.log('SOUL_SCRIPT_DIAGNOSTICS', width, JSON.stringify(await page.evaluate(() => ({ moduleCount: document.querySelectorAll('script[type=module]').length, scripts: [...document.scripts].map(s => s.src || s.type || 'classic'), soulModuleLoaded: Boolean(document.querySelector('#soulButton')?.onclick), performance: performance.getEntriesByType('resource').filter(x => /soul|atmosphere|event-souls/.test(x.name)).map(x => x.name) }))));
   await page.screenshot({ path: path.join(out, 'soul-consent-' + width + '.png'), fullPage: true });
   await page.locator('#confirmSoul').click({ timeout: 5000 });
