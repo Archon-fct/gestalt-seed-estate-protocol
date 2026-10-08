@@ -591,3 +591,20 @@ header .controls button{
   header .brand{font-size:11px}
   .organic-depth-field .organ-breathscape{opacity:.14}
 }
+
+/* Irregular deep-field starlight: no repetitive dot-grid wallpaper. */
+.sky{
+  opacity:.44;
+  background-image:
+    radial-gradient(ellipse 58vw 53vh at 19% 61%,rgba(57,91,138,.16),transparent 78%),
+    radial-gradient(ellipse 53vw 49vh at 83% 45%,rgba(88,63,146,.15),transparent 79%),
+    radial-gradient(ellipse 48vw 40vh at 49% 87%,rgba(94,56,122,.14),transparent 73%),
+    radial-gradient(circle at 18% 34%,#fff2d6bd 0 .8px,transparent 1.7px),
+    radial-gradient(circle at 76% 67%,#91e8ecad 0 .7px,transparent 1.5px),
+    radial-gradient(circle at 49% 21%,#d8beffb8 0 .65px,transparent 1.5px),
+    radial-gradient(circle at 83% 13%,#ffeccf9b 0 .6px,transparent 1.5px);
+  background-size:
+    100% 100%,100% 100%,100% 100%,
+    211px 257px,317px 373px,443px 409px,281px 331px;
+  background-position: center;
+}
