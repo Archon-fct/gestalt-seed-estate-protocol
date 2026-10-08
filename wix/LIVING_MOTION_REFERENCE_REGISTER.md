@@ -24,6 +24,23 @@ The linked public pages were resolved for **titles and provenance only**, not fr
 
 **Evidence boundary:** verified landing-page metadata does not validate individual motion frames or grant reuse rights. Actual motion fidelity and iPad Safari acceptance remain **NOT VERIFIED** pending side-by-side review of rendered motion, not screenshots alone.
 
+## Private Crooked Moon screen-recording motion study — October 8, 2026
+
+**Private source custody:** Additional owner-uploaded recordings were inspected in a **private** Crooked Moon motion review. This public repository deliberately records **no private Drive URLs, filenames, unlock information, captured video frames, or personal journals**. The observations below describe transferable motion mechanics only; third-party footage must not be copied into production.
+
+The sampled sequences show: (a) blue-white filaments converging into a luminous center, then loosening into turquoise cloud clusters; (b) fine branching, negative-space fractal webs; (c) distinct sparks joining braided multicolor vapor sheets; (d) a warm vortex contracting into a dark threshold that unfolds into pale-gold strands; (e) blue-white cocoon fibers extending outward into a star-speckled portal. Other captured segments contain browsing thumbnails and do not prove working 3D animation.
+
+**Additional kinetic invariants, subordinate to each project's approved still-image canon:**
+
+1. **One persistent material:** idle → explicit focus → coalescence → braid/unfold → stable pocket → return must preserve strand identity and spatial anchor. No frame swaps or global re-randomization on tap.
+2. **Multiscale fluid dynamics:** sparse particles, medium strands and large translucent sheets respond to a shared bounded flow field with different velocities, occlusion and near/far attenuation. Preserve meaningful dark negative space.
+3. **Local causality:** only user-selected, searched or recommended nodes attract concentrated particles. Decorative flow cannot claim real AI inference, plugin activity, health measurements or hidden tracking.
+4. **Dimensional reversibility:** entrance and return use the same actual node and Nexus coordinates. Dissolve clears only explicit Living Thread state; no invented persistence or clinical inference.
+5. **Accessibility and performance:** Stillness and reduced-motion freeze ornamental movement; input, readable labels, touch targets, keyboard navigation and return remain available. Avoid flash, whiteout, red alarm effects and excessive battery/GPU load.
+6. **Project identities remain distinct:** public Archon Soulings / Living Nexus keeps welcoming auric gold-jade-blue-violet; Silver's private anatomical heart/eyes remains its locked visual authority; EFA keeps its own soft jade/opal regulation presentation; Ilyr Veyr may adopt darker eldritch variants only inside its separate authenticated private environment.
+
+**Current implementation slice:** `hud/prototype/living-chroma.js` adds a focus-anchored, reversible braided current behind the six existing functional world buttons. This is a small, additive **source change**, not a claim that the full reference standard is visually accepted or deployed. The existing browser test checks that Guide Me concentrates the flow at the real Aura node.
+
 ## Shared motion vocabulary / implementation constraints
 
 1. **A living field, not a wallpaper.** Volumetric wisps and particle currents should have meaningful relationships to Nexus, worlds, routes, and gestures. Energy can coil, gather, dissipate, or leave a soft trace after interaction; avoid perpetual generic particle storms.
