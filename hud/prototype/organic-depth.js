@@ -216,27 +216,56 @@ if(space && nexus && nodes.length===6){
     });
     all.push('</g>');
     svg.innerHTML=all.join("");
+    svg.dataset.quality=(W<=650 || (navigator.hardwareConcurrency && navigator.hardwareConcurrency<=4))?"low":"full";
   }
-  function schedule(){
+  // A state change should never discard every SVG path and restart its
+  // animation. Geometry is regenerated only when actual positions change.
+  function syncStates(){
+    if(!svg.isConnected)return;
+    for(const node of nodes){
+      const id=node.dataset.id;
+      const responsive=node.matches(".resonant,.recommended,.search-hit,.search-neighbor");
+      const muted=node.matches(".deemphasized,.search-dim");
+      const visited=node.classList.contains("visited");
+      for(const group of svg.querySelectorAll('.organ-cell[data-world="'+id+'"],.organ-connection[data-world="'+id+'"]')){
+        group.classList.toggle("is-responsive",responsive);
+        group.classList.toggle("is-muted",muted);
+        group.classList.toggle("is-visited",visited);
+      }
+    }
+  }
+  function scheduleGeometry(){
     if(pending)return;
     pending=true;
-    requestAnimationFrame(()=>{pending=false;draw();});
+    requestAnimationFrame(()=>{
+      pending=false;
+      if(document.hidden)return;
+      draw();
+      syncStates();
+    });
   }
-  const observer=new MutationObserver(()=>schedule());
+  function syncVisibility(){
+    // animation-play-state does not inherit from the SVG element;
+    // the CSS .is-paused selector pauses descendants directly.
+    svg.classList.toggle("is-paused",document.hidden);
+    if(!document.hidden)scheduleGeometry();
+  }
+  const observer=new MutationObserver(()=>syncStates());
   for(const node of nodes)observer.observe(node,{attributes:true,attributeFilter:["class"]});
   observer.observe(space,{attributes:true,attributeFilter:["class"]});
-  window.addEventListener("resize",schedule,{passive:true});
-  window.addEventListener("orientationchange",schedule,{passive:true});
-  document.addEventListener("visibilitychange",()=>{
-    svg.style.animationPlayState=document.hidden?"paused":"running";
-  });
+  window.addEventListener("resize",scheduleGeometry,{passive:true});
+  window.addEventListener("orientationchange",scheduleGeometry,{passive:true});
+  document.addEventListener("visibilitychange",syncVisibility);
   if("ResizeObserver" in window){
-    const ro=new ResizeObserver(schedule);
-    ro.observe(space);ro.observe(nexus);
+    const ro=new ResizeObserver(scheduleGeometry);
+    ro.observe(space);
+    ro.observe(nexus);
   }
-  // During dimensional crossings, endpoints are animated by the existing engine.
-  // Re-sample a few frames only at those transitions; never run an idle JS loop.
-  space.addEventListener("transitionend",schedule,{passive:true});
-  nodes.forEach(n=>n.addEventListener("transitionend",schedule,{passive:true}));
-  schedule();
+  // Crossing geometry is resampled when native transitions settle.
+  // Never run an unbounded frame loop just to decorate an idle page.
+  space.addEventListener("transitionend",scheduleGeometry,{passive:true});
+  nodes.forEach(n=>n.addEventListener("transitionend",scheduleGeometry,{passive:true}));
+  svg.classList.toggle("is-paused",document.hidden);
+
+  scheduleGeometry();
 }
