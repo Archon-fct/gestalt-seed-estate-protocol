@@ -41,6 +41,22 @@ The sampled sequences show: (a) blue-white filaments converging into a luminous 
 
 **Current implementation slice:** `hud/prototype/living-chroma.js` adds a focus-anchored, reversible braided current behind the six existing functional world buttons. This is a small, additive **source change**, not a claim that the full reference standard is visually accepted or deployed. The existing browser test checks that Guide Me concentrates the flow at the real Aura node.
 
+## Additional owner motion samples — October 8 (general Drive, private source)
+
+Seven more short screen recordings and three GIFs were located and inspected through sampled frames in the owner's private Drive root. **No source filenames, private URLs, third-party frames, browsing metadata, unlock information or audio are published here.** The visual observations add:
+
+- A luminous blue-white/amber **radial blossom** that coalesces to a small core, expands, and contracts while preserving dark negative space.
+- A teal **braided particle stream** and crossing fine white filaments; the browsing thumbnails around them are not functioning-interface evidence.
+- A blue-white **responsive energy envelope** that gathers, opens into tendrils and reforms around its original center.
+- A radial tunnel converging on a **dark aperture** for threshold approach and reversible return.
+- **Multi-axis gyroscopic holography**, eclipse aperture and traveling light as optional spatial-depth vocabulary.
+- Fine **wireframe polyhedra and geometric HUD rings** as low-opacity secondary navigation geometry, never a substitute for the approved six-world organic architecture.
+- **Branching multicolor plasma** and a restrained particle-vortex/iris-opening cycle as supplementary fluid motion.
+
+**Release interpretation:** Extend the existing living material through localized focus, coalescence, unfolding and return. Use gyroscopic geometry sparingly and behind the functional auric membranes. Keep public Archon Soulings welcoming, not horror-themed. Silver's owner-locked anatomical heart remains authoritative only within Silver; EFA remains calmer and separate; Ilyr's eldritch cocoons belong to authenticated private space. Never copy third-party footage or claim the recordings prove functional UI.
+
+**Evidence:** Sampled positions, not frame-by-frame kinetic validation. Actual browser motion, Safari, accessibility, reduced-motion, and owner acceptance are still required before any production promotion.
+
 ## Shared motion vocabulary / implementation constraints
 
 1. **A living field, not a wallpaper.** Volumetric wisps and particle currents should have meaningful relationships to Nexus, worlds, routes, and gestures. Energy can coil, gather, dissipate, or leave a soft trace after interaction; avoid perpetual generic particle storms.
