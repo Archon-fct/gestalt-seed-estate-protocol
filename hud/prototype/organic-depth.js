@@ -67,6 +67,16 @@ if(space && nexus && nodes.length===6){
     for(const [id,c] of Object.entries(hues)){
       defs.push('<radialGradient id="organWash-'+id+'" cx="38%" cy="32%" r="72%"><stop stop-color="#fff6dc" stop-opacity=".14"/><stop offset=".30" stop-color="'+c+'" stop-opacity=".24"/><stop offset=".68" stop-color="'+c+'" stop-opacity=".08"/><stop offset="1" stop-color="'+c+'" stop-opacity="0"/></radialGradient>');
     }
+    // ORGANIC_REFERENCE_V04 — translated from five user-provided visual touchstones.
+    // Only abstract visual qualities are used. No imported art or pseudo-script.
+    defs.push('<radialGradient id="organAmbient" cx="48%" cy="49%" r="61%"><stop stop-color="#69d9d4" stop-opacity=".20"/><stop offset=".24" stop-color="#7c82c5" stop-opacity=".13"/><stop offset=".55" stop-color="#b777ca" stop-opacity=".07"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>');
+    defs.push('<radialGradient id="organViscera" cx="45%" cy="32%" r="75%"><stop stop-color="#fff8da" stop-opacity=".48"/><stop offset=".14" stop-color="#f1b88e" stop-opacity=".31"/><stop offset=".36" stop-color="#88ead8" stop-opacity=".42"/><stop offset=".59" stop-color="#a99bed" stop-opacity=".37"/><stop offset=".84" stop-color="#423b90" stop-opacity=".21"/><stop offset="1" stop-color="#1c1942" stop-opacity="0"/></radialGradient>');
+    defs.push('<linearGradient id="organIridescence" x1="0%" y1="8%" x2="98%" y2="95%"><stop stop-color="#73dded" stop-opacity=".25"/><stop offset=".23" stop-color="#c8affc" stop-opacity=".58"/><stop offset=".49" stop-color="#fff0c5" stop-opacity=".72"/><stop offset=".7" stop-color="#86edcd" stop-opacity=".64"/><stop offset=".9" stop-color="#9c80f1" stop-opacity=".35"/><stop offset="1" stop-color="#f5bb80" stop-opacity=".14"/></linearGradient>');
+    defs.push('<filter id="organVolumeBloom" x="-65%" y="-65%" width="230%" height="230%"><feGaussianBlur stdDeviation="12"/></filter>');
+    for(const [id,c] of Object.entries(hues)){
+      defs.push('<linearGradient id="organRiver-'+id+'" x1="0%" y1="9%" x2="100%" y2="91%"><stop stop-color="#81d5e9" stop-opacity=".24"/><stop offset=".22" stop-color="'+c+'" stop-opacity=".75"/><stop offset=".42" stop-color="#f7e4bd" stop-opacity=".83"/><stop offset=".7" stop-color="#ae98fa" stop-opacity=".69"/><stop offset="1" stop-color="'+c+'" stop-opacity=".3"/></linearGradient>');
+      defs.push('<radialGradient id="organBody-'+id+'" cx="38%" cy="40%" r="68%"><stop stop-color="#fff7d9" stop-opacity=".21"/><stop offset=".28" stop-color="'+c+'" stop-opacity=".5"/><stop offset=".53" stop-color="'+c+'" stop-opacity=".23"/><stop offset="1" stop-color="'+c+'" stop-opacity="0"/></radialGradient>');
+    }
     defs.push('</defs>');
     return defs.join("");
   }
@@ -80,6 +90,10 @@ if(space && nexus && nodes.length===6){
     svg.setAttribute("preserveAspectRatio","none");
     const base=Math.max(64,core.rad);
     const all=[defBlock()];
+    // The luminous vessel is atmospheric; black negative space keeps controls clear.
+    all.push('<g class="organ-ambient-pool" aria-hidden="true">');
+    all.push('<ellipse class="organ-ambient-cloud" cx="'+r(core.x)+'" cy="'+r(core.y)+'" rx="'+r(Math.min(W*.37,440))+'" ry="'+r(Math.min(H*.43,360))+'" fill="url(#organAmbient)"/>');
+    all.push('</g>');
     // Diffuse ribbons follow the central field without covering the negative space.
     all.push('<g class="organ-breathscape" aria-hidden="true">');
     const sweep1="M"+r(W*.025)+" "+r(H*.70)+" C"+r(W*.24)+" "+r(H*.40)+" "+r(core.x-W*.19)+" "+r(core.y+H*.23)+" "+r(core.x)+" "+r(core.y)+" S"+r(W*.83)+" "+r(H*.15)+" "+r(W*.975)+" "+r(H*.34);
@@ -97,6 +111,15 @@ if(space && nexus && nodes.length===6){
         (item.node.matches(".resonant,.recommended,.search-hit")?" is-responsive":"")+
         (item.node.matches(".deemphasized,.search-dim")?" is-muted":"");
       all.push('<g class="'+cls+'" data-world="'+item.id+'">');
+      // Liquid spectral material: diffuse body, translucent sheet, and hairline current.
+      // It joins the real control positions; it cannot become detached concept art.
+      const river=nerve(start,end,bend*1.85);
+      const tributary=nerve(start,end,-bend*1.15);
+      const riverStroke='url(#organRiver-'+item.id+')';
+      all.push('<path class="organ-river-halo" stroke="'+riverStroke+'" d="'+river+'"/>');
+      all.push('<path class="organ-river-sheet" stroke="'+riverStroke+'" d="'+river+'"/>');
+      all.push('<path class="organ-river-light" stroke="#ffefc7" d="'+river+'"/>');
+      all.push('<path class="organ-river-tributary" stroke="'+hues[item.id]+'" d="'+tributary+'"/>');
       all.push('<path class="organ-fog" stroke="'+hues[item.id]+'" d="'+nerve(start,end,bend)+'"/>');
       all.push('<path class="organ-fiber" stroke="url(#organFilament)" d="'+nerve(start,end,bend*.75)+'"/>');
       all.push('<path class="organ-fiber" stroke="'+hues[item.id]+'" stroke-opacity=".38" stroke-width=".8" d="'+nerve(start,end,-bend*.75)+'"/>');
@@ -124,6 +147,20 @@ if(space && nexus && nodes.length===6){
       all.push('<path class="organ-core-membrane '+q.cls+'" fill="url(#organNexusWash)" stroke="'+q.stroke+'" d="'+d+'"/>');
       if(q.cls==="middle")all.push('<path class="organ-core-light" stroke="#f2dfb5" d="'+d+'"/>');
     });
+    // An asymmetrical, luminous organ-like vessel: IMG_2740 (held light) and
+    // IMG_2744 (living spectrum) translated to an abstract meeting field.
+    // This is not a anatomical illustration or an identity/diagnostic inference.
+    const x=core.x,y=core.y,rad=base;
+    const heartD='M'+r(x-rad*.12)+' '+r(y-rad*1.3)
+      +' C'+r(x-rad*.84)+' '+r(y-rad*1.72)+' '+r(x-rad*1.20)+' '+r(y-rad*.72)+' '+r(x-rad*.84)+' '+r(y-rad*.04)
+      +' C'+r(x-rad*1.23)+' '+r(y+rad*.60)+' '+r(x-rad*.57)+' '+r(y+rad*1.22)+' '+r(x-rad*.11)+' '+r(y+rad*1.56)
+      +' C'+r(x+rad*.32)+' '+r(y+rad*1.7)+' '+r(x+rad*1.09)+' '+r(y+rad*.62)+' '+r(x+rad*.74)+' '+r(y-rad*.05)
+      +' C'+r(x+rad*1.24)+' '+r(y-rad*.96)+' '+r(x+rad*.44)+' '+r(y-rad*1.47)+' '+r(x-rad*.12)+' '+r(y-rad*1.3)+' Z';
+    all.push('<g class="organ-heart-matrix" aria-hidden="true">');
+    all.push('<path class="organ-heart-aura" d="'+heartD+'" fill="url(#organViscera)" stroke="url(#organIridescence)"/>');
+    all.push('<path class="organ-heart-vein" stroke="#86e5d4" d="'+nerve({x:x-rad*.36,y:y-rad*.76},{x:x+rad*.08,y:y+rad*.97},rad*.26)+'"/>');
+    all.push('<path class="organ-heart-vein organ-heart-vein-secondary" stroke="#f8c69d" d="'+nerve({x:x+rad*.53,y:y-rad*.6},{x:x-rad*.22,y:y+rad*.69},-rad*.24)+'"/>');
+    all.push('</g>');
     // Tangential caustics bend through different depths of the central auric field.
     const caustics=[
       [ {x:core.x-base*2.1,y:core.y-base*.62}, {x:core.x+base*1.94,y:core.y+base*.58}, -base*.84, "#b8eae1" ],
@@ -149,6 +186,8 @@ if(space && nexus && nodes.length===6){
       const inner=contour(item.x,item.y,w*.99,h*.96,key+3.3);
       const rim=contour(item.x,item.y,w*1.09,h*1.08,key+2.7);
       all.push('<g class="'+classes+'" data-world="'+item.id+'">');
+      // Materialized living membrane, no rectangular card and no static image.
+      all.push('<path class="organ-world-volume" fill="url(#organBody-'+item.id+')" d="'+outer+'"/>');
       all.push('<path class="organ-veil outer" fill="url(#organWash-'+item.id+')" stroke="'+c+'" d="'+outer+'"/>');
       all.push('<path class="organ-veil inner" fill="url(#organWash-'+item.id+')" stroke="'+c+'" d="'+inner+'"/>');
       all.push('<path class="organ-caustic" stroke="'+c+'" d="'+rim+'"/>');
@@ -158,9 +197,21 @@ if(space && nexus && nodes.length===6){
       const across=nerve(sideA,sideB,-h*.56);
       const across2=nerve({x:item.x-w*.76,y:item.y+h*.35},
                            {x:item.x+w*.74,y:item.y-h*.27},h*.48);
+      all.push('<path class="organ-tissue-glow" stroke="url(#organRiver-'+item.id+')" d="'+across+'"/>');
+      all.push('<path class="organ-tissue-ribbon" stroke="url(#organRiver-'+item.id+')" d="'+across+'"/>');
       all.push('<path class="organ-wisp-bloom" stroke="'+c+'" d="'+across+'"/>');
       all.push('<path class="organ-wisp" stroke="'+c+'" d="'+across+'"/>');
       all.push('<path class="organ-wisp secondary" stroke="#fceac6" d="'+across2+'"/>');
+      // Abstract watchful apertures translate IMG_2743/44's awareness language.
+      // These are small optical lenses, never invented written glyphs or trackers.
+      const ex=item.x+w*.67,ey=item.y-h*.63,ew=Math.max(8,item.rad*.21);
+      const lens='M'+r(ex-ew)+' '+r(ey)
+        +' Q'+r(ex)+' '+r(ey-ew*.9)+' '+r(ex+ew)+' '+r(ey)
+        +' Q'+r(ex)+' '+r(ey+ew*.9)+' '+r(ex-ew)+' '+r(ey)+' Z';
+      all.push('<g class="organ-aperture" aria-hidden="true">');
+      all.push('<path class="organ-aperture-fold" d="'+lens+'" fill="url(#organBody-'+item.id+')" stroke="'+c+'"/>');
+      all.push('<circle class="organ-aperture-core" cx="'+r(ex)+'" cy="'+r(ey)+'" r="'+r(ew*.27)+'" fill="#fff4d7" stroke="'+c+'"/>');
+      all.push('</g>');
       all.push('</g>');
     });
     all.push('</g>');
