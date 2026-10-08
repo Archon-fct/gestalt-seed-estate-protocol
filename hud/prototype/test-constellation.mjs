@@ -133,6 +133,15 @@ for (const width of widths) {
   });
   await page.locator('#guide').click();await page.locator('[data-intent="learn"]').click();
   await page.waitForTimeout(60);
+  // Flow follows a real recommended node; this is not simulated AI activity.
+  try {
+    await page.waitForFunction(() => {
+      const canvas=document.querySelector('#livingChroma');
+      return canvas?.dataset.flowStage==='braided' && canvas?.dataset.focusWorld==='aura';
+    }, null, {timeout:3000});
+  } catch {
+    failures.push(width+': chromatic current did not coalesce around recommended Aura');
+  }
   const organicContinuity=await page.evaluate(() => {
     const group=document.querySelector('.organic-depth-field .organ-connection[data-world="aura"]');
     const flow=group?.querySelector('.organ-flow');
