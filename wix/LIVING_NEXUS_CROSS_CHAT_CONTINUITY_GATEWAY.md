@@ -7,6 +7,12 @@
 **Working PR:** [#11 — Prototype the public Project Constellation](https://github.com/Archon-fct/gestalt-seed-estate-protocol/pull/11), draft, target \`main\`.  
 **Working branch:** \`feature/public-project-constellation\`. Never treat this document's snapshot SHA as a permanent branch head.
 
+## Owner correction — living material, not an animated photograph (2026-10-08)
+
+**Read [LIVING_NEXUS_PROCEDURAL_MATERIAL_CANON.md](./LIVING_NEXUS_PROCEDURAL_MATERIAL_CANON.md) before implementing or deploying any further Nexus renderer.** The exact approved six-world image is the **design blueprint** for the spatial hierarchy, luminous anatomy and aesthetic quality. It is **not** intended to remain as a raster image being overlaid, tilted, refracted or fisheye-warped. The actual six-world environment must be independently rendered, living, interactive material with genuine responsive volumetric depth and reversible transitions. This explicitly supersedes older statements that the exact image must be the live art backplate; it does not override the six-world functional architecture, public/private boundaries or owner acceptance gate.
+
+Current image-free Study 10 is a local structural experiment, **not visually accepted or deployed**. Earlier cinematic v0.8/v0.9 previews remain isolated comparisons, not approved final visuals. No production promotion is authorized.
+
 ## 1. One vision; different implementation surfaces
 
 The Living Nexus is the **Archon Soulings public-facing living operating environment**. All participating ChatGPT conversations, implementation branches, handoffs, previews and agents must preserve the same approved product and visual canon.
