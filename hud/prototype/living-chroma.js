@@ -174,21 +174,21 @@ function paint(time){
 }
 function loop(now){
  handle=0;
- if(document.hidden||still()){active=false;paint(3.7);hasFrame=true;return;}
+ if(document.hidden||still()){active=false;canvas.dataset.motion="paused";paint(3.7);hasFrame=true;return;}
  const interval=lowBudget()?92:66;
  if(now-lastPaint>=interval){
    elapsed=Math.min(86400,elapsed+Math.min(.21,(now-lastPaint)/1000));
    lastPaint=now;paint(elapsed);hasFrame=true;
  }
- active=true;handle=requestAnimationFrame(loop);
+ active=true;canvas.dataset.motion="running";handle=requestAnimationFrame(loop);
 }
 function refresh(){
- if(document.hidden){if(handle)cancelAnimationFrame(handle);handle=0;active=false;return;}
+ if(document.hidden){if(handle)cancelAnimationFrame(handle);handle=0;active=false;canvas.dataset.motion="paused";return;}
  if(still()){
-   if(handle)cancelAnimationFrame(handle);handle=0;active=false;
+   if(handle)cancelAnimationFrame(handle);handle=0;active=false;canvas.dataset.motion="paused";
    paint(3.7);hasFrame=true;return;
  }
- if(!active){lastPaint=0;active=true;handle=requestAnimationFrame(loop);}
+ if(!active){lastPaint=0;active=true;canvas.dataset.motion="running";handle=requestAnimationFrame(loop);}
 }
 const bodyObserver=new MutationObserver(refresh);
 bodyObserver.observe(document.body,{attributes:true,attributeFilter:["class"]});
