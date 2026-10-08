@@ -124,6 +124,17 @@ if(space && nexus && nodes.length===6){
       all.push('<path class="organ-core-membrane '+q.cls+'" fill="url(#organNexusWash)" stroke="'+q.stroke+'" d="'+d+'"/>');
       if(q.cls==="middle")all.push('<path class="organ-core-light" stroke="#f2dfb5" d="'+d+'"/>');
     });
+    // Tangential caustics bend through different depths of the central auric field.
+    const caustics=[
+      [ {x:core.x-base*2.1,y:core.y-base*.62}, {x:core.x+base*1.94,y:core.y+base*.58}, -base*.84, "#b8eae1" ],
+      [ {x:core.x-base*1.8,y:core.y+base*.92}, {x:core.x+base*1.73,y:core.y-base*.83}, base*.9, "#ffebbe" ],
+      [ {x:core.x-base*.84,y:core.y-base*1.82}, {x:core.x+base*.95,y:core.y+base*1.75}, base*.72, "#c4b4ff" ]
+    ];
+    caustics.forEach(([a,b,bend,color],i)=>{
+      const d=nerve(a,b,bend);
+      all.push('<path class="organ-wisp-bloom" stroke="'+color+'" d="'+d+'"/>');
+      all.push('<path class="organ-wisp organ-core-wisp'+(i===2?' secondary':'')+'" stroke="'+color+'" d="'+d+'"/>');
+    });
     all.push('</g><g class="organ-worlds" aria-hidden="true">');
     world.forEach(item=>{
       const c=hues[item.id],key=anchors[item.id]||0;
@@ -141,6 +152,15 @@ if(space && nexus && nodes.length===6){
       all.push('<path class="organ-veil outer" fill="url(#organWash-'+item.id+')" stroke="'+c+'" d="'+outer+'"/>');
       all.push('<path class="organ-veil inner" fill="url(#organWash-'+item.id+')" stroke="'+c+'" d="'+inner+'"/>');
       all.push('<path class="organ-caustic" stroke="'+c+'" d="'+rim+'"/>');
+      // Irregular folds of colored light: inside the membrane rather than rings.
+      const sideA={x:item.x-w*.87,y:item.y-h*.22};
+      const sideB={x:item.x+w*.87,y:item.y+h*.13};
+      const across=nerve(sideA,sideB,-h*.56);
+      const across2=nerve({x:item.x-w*.76,y:item.y+h*.35},
+                           {x:item.x+w*.74,y:item.y-h*.27},h*.48);
+      all.push('<path class="organ-wisp-bloom" stroke="'+c+'" d="'+across+'"/>');
+      all.push('<path class="organ-wisp" stroke="'+c+'" d="'+across+'"/>');
+      all.push('<path class="organ-wisp secondary" stroke="#fceac6" d="'+across2+'"/>');
       all.push('</g>');
     });
     all.push('</g>');
