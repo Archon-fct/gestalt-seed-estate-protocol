@@ -322,3 +322,40 @@ body.still .organic-depth-field .organ-wisp { animation:none!important; }
 body.still .organic-depth-field .organ-heart-aura,
 body.still .organic-depth-field .organ-river-light,
 body.still .organic-depth-field .organ-heart-vein{animation:none!important;}
+
+/* Motion-study refinement: current interaction owns the brightest current.
+   Idle filaments remain present, but do not endlessly race around the screen. */
+.organic-depth-field .organ-connection .organ-flow{
+  opacity:.12;
+  animation-play-state:paused;
+  transition:opacity .24s ease-out;
+}
+.organic-depth-field .organ-connection.is-responsive .organ-flow,
+.organic-depth-field .organ-connection.is-visited .organ-flow{
+  opacity:.74;
+  animation-play-state:running;
+}
+.organic-depth-field .organ-cell.is-responsive .organ-veil.inner{
+  stroke-opacity:.83;
+  filter:drop-shadow(0 0 12px rgba(255,237,190,.43));
+}
+.organic-depth-field .organ-cell.is-visited .organ-wisp{
+  opacity:.68;
+}
+.organic-depth-field.is-paused *{
+  animation-play-state:paused!important;
+}
+.organic-depth-field[data-quality="low"] .organ-fog,
+.organic-depth-field[data-quality="low"] .organ-wisp-bloom{
+  filter:none;
+}
+@media(prefers-reduced-motion:reduce){
+ .organic-depth-field .organ-flow,
+ .organic-depth-field .organ-connection.is-visited .organ-flow,
+ .organic-depth-field .organ-connection.is-responsive .organ-flow{
+   animation:none!important;
+ }
+}
+body.still .organic-depth-field .organ-flow{
+ animation:none!important;
+}
