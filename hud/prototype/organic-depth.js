@@ -187,6 +187,23 @@ if(space && nexus && nodes.length===6){
     all.push('<path class="organ-heart-vein" stroke="#86e5d4" d="'+nerve({x:x-rad*.36,y:y-rad*.76},{x:x+rad*.08,y:y+rad*.97},rad*.26)+'"/>');
     all.push('<path class="organ-heart-vein organ-heart-vein-secondary" stroke="#f8c69d" d="'+nerve({x:x+rad*.53,y:y-rad*.6},{x:x-rad*.22,y:y+rad*.69},-rad*.24)+'"/>');
     all.push('</g>');
+    // Layered radial corona: irregular light transport from the meeting field.
+    // These are optical currents, not invented Aureglossa or decorative text.
+    all.push('<g class="organ-corona" aria-hidden="true">');
+    for(let i=0;i<30;i++){
+      const a=(i/30)*Math.PI*2;
+      const drift=Math.sin(i*2.39996)*.20;
+      const inner=rad*(.38+.07*Math.sin(i*1.9));
+      const outer=rad*(1.43+.27*Math.sin(i*2.7));
+      const x1=x+Math.cos(a)*inner,y1=y+Math.sin(a)*inner;
+      const x2=x+Math.cos(a+drift)*outer,y2=y+Math.sin(a+drift)*outer;
+      const t=.18*Math.sin(i*1.7);
+      const bend=(a+.32+t);
+      const cx=x+Math.cos(bend)*rad*.95,cy=y+Math.sin(bend)*rad*.95;
+      const d='M'+r(x1)+' '+r(y1)+' Q'+r(cx)+' '+r(cy)+' '+r(x2)+' '+r(y2);
+      all.push('<path class="organ-corona-ray" stroke="'+(i%3===0?'#b9a4ff':i%3===1?'#fff0bc':'#80e4d4')+'" d="'+d+'"/>');
+    }
+    all.push('</g>');
     // Tangential caustics bend through different depths of the central auric field.
     const caustics=[
       [ {x:core.x-base*2.1,y:core.y-base*.62}, {x:core.x+base*1.94,y:core.y+base*.58}, -base*.84, "#b8eae1" ],
@@ -207,7 +224,13 @@ if(space && nexus && nodes.length===6){
       const classes="organ-cell world-"+item.id+(active?" is-responsive":"")+(dimmed?" is-muted":"")+(visited?" is-visited":"");
       // World radii scale with the real interactive target and stay behind it.
       // A distinct axial ratio and contour seed keeps each pocket non-identical.
-      const w=item.rad*1.72,h=item.rad*(1.55+.19*Math.sin(key));
+      // Fit membranes fully around interactive worlds, especially at 390/820px.
+      // This prevents the worlds becoming chopped-off opaque blobs on iPad/phone.
+      const desiredW=item.rad*1.72;
+      const safeMargin=Math.max(8,Math.min(W*.018,20));
+      const availableX=Math.max(item.rad*1.10,Math.min(item.x-safeMargin,W-item.x-safeMargin));
+      const worldScale=W<1000?Math.min(1,availableX/(desiredW*1.26)):1;
+      const w=desiredW*worldScale,h=item.rad*(1.55+.19*Math.sin(key))*worldScale;
       const outer=contour(item.x,item.y,w*1.26,h*1.20,key+1.1);
       const inner=contour(item.x,item.y,w*.99,h*.96,key+3.3);
       const rim=contour(item.x,item.y,w*1.09,h*1.08,key+2.7);
@@ -289,13 +312,29 @@ if(space && nexus && nodes.length===6){
       }
     }
   }
+  // Avoid replacing or re-building SVG when only selection classes change.
+  let lastGeometrySignature="";
+  function currentGeometrySignature(){
+    const bb=space.getBoundingClientRect();
+    const elements=[nexus,...nodes];
+    const parts=[bb.width,bb.height];
+    for(const el of elements){
+      const b=el.getBoundingClientRect();
+      parts.push(b.left+b.width/2,b.top+b.height/2);
+    }
+    return parts.map(n=>Math.round(n*2)/2).join("|");
+  }
   function scheduleGeometry(){
     if(pending)return;
     pending=true;
     requestAnimationFrame(()=>{
       pending=false;
       if(document.hidden)return;
-      draw();
+      const signature=currentGeometrySignature();
+      if(signature!==lastGeometrySignature){
+        lastGeometrySignature=signature;
+        draw();
+      }
       syncStates();
     });
   }
@@ -319,7 +358,11 @@ if(space && nexus && nodes.length===6){
   // Crossing geometry is resampled when native transitions settle.
   // Never run an unbounded frame loop just to decorate an idle page.
   space.addEventListener("transitionend",scheduleGeometry,{passive:true});
-  nodes.forEach(n=>n.addEventListener("transitionend",scheduleGeometry,{passive:true}));
+  nodes.forEach(n=>n.addEventListener("transitionend",()=>{
+    // Node hover/Guide transforms are state feedback, not structural changes.
+    // Only dimensional crossings require geometry resampling.
+    if(space.classList.contains("crossing")||space.classList.contains("returning"))scheduleGeometry();
+  },{passive:true}));
   svg.classList.toggle("is-paused",document.hidden);
 
   scheduleGeometry();
