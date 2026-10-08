@@ -51,8 +51,8 @@ This is an **index**, not a revision or supersession of these documents. If anot
 | Hidden Wix / Aureglossa HUD v0.6 preview work | Isolated published editorless preview exists; content/build identity and visual acceptance must be checked independently | **Preview only.** No substitution for owner-approved release. |
 | Aura Dynamics and canonical Aureglossa | Experiential lessons and language/terminology rules | Preserve actual routes and canonical language; do not invent glyphs. |
 | Gestalt Seed / Soul & Stone public bridge | Shared visual vocabulary and bounded public relationships/provenance | Related ecosystem, but not permission to mix project logic or state. |
-| Crooked Moon / Ilyr Veyr private work | Privately supplied kinetic reference vocabulary | **Private boundary.** Only sanitized abstract motion principles may inform public rendering. |
-| Silver / EFA private assistants | Separate private products with distinct identities and user data | **Do not merge** into public Nexus sources, identity, storage or logs. |
+| Private derivative motion studies | Privately supplied kinetic reference vocabulary | **Private boundary.** Only sanitized abstract motion principles may inform public rendering. |
+| Other private assistant projects | Separate private products with distinct identities and user data | **Do not merge** into public Nexus sources, identity, storage or logs. |
 
 The agent cannot enumerate all currently open ChatGPT tabs or move their histories on its own. Additional chat links and owner-provided handoffs must be appended to a **private** project ledger, not guessed here.
 
@@ -79,7 +79,7 @@ At the start of this consolidation, branch \`feature/public-project-constellatio
 4. Report independently: \`IMPLEMENTED\`, \`TESTED\`, \`VISUALLY ACCEPTED\`, \`PREVIEW DEPLOYED\`, \`PRODUCTION DEPLOYED\`; record \`PASS / FAIL / NOT VERIFIED / BLOCKED\` for each. Never collapse these into “done.”
 5. End each meaningful work session with a handoff entry: chat identifier/link if owner supplied, scoped files, starting SHA, ending SHA, CI link, screenshot/video evidence, owner acceptance state, changed APIs/storage, unresolved blockers, and next **single** priority.
 6. **No canonical takeover:** do not silently rewrite reference hierarchy, project naming, existing commit history or visual authority. Conflicts must be recorded as \`CONFLICT — OWNER DECISION REQUIRED\` until explicitly resolved.
-7. **Private/public isolation:** communicate only implementation-neutral motion observations across the Crooked Moon / Silver / EFA boundary. Private details stay in private project files and chats.
+7. **Private/public isolation:** communicate only implementation-neutral motion observations across all private/public product boundaries. Private details stay in private project files and chats.
 
 ## 6. Next cross-chat work item
 
