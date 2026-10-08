@@ -47,6 +47,20 @@ for (const width of widths) {
 
   const nodeCount = await page.locator('.node').count();
   if (nodeCount !== 6) failures.push(width + ': expected 6 public nodes, got ' + nodeCount);
+  // ORGANIC_DEPTH_VISUAL_GATE: verify decorative SVG is spatial and untouchable.
+  const organic=await page.evaluate(()=>{
+    const svg=document.querySelector('#space > .organic-depth-field');
+    return {present:!!svg,aria:svg?.getAttribute('aria-hidden'),
+      pointer:svg?getComputedStyle(svg).pointerEvents:null,
+      cells:svg?.querySelectorAll('.organ-cell').length||0,
+      connections:svg?.querySelectorAll('.organ-connection').length||0,
+      shells:svg?.querySelectorAll('.organ-core-membrane').length||0,
+      wisps:svg?.querySelectorAll('.organ-wisp').length||0,
+      viewbox:svg?.getAttribute('viewBox')||''};
+  });
+  console.log('ORGANIC_DEPTH',width,JSON.stringify(organic));
+  if(!organic.present||organic.aria!=='true'||organic.pointer!=='none'||organic.cells!==6||organic.connections!==6||organic.shells!==3||organic.wisps<9)
+    failures.push(width+': organic depth layer incomplete or intercepts input '+JSON.stringify(organic));
 
   const overflow = await page.evaluate(() => ({
     horizontal: document.documentElement.scrollWidth > innerWidth,
@@ -129,6 +143,8 @@ for (const width of widths) {
   if(await page.evaluate(()=>sessionStorage.getItem('archonLivingThread.v1')||sessionStorage.getItem('archonLivingThread.session.v1')))failures.push(width+': dissolve did not clear saved/session journey');
   await page.locator('#still').click();
   if (!(await page.locator('body').getAttribute('class') || '').includes('still')) failures.push(width + ': Stillness did not activate');
+  const stillWisp=await page.locator('.organic-depth-field .organ-wisp').first().evaluate(el=>getComputedStyle(el).animationName);
+  if(stillWisp!=='none')failures.push(width+': Stillness did not stop organic-depth motion: '+stillWisp);
 
   const text = await page.content();
   if (/silver/i.test(text)) failures.push(width + ': public prototype contains forbidden Silver reference');
@@ -142,6 +158,8 @@ const reduced = await browser.newPage({ viewport:{ width:390,height:900 }, reduc
 await reduced.goto(file);
 const animation = await reduced.locator('.node').first().evaluate(el => getComputedStyle(el).animationName);
 if (animation !== 'none') failures.push('reduced-motion: node animation still active: ' + animation);
+const organicReduced=await reduced.locator('.organic-depth-field .organ-wisp').first().evaluate(el=>getComputedStyle(el).animationName);
+if(organicReduced!=='none') failures.push('reduced-motion: organic depth animation still active: '+organicReduced);
 await reduced.close();
 
 
