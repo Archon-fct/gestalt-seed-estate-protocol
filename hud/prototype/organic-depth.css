@@ -608,3 +608,52 @@ header .controls button{
     211px 257px,317px 373px,443px 409px,281px 331px;
   background-position: center;
 }
+
+/* Auric Fidelity v0.7.2 — light lives inside the world, not only at its rim. */
+#space>.node .world-refraction{
+  position:absolute;inset:1px;border-radius:inherit;z-index:0;
+  pointer-events:none;mix-blend-mode:screen;
+  background:
+    radial-gradient(ellipse 64% 49% at 33% 25%,rgba(255,251,214,.34),transparent 84%),
+    conic-gradient(from 24deg at 52% 45%,
+      transparent 0 25deg,
+      color-mix(in srgb,var(--world-light),transparent 72%) 45deg,
+      transparent 94deg 166deg,
+      rgba(255,239,194,.15) 197deg,
+      transparent 235deg,
+      color-mix(in srgb,var(--world-light),transparent 83%) 293deg,
+      transparent 346deg);
+  filter:blur(1.2px);
+  opacity:.65;
+  animation:worldRefractionBreathe 11s ease-in-out infinite alternate;
+}
+#space>.node .world-mark,#space>.node>span{position:relative;z-index:2}
+#space>.node .world-mark{
+  stroke-width:1.5;
+  filter:drop-shadow(0 0 9px var(--world-light)) drop-shadow(0 0 4px rgba(255,246,222,.5));
+}
+#space>.node:is(:hover,:focus-visible,.visited,.recommended,.search-hit) .world-refraction{
+  opacity:.9;
+}
+.organic-depth-field .organ-cell .organ-veil.inner{
+  fill-opacity:.68;
+  stroke-opacity:.65;
+}
+.organic-depth-field .organ-cell .organ-veil.outer{
+  fill-opacity:.25;
+  stroke-opacity:.49;
+}
+@keyframes worldRefractionBreathe{to{opacity:.84;transform:scale(1.025)}}
+@media(min-width:1000px){
+  #space>.node{width:154px;height:154px;padding:17px}
+  #space>.node .world-mark{width:50px;height:50px}
+  #space>.node[data-id="aura"]{left:calc(50% - 77px)}
+  #space>.node[data-id="journal"]{left:calc(50% - 77px);bottom:10%}
+}
+@media(max-width:650px){
+  #space>.node .world-refraction{opacity:.52;filter:none}
+}
+@media(prefers-reduced-motion:reduce){
+  #space>.node .world-refraction{animation:none!important}
+}
+body.still #space>.node .world-refraction{animation:none!important}
