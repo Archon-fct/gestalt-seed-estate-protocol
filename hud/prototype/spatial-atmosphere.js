@@ -7,7 +7,9 @@ const worlds={
  gestalt:{base:196,over:392,depth:.014},
  journal:{base:130,over:195,depth:.010},
  workshops:{base:164,over:246,depth:.015},
- aureglossa:{base:220,over:330,depth:.012},\n nexus:{base:110,over:220,depth:.008}\n};
+ aureglossa:{base:220,over:330,depth:.012},
+ nexus:{base:110,over:220,depth:.008}
+};
 function stopNodes(){nodes.forEach(n=>{try{n.stop?.()}catch{}try{n.disconnect?.()}catch{}});nodes=[]}
 export async function enterAtmosphere(world){
  if(!worlds[world])return false;
