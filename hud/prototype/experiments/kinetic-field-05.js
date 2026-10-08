@@ -309,6 +309,7 @@ function render(){
   bloomWorld(item,energyTime,.42+focus*.48,isChosen?open:0);
  }
  ctx.restore();frame++;paintms=performance.now()-start;
+ canvas.dataset.material='continuous-auric-membrane-v05';
  canvas.dataset.frames=String(frame);canvas.dataset.lastPaintMs=paintms.toFixed(1);
 }
 function tick(now){
