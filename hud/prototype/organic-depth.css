@@ -657,3 +657,32 @@ header .controls button{
   #space>.node .world-refraction{animation:none!important}
 }
 body.still #space>.node .world-refraction{animation:none!important}
+
+/* Auric Fidelity v0.7.3 — remove broad diagonal sash artifacts.
+   Light folds belong *inside* a dimension, never as opaque slashes across it.
+   No change to node labels, route targets, or hit testing. */
+.organic-depth-field .organ-cell .organ-world-sheen{
+  opacity:.21;
+  filter:blur(1.4px);
+}
+.organic-depth-field .organ-cell .organ-tissue-glow{
+  opacity:.14;
+  stroke-width:10;
+}
+.organic-depth-field .organ-cell .organ-tissue-ribbon{
+  opacity:.20;
+  stroke-width:1.8;
+}
+.organic-depth-field .organ-cell .organ-wisp-bloom{
+  opacity:.09;
+}
+.organic-depth-field .organ-cell .organ-aperture{
+  opacity:.09;
+}
+.organic-depth-field .organ-cell.is-responsive .organ-world-sheen{
+  opacity:.44;
+}
+@media(max-width:650px){
+ .organic-depth-field .organ-cell .organ-world-sheen{opacity:.16}
+ .organic-depth-field .organ-cell .organ-tissue-ribbon{opacity:.13}
+}
