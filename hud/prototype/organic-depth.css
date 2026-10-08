@@ -359,3 +359,60 @@ body.still .organic-depth-field .organ-heart-vein{animation:none!important;}
 body.still .organic-depth-field .organ-flow{
  animation:none!important;
 }
+
+
+/* ORGANIC_TAPERED_BANDS_V05 — iridescent liquid veils, not rigid tubes. */
+.organic-depth-field .organ-spectral-veil {
+  stroke:none; opacity:.64;
+  filter:drop-shadow(0 0 7px rgba(148,208,220,.15));
+  animation:organSilkBreathe 13s ease-in-out infinite alternate;
+}
+.organic-depth-field .organ-world-sheen {
+  stroke:none; opacity:.49; filter:drop-shadow(0 0 4px rgba(197,185,229,.1));
+  animation:organSilkBreathe 10s ease-in-out infinite alternate-reverse;
+}
+.organic-depth-field .organ-breathscape .organ-fog {
+  opacity:.09; stroke-width:9; filter:url(#organVolumeBloom);
+}
+.organic-depth-field .organ-river-halo {
+  stroke-width:24; opacity:.22; filter:url(#organVolumeBloom);
+}
+.organic-depth-field .organ-river-sheet {
+  stroke-width:4; opacity:.32; filter:drop-shadow(0 0 6px rgba(126,230,224,.16));
+}
+.organic-depth-field .organ-river-light {stroke-width:1.1;opacity:.42;}
+.organic-depth-field .organ-river-tributary {stroke-width:1.4;opacity:.28;}
+.organic-depth-field .organ-tissue-glow {
+  stroke-width:12; opacity:.25; filter:url(#organVolumeBloom);
+}
+.organic-depth-field .organ-tissue-ribbon {stroke-width:3.4;opacity:.34;}
+.organic-depth-field .organ-core-membrane.outer,
+.organic-depth-field .organ-core-membrane.middle {stroke-opacity:.23;}
+.organic-depth-field .organ-core-light {opacity:.22;}
+#space .nexus-membrane {border-color:rgba(137,222,209,.16);opacity:.32;}
+#space .auric-being .layer {opacity:.3;}
+@keyframes organSilkBreathe {to{opacity:.78;filter:brightness(1.2);}}
+.organic-depth-field .organ-cell.is-responsive .organ-world-sheen,
+.organic-depth-field .organ-connection.is-responsive .organ-spectral-veil {opacity:.9;}
+.organic-depth-field .organ-cell.is-muted .organ-world-sheen,
+.organic-depth-field .organ-connection.is-muted .organ-spectral-veil {opacity:.20;}
+@media(max-width:900px){
+ .organic-depth-field .organ-river-halo {stroke-width:15;opacity:.19;}
+ .organic-depth-field .organ-river-sheet {stroke-width:3;opacity:.27;}
+}
+@media(max-width:650px){
+ .organic-depth-field .organ-spectral-veil {opacity:.53;}
+ .organic-depth-field .organ-world-sheen {opacity:.45;}
+ .organic-depth-field .organ-breathscape .organ-fog {opacity:.04;}
+ .organic-depth-field .organ-river-halo {stroke-width:9;opacity:.13;}
+ .organic-depth-field .organ-river-sheet {stroke-width:2;opacity:.22;}
+ .organic-depth-field .organ-tissue-glow {stroke-width:8;opacity:.21;}
+ .organic-depth-field .organ-tissue-ribbon {stroke-width:2;opacity:.29;}
+}
+.organic-depth-field.is-paused * {animation-play-state:paused!important;}
+@media(prefers-reduced-motion:reduce){
+ .organic-depth-field .organ-spectral-veil,
+ .organic-depth-field .organ-world-sheen {animation:none!important;}
+}
+body.still .organic-depth-field .organ-spectral-veil,
+body.still .organic-depth-field .organ-world-sheen {animation:none!important;}
