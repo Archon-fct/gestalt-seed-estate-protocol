@@ -140,7 +140,14 @@ for (const width of widths) {
       return canvas?.dataset.flowStage==='braided' && canvas?.dataset.focusWorld==='aura';
     }, null, {timeout:3000});
   } catch {
-    failures.push(width+': chromatic current did not coalesce around recommended Aura');
+    const diagnostic=await page.evaluate(()=>({
+      canvas:document.querySelector('#livingChroma')?.dataset.flowStage,
+      focused:document.querySelector('#livingChroma')?.dataset.focusWorld,
+      motion:document.querySelector('#livingChroma')?.dataset.motion,
+      aura:document.querySelector('[data-id="aura"]')?.className,
+      stage:document.querySelector('#space')?.className
+    }));
+    failures.push(width+': chromatic current did not coalesce around recommended Aura '+JSON.stringify(diagnostic));
   }
   const organicContinuity=await page.evaluate(() => {
     const group=document.querySelector('.organic-depth-field .organ-connection[data-world="aura"]');
