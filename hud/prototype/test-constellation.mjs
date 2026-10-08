@@ -179,7 +179,7 @@ for (const width of widths) {
   if (!(await page.locator('body').getAttribute('class') || '').includes('still')) failures.push(width + ': Stillness did not activate');
   const stillWisp=await page.locator('.organic-depth-field .organ-wisp').first().evaluate(el=>getComputedStyle(el).animationName);
   if(stillWisp!=='none')failures.push(width+': Stillness did not stop organic-depth motion: '+stillWisp);
-  await page.waitForFunction(()=>document.querySelector('#livingChroma')?.dataset.motion==='paused',{timeout:1500}).catch(()=>{failures.push(width+': chromatic Canvas ignored Stillness');});
+  await page.waitForFunction(()=>document.querySelector('#livingChroma')?.dataset.motion==='paused',null,{timeout:1500}).catch(()=>{failures.push(width+': chromatic Canvas ignored Stillness');});
 
   const text = await page.content();
   if (/silver/i.test(text)) failures.push(width + ': public prototype contains forbidden Silver reference');
