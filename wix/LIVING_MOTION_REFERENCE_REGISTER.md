@@ -97,6 +97,29 @@ MOTION-03 is a **tier of acceptance**, not an animation asset or an instruction 
 
 **Gate for the next isolated browser study:** Reuse one Nexus-to-Aura anchor relationship. Record meaningful source-preserving stages—idle, hovered/focused, gathering, unfolding, stable, reversing, returned—at 390px, 820px and 1280px; capture several real intermediate frames per transition. Verify no cut/seam, genuine Return and Dissolve behavior, pointer/keyboard accessibility, reduced motion, opt-in Atmosphere / immediate Silence, no public/private boundary leak and physical iPad Safari performance before propagation to all six worlds. Maintain functional control independently of the visual engine. **Owner visual acceptance remains open.** The kinetic reference changes neither production deployment permissions nor the required six-world baseline.
 
+## General-Drive motion extension — reviewed owner references (2026-10-08)
+
+**Review status:** Seven recently supplied video studies and three looping motion studies were directly inspected at representative timepoints and sequence intervals. Some screen recordings show browsing through **different** visual examples; their edits must not be mistaken for one seamless, working HUD. These are **private source studies, not approved production assets or footage reuse**. Keep all file names, Drive paths, raw media, embedded screens, original authorship, and private-project assets out of public bundles and this public repository.
+
+**Applied observations, subordinate to the accepted six-world visual authority:**
+
+- **Nucleus → filament bloom → nucleus:** Locally concentrated blue/pearl/gold strands contract, disperse, and return to a recognizable center. The same material persists through each phase. Use only to animate a *selected* world, never a whole-screen strobe.
+- **Breakup → recombination:** A dark central anchor survives changing clouds, branching particles and optical arcs; the luminous shell can reorganize without losing orientation. Use for entering a dimension and reversing on return.
+- **Depth through differential motion:** Near-field streaks, middle-distance webs and far-field stars change speed and apparent scale relative to a fixed destination. An idle field remains calm and readable.
+- **Holographic alignment:** Abstract geometric planes, points and thin orbital marks can assemble around a center to indicate relationship, focus or progress. This **does not** authorize converting the environment into a conventional dashboard or flat circular HUD.
+- **Minimal ring / seed state grammar:** A small luminous opening can fold, tilt, narrow, and re-form; particles may disperse and coherently reconverge. These are useful restrained motifs for Save/Return/Dissolve and a browser-local journey trace, not replacements for the six richly differentiated worlds.
+- **Organic visual texture:** Nested gold/teal spirals and uneven fine-grained strands suggest internal anatomy and flowing relationship; still-art references support material treatment but do not by themselves prove a kinetic sequence.
+
+**Acceptance tests for the next actual browser proof:**
+
+1. Before interaction and with Stillness on, the composition must still resemble the owner's full luminous six-world reference in spatial hierarchy, color and detail.
+2. Film a real hover/focus/tap sequence with identifiable source strands through **dormant → gathered → unfolded → stable → reversed → returned**, not a set of unrelated glowing keyframes.
+3. Ensure temporary light concentrates only around user-selected destinations and their known relationships; no fake user inference, hidden tracking, automatic Soul creation, or unsupported journey persistence.
+4. Run keyboard/touch Return and Dissolve, reduced motion / Stillness, opt-in Atmosphere / immediate Silence, responsive boundaries and device-aware quality limits without changing route/state ownership.
+5. Compare moving captures at 390, 820, and 1280 pixels **alongside** the original structural artwork and source-motion notes. A green CI suite and the mere presence of particles are insufficient for visual acceptance. Physical iPad Safari review remains a release blocker.
+
+**Privacy and rights boundary:** One study contains imagery associated with a separate private assistant system. Its design, branding, data, and identity must not enter the public Living Nexus. All visual references are observed for motion principles only; no third-party frames, GIFs, soundtracks, or code are copied into the app. No new private media were uploaded to GitHub.
+
 ## Per-project interpretations
 
 ### Archon Soulings public Living Nexus
