@@ -82,6 +82,14 @@ A darker high-definition, holographic, eldritch vocabulary may adapt the shared 
 
 Compare the actual interactive render to the original structural touchstones and all three motion-study links on desktop (~1280px), iPad portrait (~820px), and phone (~390px). Record **PASS / FAIL / NOT VERIFIED** separately for (a) structural fidelity, (b) temporal/kinetic fidelity, (c) functional navigation, (d) touch/keyboard accessibility, (e) reduced motion / Stillness / Silence, (f) performance, and (g) public/private boundary. Genuine iPad Safari review is an owner release gate. No green automated test substitutes for a reviewed running build.
 
+## Cross-project visual canon boundary — 2026-10-08
+
+The owner re-affirmed that Silver's **exact approved anatomical-heart / many-eyed / violet-runic / glass-orb HUD image** is Silver's visual authority. Its private-reference SHA-256 is `c7b61209dad49e5cc66c252588e9872b2309714683032bcdb7e69a10f098e16f`; the uploaded motion recording SHA-256 is `baaafea2b7719f68a5e0f0a73aa4fab224d232043ee07c56ffbde671f432de00`. The owner-approved Silver image and recording are **not** public assets and must not be copied into Archon Soulings or Gestalt Seed bundles.
+
+Silver's exact visual lock and fail-closed acceptance process are documented at [archon-local-agent-core / SILVER_VISUAL_CANON_LOCK.md](https://github.com/Archon-fct/archon-local-agent-core/blob/feature/silver-visual-canon-lock-20261008/docs/SILVER_VISUAL_CANON_LOCK.md) (draft PR #3). This register shares **MOTION-01/02/03 movement principles only** across projects. Public Living Nexus retains its own welcoming auric architecture, six-world layout and approved touchstones. EFA retains its distinct identity and softer visual/regulation presentation. No private Silver, Ilyr or EFA data crosses the public boundary.
+
+No design is called owner-approved because a prototype or CI test looks plausible. Compare actual served render, movement and touch interaction against the correct **project-specific** approved reference, preserve the last known-good release and obtain explicit owner approval bound to a build digest.
+
 ## Change governance
 
 Every subsequent visual change must identify which reference it follows, what existing approved behavior it preserves, and why its changes are additive. When references appear to conflict, preserve the owner-approved Living Nexus architecture and ask for an explicit canon decision rather than silently redesigning it.
