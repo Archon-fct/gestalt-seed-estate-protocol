@@ -28,6 +28,8 @@ jobs:
         run: node hud/prototype/test-constellation.mjs
       - name: Test isolated Nexus kinetic continuity study 04
         run: node hud/prototype/experiments/test-living-constellation-04.mjs
+      - name: Check shared pocket living material across all worlds
+        run: node tests/test-pocket-living-material.mjs
       - name: Check dimensional returns, portrait bounds and immediate Silence
         run: node tests/test-living-release-gates.mjs
       - name: Upload screenshots
