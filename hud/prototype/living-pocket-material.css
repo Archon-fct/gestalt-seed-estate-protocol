@@ -1,0 +1,10 @@
+/* Living Pocket Material 0.1 — additive procedural atmosphere.
+   Visual only, pointer inert; preserve existing layout and functional controls. */
+body{isolation:isolate}
+body>.living-pocket-material{position:fixed;inset:0;width:100vw;height:100vh;z-index:1;opacity:.92;pointer-events:none!important;user-select:none;mix-blend-mode:screen;contain:strict}
+body>main{z-index:2}
+body>header{z-index:20}
+body>.nexus-home{z-index:120}
+body.still>.living-pocket-material{opacity:.61}
+@media(max-width:700px){body>.living-pocket-material{opacity:.71}}
+@media(prefers-reduced-motion:reduce){body>.living-pocket-material{opacity:.62;transition:none!important}}
