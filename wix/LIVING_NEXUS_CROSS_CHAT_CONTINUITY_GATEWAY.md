@@ -7,6 +7,10 @@
 **Working PR:** [#11 — Prototype the public Project Constellation](https://github.com/Archon-fct/gestalt-seed-estate-protocol/pull/11), draft, target \`main\`.  
 **Working branch:** \`feature/public-project-constellation\`. Never treat this document's snapshot SHA as a permanent branch head.
 
+## Release 1.0 coordination — approved 2026-10-09
+
+The owner approved **complete production launch first, no additional major subsystems before launch**, and a staged 1.1/1.2 refinement plan. Read **[LIVING_NEXUS_RELEASE_1_0_SCOPE_LOCK_2026-10-09.md](./LIVING_NEXUS_RELEASE_1_0_SCOPE_LOCK_2026-10-09.md)** alongside this gateway and the procedural material canon. Release 1.0 is authorized but remains **not production-verified**. Use the actual existing Wix Editor site, preserve Bookings/Forms/SEO and rollback, and do not claim success from the isolated preview. A strict read-only, manually triggered production gate is now committed; it has **not yet run against a production Nexus installation**.
+
 ## Owner correction — living material, not an animated photograph (2026-10-08)
 
 **Read [LIVING_NEXUS_PROCEDURAL_MATERIAL_CANON.md](./LIVING_NEXUS_PROCEDURAL_MATERIAL_CANON.md) before implementing or deploying any further Nexus renderer.** The exact approved six-world image is the **design blueprint** for the spatial hierarchy, luminous anatomy and aesthetic quality. It is **not** intended to remain as a raster image being overlaid, tilted, refracted or fisheye-warped. The actual six-world environment must be independently rendered, living, interactive material with genuine responsive volumetric depth and reversible transitions. This explicitly supersedes older statements that the exact image must be the live art backplate; it does not override the six-world functional architecture, public/private boundaries or owner acceptance gate.
