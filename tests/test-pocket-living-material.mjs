@@ -14,7 +14,7 @@ try{
    const page=await browser.newPage({viewport});
    const crashes=[];page.on('pageerror',err=>crashes.push(String(err)));
    await page.goto(pathToFileURL(path.join(root,name+'.html')).href,{waitUntil:'load'});
-   await page.waitForFunction(()=>!!document.querySelector('#livingPocketMaterial')?.dataset.motion,{timeout:5000});
+   await page.waitForFunction(()=>Number(document.querySelector('#livingPocketMaterial')?.dataset.frames||0)>=1,null,{timeout:5000});
    const initial=await page.evaluate(()=>{
     const canvas=document.querySelector('#livingPocketMaterial');
     return {present:!!canvas,aria:canvas?.getAttribute('aria-hidden'),role:canvas?.getAttribute('role'),
@@ -28,11 +28,13 @@ try{
    if(initial.overflow)errors.push(name+' '+viewport.width+' horizontal overflow');
    const before=initial.frames;
    await page.locator('#still').click();
+   await page.waitForFunction(()=>document.querySelector('#livingPocketMaterial')?.dataset.motion==='paused',null,{timeout:3000});
    const after=await page.evaluate(()=>({still:document.body.classList.contains('still'),motion:document.querySelector('#livingPocketMaterial')?.dataset.motion,
      frames:Number(document.querySelector('#livingPocketMaterial')?.dataset.frames||0)}));
    if(!after.still||after.motion!=='paused'||after.frames<before)
      errors.push(name+' '+viewport.width+' Stillness: '+JSON.stringify(after));
    await page.locator('#still').click();
+   await page.waitForFunction(()=>document.querySelector('#livingPocketMaterial')?.dataset.motion==='running',null,{timeout:3000});
    const resumed=await page.locator('#livingPocketMaterial').getAttribute('data-motion');
    if(resumed!=='running')errors.push(name+' '+viewport.width+' resume failed: '+resumed);
    if(crashes.length)errors.push(name+' '+viewport.width+' JS: '+crashes.join(' | '));
@@ -40,7 +42,7 @@ try{
   }
   const reduced=await browser.newPage({viewport:{width:390,height:844},reducedMotion:'reduce'});
   await reduced.goto(pathToFileURL(path.join(root,name+'.html')).href,{waitUntil:'load'});
-  await reduced.waitForFunction(()=>!!document.querySelector('#livingPocketMaterial')?.dataset.motion,{timeout:5000});
+  await reduced.waitForFunction(()=>!!document.querySelector('#livingPocketMaterial')?.dataset.motion,null,{timeout:5000});
   const paused=await reduced.locator('#livingPocketMaterial').getAttribute('data-motion');
   if(paused!=='paused')errors.push(name+' reduced motion failed: '+paused);
   checks++;await reduced.close();
