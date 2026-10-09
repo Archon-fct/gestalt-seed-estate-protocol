@@ -4,6 +4,9 @@
 **Owner authorization:** "Complete the authorized production launch" of the hosted **procedural v0.10** and improve the other pocket pages.
 **Actual production state:** **NOT LAUNCHED BY THIS HANDOFF. DO NOT CLAIM SUCCESS.** Existing public Wix Editor site and services are unchanged by this work.
 
+## Authenticated Work preflight update — 2026-10-09
+Authenticated Wix Editor access is now confirmed. [Read the preflight receipt](./LIVING_NEXUS_EDITOR_PREFLIGHT_2026-10-09.md) before attempting installation: revision 387 is identified and starred, but the standalone v0.10 source still needs Wix packaging, production route mapping, existing journal/consent integration, immediate Silence, and mobile-gate reconciliation. **Production remains unchanged and unpublished by this release work.** The earlier login blocker below is historical; do not send the owner through sign-in again while this authenticated session remains available.
+
 ## Read first — binding requirements
 - [Cross-chat continuity gateway](./LIVING_NEXUS_CROSS_CHAT_CONTINUITY_GATEWAY.md)
 - [Procedural living material canon](./LIVING_NEXUS_PROCEDURAL_MATERIAL_CANON.md)
@@ -32,7 +35,7 @@ The **Sessions/Inner Sanctum** pocket page was corrected to link directly to bot
 ## Actual Wix Editor deployment blocker (not a code failure)
 The connected Wix REST management interfaces can read/update business entities and publish already-saved site changes. They do **not** provide a verified API contract here for editing the existing Wix **Editor** homepage composition. Calling Publish Site without saving a compatible page change would not install Living Nexus. A custom code embed into the global site header/footer, a forced full-screen cross-origin iframe, domain redirection, or DNS migration could break accessibility, SEO, forms or Bookings and is **not an acceptable workaround**.
 
-The available external browser session was **not signed into the owner's Wix management account**; it displayed Wix sign-in. Owner-authorized ChatGPT Work/Cloud Browser (signed into Wix) is required to operate the existing Editor UI. Do not solicit, log or expose credentials.
+At the original handoff, the external browser was not signed into Wix. **Resolved during authenticated Work preflight on 2026-10-09:** the dashboard and production Editor both opened. The remaining integration gaps and rollback limits are recorded in the preflight receipt above. Do not solicit, log or expose credentials.
 
 ## Execute in the existing Editor via signed-in Work mode — no new site
 1. **Record rollback:** Inspect current Wix Site History and capture a known-good published Editor revision, nav/SEO configuration, current homepage screenshot and active Forms/Bookings paths. Do not overwrite prior work until recovery is verified.
