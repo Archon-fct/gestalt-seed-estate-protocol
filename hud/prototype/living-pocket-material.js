@@ -10,7 +10,7 @@ const paths={
   'living-archive.html':'archive','astral-journal.html':'journal',
   'living-threshold.html':'threshold'
 };
-const page=window.__livingPocketTestPath||location.pathname.split('/').pop();const kind=paths[page];if(!kind)return;
+const page=location.pathname.split('/').pop();const kind=paths[page];if(!kind)return;
 const palettes={
  aura:['#79ebd1','#c5fff0','#80b7f7','#f9daa6'],
  tongue:['#efd9a0','#92d7e5','#ad9df1','#eff6d9'],
