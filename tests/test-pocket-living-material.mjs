@@ -37,6 +37,18 @@ try{
    await page.waitForFunction(()=>document.querySelector('#livingPocketMaterial')?.dataset.motion==='running',null,{timeout:3000});
    const resumed=await page.locator('#livingPocketMaterial').getAttribute('data-motion');
    if(resumed!=='running')errors.push(name+' '+viewport.width+' resume failed: '+resumed);
+   if(name==='inner-sanctum'){
+    await page.locator('[data-path="clarity"]').click();
+    if(!(await page.locator('#book').getAttribute('href')).endsWith('/booking-calendar/30-minutes-1'))
+      errors.push('sanctum '+viewport.width+' clarity: expected verified 30-minute booking link');
+    if(!(await page.locator('#bookAlt').getAttribute('href')).endsWith('/booking-calendar/60-minutes-1'))
+      errors.push('sanctum '+viewport.width+' clarity: alternative 60-minute link missing');
+    await page.locator('#close').click();
+    await page.locator('[data-path="deep"]').click();
+    if(!(await page.locator('#book').getAttribute('href')).endsWith('/booking-calendar/60-minutes-1'))
+      errors.push('sanctum '+viewport.width+' deep work: expected verified 60-minute booking link');
+    await page.locator('#close').click();
+   }
    if(crashes.length)errors.push(name+' '+viewport.width+' JS: '+crashes.join(' | '));
    checks+=8;await page.close();
   }
