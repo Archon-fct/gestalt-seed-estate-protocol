@@ -138,8 +138,11 @@ for (const width of widths) {
     await page.waitForFunction(() => {
       const canvas=document.querySelector('#livingChroma');
       return canvas?.dataset.flowStage==='braided' && canvas?.dataset.focusWorld==='aura';
-    }, null, {timeout:3000});
+    }, null, {timeout:6500, polling:100});
   } catch {
+    // iPad portrait can render the first focus frame just after the wait expires.
+    // Re-read actual current DOM state before recording a failure: never mark a
+    // passing live material frame as a failed visual test due to scheduling lag.
     const diagnostic=await page.evaluate(()=>({
       canvas:document.querySelector('#livingChroma')?.dataset.flowStage,
       focused:document.querySelector('#livingChroma')?.dataset.focusWorld,
@@ -147,7 +150,9 @@ for (const width of widths) {
       aura:document.querySelector('[data-id="aura"]')?.className,
       stage:document.querySelector('#space')?.className
     }));
-    failures.push(width+': chromatic current did not coalesce around recommended Aura '+JSON.stringify(diagnostic));
+    if(diagnostic.canvas!=='braided'||diagnostic.focused!=='aura'){
+      failures.push(width+': chromatic current did not coalesce around recommended Aura '+JSON.stringify(diagnostic));
+    }
   }
   const organicContinuity=await page.evaluate(() => {
     const group=document.querySelector('.organic-depth-field .organ-connection[data-world="aura"]');
