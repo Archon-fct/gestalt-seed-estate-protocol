@@ -23,7 +23,7 @@ https://headless-mfewrcffiie-archonsoulings-140e.wix-site-host.com/experiments/l
 ## Evidence and limits
 - Local in-memory Chromium at **390 / 820 / 1280px**: 7 clickable nodes, booking links, Guide Me, Living Thread, Dissolve, Stillness, no overflow, no page JS errors, no network requests — **PASS**. OS reduced motion + Gestalt selection — **PASS**.
 - Unedited local screenshots and short motion sequence in the conversation review package.
-- Hosted CI workflow `.github/workflows/living-nexus-procedural-v10.yml`, with actual served-browser screenshots. **Check its latest conclusion before claiming hosted PASS.**
+- Hosted CI workflow `.github/workflows/living-nexus-procedural-v10.yml`: **PASS** for source revision `4be397ab36f1a5dac442f754ef43629d93ad6802`, [GitHub run #37875299500](https://github.com/Archon-fct/gestalt-seed-estate-protocol/actions/runs/37875299500). It verified actual Wix-served rendering, world controls, booking links, Living Thread, Stillness, reduced motion, and produced hosted screenshots (`nexus-v10-procedural-hosted-captures`). This remains a technical test, **not** visual approval.
 - Native iPad Safari performance, GPU/battery, eye-tracking calibration, end-to-end checkout, visual quality comparison, true 3D volumetrics and cross-page same-material transitions: **NOT VERIFIED**.
 - **Visual gap:** This is genuine procedural geometry, but the current screenshot remains less rich and volumetric than the approved owner reference. Do **not** call it the final approved design or promote it to the main Archon Soulings homepage. A technical test cannot overrule the visual hold.
 
