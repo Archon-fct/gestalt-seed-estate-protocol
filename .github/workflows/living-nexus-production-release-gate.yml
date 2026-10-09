@@ -1,0 +1,40 @@
+name: Living Nexus — Production Release Gate
+# Strictly read-only. Does not publish, submit forms, charge money or record user data.
+on:
+  workflow_dispatch:
+    inputs:
+      production_nexus_url:
+        description: "Verified production Living Nexus URL on www.archonsoulings.com (after Editor installation)"
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  verify:
+    name: Inspect public release without mutations
+    runs-on: ubuntu-latest
+    timeout-minutes: 23
+    env:
+      NEXUS_RELEASE_URL: ${{ inputs.production_nexus_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install browser verification dependencies
+        run: |
+          npm init -y >/dev/null
+          npm install --no-audit --no-fund --save-dev playwright >/dev/null
+          npx playwright install --with-deps chromium webkit >/dev/null
+      - name: Verify actual production URL and business routes
+        run: node tests/test-living-nexus-production-gate.mjs
+      - name: Upload production evidence (public pages only)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: living-nexus-production-release-verification
+          path: hud/prototype/test-artifacts/production-release/
+          retention-days: 14
+          if-no-files-found: ignore

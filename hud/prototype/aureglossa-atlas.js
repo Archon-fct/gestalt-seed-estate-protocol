@@ -1,0 +1,37 @@
+/* Aureglossa Living Atlas v0.2: audited public teaching layer. No invented glyphs, IPA or words. */
+(()=>{
+'use strict';
+const dialog=document.querySelector('#aureglossaAtlas'),opener=document.querySelector('#openAtlas');
+if(!dialog||!opener)return;
+const panel=dialog.querySelector('.atlas-body'),tabs=[...dialog.querySelectorAll('[data-atlas-tab]')];
+const live=dialog.querySelector('.atlas-live');
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const item=(a,b)=>'<div class="atlas-entry"><strong>'+esc(a)+'</strong><span>'+esc(b)+'</span></div>';
+const pronouns=[['na','I / me'],['tha','you (singular)'],['el','animate third-person singular'],['it','non-animate / abstraction'],['nar','we (inclusive)'],['nam','we (exclusive)'],['thar','you (plural)'],['elar','they (plural)'],['esh','self / reflexive']];
+const groups=[
+['Aspect','sha · beginning','dur · ongoing','et · completed','ir · prospective','re · repeated'],
+['Relation','ar · of / possession','ta · toward','va · from','en · within','ath · through','ka · with','or · before','ul · beneath','sur · above'],
+['Logic','ae · and','au · or','dar · but','thal · because','vara · therefore','nu · negation','ra · yes/no question'],
+['Ritual','o · invocation','ha · emphasis','sei · let it be','vek · emphatic command','amen · closure']
+];
+const sections={
+origins:{title:'A language with memory',lead:'Aureglossa is a constructed ceremonial and creative language with a living productive layer and preserved historical editions.',html:'<h3>Five source-language strata</h3><p><b>Vedic / ancient Sanskrit</b> — breath, vitality, ritual sound. <b>Classical Latin</b> — office, oath, formal structure. <b>Classical Ancient Greek</b> — philosophy, gnosis, cosmology. <b>Sumerian</b> — temple and primordial register. <b>Gothic</b> — threshold, binding and warding.</p><p>These are design influences, not verified etymologies for every coined word. New historical derivations require citations.</p><h3>Two language layers</h3><p><b>Current canonical draft:</b> productive analytical grammar. <b>Legacy v0.3:</b> historical experiments and attested ritual uses; preserved, not overwritten.</p><p class="atlas-caution">The recovered master specifies a 32-letter alphabet. Its exact sound inventory and glyph assets have not been imported into this public page. No invented pronunciation or pseudo-writing is displayed.</p>'},
+grammar:{title:'Grammar as relationship',lead:'The current productive draft organizes meaning by syntax, aspect, relation and ritual intention.',html:'<div class="atlas-flow"><span>Subject</span><span>Aspect</span><span>Verb</span><span>Object</span><span>Relation</span></div><h3>Productive rules</h3><p>Verbs do not inflect for person. Unmarked declaratives are timeless or general unless context supplies time. Identity statements may omit a copula. Possession is <b>possessed + ar + possessor</b>; negation precedes what is negated.</p><p>A bare verb can serve as a neutral instruction in imperative context. <b>sei</b> is an invitation or blessing, <b>vek</b> marks an emphatic command, and <b>o</b> calls or invokes.</p><h3>Explore the pattern</h3><div class="atlas-pattern">na <span>dur</span> [audited verb]</div><p>This is a structural demonstration of subject + ongoing aspect + verb slot, not an attested sentence or newly invented translation.</p><h3>Do not overwrite history</h3><p>Legacy <b>na</b> could indicate possession; current <b>na</b> means I/me and possession uses <b>ar</b>. Legacy <b>et</b> meant “and”; current <b>et</b> marks completed aspect, and current “and” is <b>ae</b>.</p>'},
+lexicon:{title:'Words with provenance',lead:'The following nine pronouns and twenty-six particles are recorded in the recovered current productive layer.',html:'<h3>Nine pronouns</h3><div class="atlas-entry-grid">'+pronouns.map(x=>item(x[0],x[1])).join('')+'</div><h3>Twenty-six particles</h3>'+groups.map(g=>'<section class="atlas-family"><h4>'+esc(g[0])+'</h4><div class="atlas-chips">'+g.slice(1).map(x=>'<span>'+esc(x)+'</span>').join('')+'</div></section>').join('')+'<h3>Mantle morphology</h3><p><b>-thra</b> means one who bears, embodies or is entrusted with a mantle; root stress is primary. The roots <b>kalu-</b>, <b>orak-</b>, <b>vasan-</b> are bound roots, not independent words.</p><p><b>Kaluthra:</b> Steward of the Gestalt. <b>Orakthra:</b> Thaumaturgic Co-Architect. <b>Vasanthra:</b> She who brings spring to the depths. These roles coexist with older dictionary glosses.</p>'},
+motto:{title:'THARAVEL · KOSMATHRA',lead:'An adopted two-word ritual motto whose English project gloss is poetic, not a literal word-by-word sentence.',html:'<div class="atlas-motto">THARAVEL · KOSMATHRA<small>Go further · Live passionately · Build the soul of the cosmos</small></div><div class="atlas-entry-grid">'+item('THARAVEL','Adopted whole verb/imperative-capable form. Etymology unresolved; do not split into thara + vel.')+item('KOSMATHRA','Productive mantle -thra; kosma- Greek-inspired, exact source citation pending.')+'</div><p><b>-thra does not literally mean “soul.”</b> Earlier thara = center and vel = steady are protected legacy meanings. The English motto is a deliberate interpretive expansion.</p><p>No authoritative IPA can be provided until the original 32-letter phonetic inventory is available.</p>'},
+archive:{title:'The archive remains alive',lead:'Attested ritual texts retain their exact wording even when their lexical meanings remain uncertain.',html:'<h3>Sung Aureglossa Chant</h3><p>The ten-line preserved chant opens <b>“Asha Veyr Kalorum.”</b> and closes <b>“THORA VEY AKARA NETH.”</b> Its recovered master leaves <b>24 forms unresolved</b>. This atlas does not invent their translations.</p><h3>Ritual and musical editions</h3><p>Language in a daily rite, an older chant, or a musical arrangement can belong to different historical layers. A meaning in one edition cannot silently resolve a word in another.</p><h3>Audit pathway for new words</h3><p>Record the source language, attested form, citation, transformation, Aureglossa meaning, pronunciation tied to the original alphabet, grammatical class, examples and canon status. Check both the current layer and the legacy 827-entry lexicon.</p><p class="atlas-caution">This page deliberately omits unsupported glyphs, IPA, etymologies, and unverified ritual translations.</p>'}
+};
+function select(key,focus){
+ const d=sections[key];if(!d)return;
+ tabs.forEach(t=>{const a=t.dataset.atlasTab===key;t.setAttribute('aria-selected',String(a));t.tabIndex=a?0:-1;});
+ panel.innerHTML='<div class="atlas-eyebrow">THE LIVING TONGUE · '+esc(key.toUpperCase())+'</div><h2>'+d.title+'</h2><p class="atlas-lead">'+d.lead+'</p>'+d.html;
+ panel.scrollTop=0;live.textContent=d.title;if(focus)tabs.find(t=>t.dataset.atlasTab===key)?.focus();
+}
+opener.addEventListener('click',()=>{select('origins',false);dialog.showModal();});
+dialog.querySelector('.atlas-close').addEventListener('click',()=>dialog.close());
+dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close();});
+tabs.forEach((tab,i)=>{
+ tab.addEventListener('click',()=>select(tab.dataset.atlasTab,false));
+ tab.addEventListener('keydown',e=>{if(!['ArrowRight','ArrowLeft','Home','End'].includes(e.key))return;e.preventDefault();const n=e.key==='Home'?0:e.key==='End'?tabs.length-1:(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;select(tabs[n].dataset.atlasTab,true);});
+});
+})();

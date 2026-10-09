@@ -1,0 +1,12 @@
+{
+  "version":"0.1",
+  "policy":"public-only",
+  "objects":{
+    "tharavel-kosmathra":{"kind":"language","status":"ADOPTED_ETYM_PARTLY_PROVISIONAL","source":"aureglossa/THARAVEL_KOSMATHRA_AUDIT_2026-10-06.md"},
+    "aura-dynamics":{"kind":"teaching","status":"PROJECT_PUBLIC","source":"hud/prototype/aura-dynamics.html"},
+    "gestalt-protocol":{"kind":"governance","status":"CANON","source":"public Gestalt protocol"},
+    "living-threshold":{"kind":"interface","status":"PROTOTYPE","source":"hud/prototype/living-threshold.html"},
+    "living-archive":{"kind":"interface","status":"PROTOTYPE","source":"hud/prototype/living-archive.html"}
+  },
+  "relationshipTypes":["INSPIRED_BY","RESPONDS_TO","EXTENDS","QUESTIONS","USES_CANON","COLLABORATES_WITH","PUBLISHES_TO"]
+}

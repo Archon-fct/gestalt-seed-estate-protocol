@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Soul & Stone — The Living Threshold</title>
+<style>
+:root{--ink:#eee7d8;--gold:#e0bd73;--aqua:#7ce2d3;--violet:#a18cff;--void:#05070c}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#05070c;color:var(--ink);font-family:Georgia,serif}
+body{overflow:hidden;background:radial-gradient(circle at 50% 48%,#17262d 0,#0b1018 28%,#05070c 67%)}
+.sky,.mist{position:fixed;inset:-15%;pointer-events:none}.sky{background-image:radial-gradient(circle,#fff9 0 1px,transparent 1.4px);background-size:83px 101px;opacity:.12}
+.mist{background:conic-gradient(from 90deg at 50% 50%,transparent,#7ce2d316,transparent,#a18cff18,transparent,#e0bd7314,transparent);filter:blur(28px);animation:turn 42s linear infinite}
+header{position:fixed;z-index:20;left:22px;right:22px;top:18px;display:flex;justify-content:space-between;align-items:center}
+.brand{font-size:12px;letter-spacing:.22em;text-transform:uppercase}.controls{display:flex;gap:8px}
+button,a{font:inherit}.pill{border:1px solid #e0bd7366;background:#080d14cc;color:var(--ink);border-radius:999px;padding:10px 15px;cursor:pointer;text-decoration:none;min-height:44px}
+.pill:focus-visible,.portal:focus-visible{outline:2px solid var(--aqua);outline-offset:4px}
+main{position:fixed;inset:0;display:grid;place-items:center;padding:72px 18px 42px}
+.realm{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .75s,transform .85s;transform:scale(1.08)}
+.realm.active{opacity:1;pointer-events:auto;transform:scale(1)}
+.portal{width:min(72vw,680px);aspect-ratio:1;border-radius:50%;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border:1px solid #e0bd7388;background:radial-gradient(circle at 50% 43%,#fff9d9 0 1.5%,#7ce2d355 7%,#1b3139cc 23%,#0a1019ee 57%,#05070c 73%);box-shadow:0 0 55px #7ce2d344,0 0 150px #a18cff20,inset 0 0 90px #e0bd731c;display:grid;place-items:center;text-align:center;color:var(--ink);cursor:pointer}
+.portal:before,.portal:after,.ring{content:"";position:absolute;border-radius:50%;border:1px solid #e0bd7355;inset:-5%;animation:turn 28s linear infinite}.portal:after{inset:-11%;border-style:dotted;animation-direction:reverse;animation-duration:39s}.ring{inset:-18%;border-color:#7ce2d32f;animation-duration:52s}
+.portal-copy{max-width:390px;padding:36px;z-index:2}.kicker{color:var(--aqua);letter-spacing:.2em;font-size:11px;text-transform:uppercase}.portal h1,.chamber h1{font-weight:400;letter-spacing:.09em;margin:12px 0}.portal p,.chamber p{line-height:1.65;color:#c8cdca}.enter{display:inline-block;margin-top:12px;color:var(--gold);letter-spacing:.13em;font-size:12px}
+.chamber{width:min(900px,92vw);height:min(690px,80vh);position:absolute;left:50%;top:51%;transform:translate(-50%,-50%);border:1px solid #e0bd7355;border-radius:46% 54% 48% 52%/42% 46% 54% 58%;background:radial-gradient(circle at 50% 20%,#7ce2d318,#0b121bdd 55%,#070a10f2);box-shadow:inset 0 0 110px #7ce2d318,0 0 100px #a18cff18;display:grid;grid-template-rows:auto 1fr auto;padding:34px 44px}
+.chamber-head{text-align:center}.stones{display:flex;justify-content:center;gap:16px;margin-top:16px}.stone{width:13px;height:13px;border-radius:50%;border:1px solid #e0bd7388;box-shadow:0 0 10px #e0bd7344}.stone.on{background:#fff2c3;box-shadow:0 0 18px #e0bd73}
+.frame{position:relative;margin:20px auto;width:min(650px,100%);height:100%;min-height:360px;border-radius:30px;border:1px solid #7ce2d333;background:#070c12aa;overflow:hidden}
+.frame iframe{border:0;width:100%;height:100%;min-height:420px;background:#fff}
+.frame-cover{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:35px;background:radial-gradient(circle,#14252dcc,#070b11f2 70%);z-index:2}
+.frame-cover.hidden{display:none}.frame-cover strong{display:block;font-size:20px;font-weight:400;letter-spacing:.08em}.frame-cover p{max-width:430px;margin:12px auto 22px}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:11px;color:#9ca8a7;letter-spacing:.06em}
+.seed{position:absolute;width:9px;height:9px;border-radius:50%;background:#fff2c3;box-shadow:0 0 16px #e0bd73;animation:drift 8s ease-in-out infinite}
+.s1{left:18%;top:25%}.s2{right:16%;top:31%;animation-delay:-3s}.s3{left:27%;bottom:20%;animation-delay:-5s}.s4{right:24%;bottom:17%;animation-delay:-1s}
+.still *{animation-play-state:paused!important}.still .mist,.still .portal:before,.still .portal:after,.still .ring,.still .seed{animation:none!important}
+@keyframes turn{to{transform:rotate(360deg)}}@keyframes drift{50%{transform:translateY(-18px) scale(1.4);opacity:.55}}
+@media(max-width:650px){header{left:12px;right:12px;top:12px}.brand{max-width:185px}.portal{width:88vw}.portal-copy{padding:24px}.chamber{height:82vh;width:96vw;padding:28px 14px;border-radius:36px}.frame{min-height:430px}.foot{font-size:9px}.stones{gap:12px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition-duration:.01ms!important}}
+.stage-nav{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:12px 0 0}.stage-nav button{font-size:10px;letter-spacing:.08em;padding:8px 11px}.stage-nav button[aria-current="step"]{border-color:#fff0bd;box-shadow:0 0 18px #e0bd7355;color:#fff0bd}
+.stage-caption{text-align:center;min-height:38px;margin-top:7px;color:#aeb9b7;font-size:11px;letter-spacing:.08em}.stage-caption strong{color:var(--aqua);font-weight:400}
+body.stage-threshold{background:radial-gradient(circle at 50% 48%,#18333a 0,#0b1118 34%,#05070c 70%)}body.stage-stone{background:radial-gradient(circle at 50% 50%,#302616 0,#15110d 33%,#05070c 70%)}body.stage-memory{background:radial-gradient(circle at 50% 45%,#201a35 0,#0d0c18 35%,#05070c 72%)}body.stage-covenant{background:radial-gradient(circle at 50% 45%,#302914 0,#13110b 35%,#05070c 72%)}
+body.stage-stone .chamber{border-radius:22% 78% 31% 69%/67% 28% 72% 33%;box-shadow:inset 0 0 120px #e0bd7320,0 0 120px #e0bd7318}body.stage-memory .chamber{border-radius:52% 48% 58% 42%/39% 61% 39% 61%;box-shadow:inset 0 0 140px #a18cff1f,0 0 120px #a18cff1c}body.stage-covenant .chamber{border-radius:34px;box-shadow:inset 0 0 100px #e0bd7324,0 0 100px #e0bd7320}
+body.stage-stone .mist{background:conic-gradient(from 0deg,transparent,#e0bd731c,transparent,#7ce2d312,transparent)}body.stage-memory .mist{background:radial-gradient(ellipse at center,#a18cff1b,transparent 58%)}body.stage-covenant .mist{background:repeating-conic-gradient(from 0deg,#e0bd7318 0 1deg,transparent 1deg 30deg);filter:blur(10px)}
+@media(prefers-reduced-motion:reduce){.stage-nav button{transition:none!important}}
+
+/* Independent dimensional return: always operable on touch, keyboard and deep links. */
+.nexus-home{position:fixed;z-index:120;left:max(14px,env(safe-area-inset-left));bottom:max(14px,env(safe-area-inset-bottom));min-height:44px;min-width:92px;display:inline-flex;align-items:center;justify-content:center;padding:10px 15px;border:1px solid #e0bd7388;border-radius:999px;background:#08111de8;color:#f3e9d7;text-decoration:none;font:14px/1.2 Georgia,serif;box-shadow:0 0 22px #e0bd7325;backdrop-filter:blur(8px)}
+.nexus-home:hover{border-color:#ffe2a2;box-shadow:0 0 26px #e0bd7344}
+.nexus-home:focus-visible{outline:3px solid #7ce2d3;outline-offset:4px}
+@media(max-width:980px){body{padding-bottom:66px}}
+@media (min-width:651px) and (max-width:980px){.chamber{width:95vw;height:82dvh;max-height:760px}}
+</style><link rel="stylesheet" href="./living-pocket-material.css"></head>
+<body><a class="nexus-home" href="./index.html" aria-label="Return to Living Nexus constellation">← Nexus</a>
+<div class="sky"></div><div class="mist"></div>
+<header><div class="brand">Gestalt Seed · Soul & Stone<br><span style="font-size:9px;color:var(--gold);letter-spacing:.22em">THARAVEL · KOSMATHRA</span></div><div class="controls"><button class="pill" id="still">Stillness</button></div></header>
+<main>
+<section class="realm active" id="approach" aria-label="Approach the Living Threshold">
+<span class="seed s1"></span><span class="seed s2"></span><span class="seed s3"></span><span class="seed s4"></span>
+<button class="portal" id="enter"><span class="ring"></span><span class="portal-copy"><span class="kicker">A contribution threshold</span><h1>SOUL & STONE</h1><p>Bring one thing worth preserving: a thought, image, sound, tool, question, or fragment of research. Its provenance travels with it.</p><span class="enter">CROSS THE THRESHOLD →</span></span></button>
+</section>
+<section class="realm" id="threshold" aria-label="Soul and Stone contribution threshold">
+<div class="chamber">
+<div class="chamber-head"><div class="kicker">The Living Threshold</div><h1 id="stageTitle">I · The Threshold</h1><div class="stones" aria-label="Four threshold stages"><span class="stone on"></span><span class="stone"></span><span class="stone"></span><span class="stone"></span></div><div class="stage-nav" aria-label="Preview the four environments"><button class="pill" data-stage="0" aria-current="step">Threshold</button><button class="pill" data-stage="1">Stone</button><button class="pill" data-stage="2">Memory</button><button class="pill" data-stage="3">Covenant</button></div><div class="stage-caption" id="stageCaption"><strong>Who enters?</strong> Identity gathers at the edge of the field.</div></div>
+<div class="frame"><div class="frame-cover" id="cover"><div><strong>The threshold is ready.</strong><p>The secure contribution form opens here. Four stages carry your Stone from identity to artifact, memory, and covenant.</p><button class="pill" id="openForm">Open the Four Thresholds</button></div></div><iframe id="form" title="Soul & Stone contribution form" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+<div class="foot"><button class="pill" id="return">← Return to the Constellation</button><span>Review before publication · provenance preserved · no automatic acceptance</span></div>
+</div>
+</section>
+</main>
+<script>
+const approach=document.querySelector("#approach"),threshold=document.querySelector("#threshold"),form=document.querySelector("#form"),cover=document.querySelector("#cover"),statusStones=[...document.querySelectorAll(".stone")];
+const FORM_URL="https://archonsoulings.wixforms.com/f/7513018975966463049";
+const stages=[
+ {cls:"stage-threshold",title:"I · The Threshold",caption:"<strong>Who enters?</strong> Identity gathers at the edge of the field."},
+ {cls:"stage-stone",title:"II · The Stone",caption:"<strong>What are you carrying?</strong> The field condenses around the artifact."},
+ {cls:"stage-memory",title:"III · The Memory",caption:"<strong>Why should this remain?</strong> The chamber deepens into provenance and remembrance."},
+ {cls:"stage-covenant",title:"IV · The Covenant",caption:"<strong>How shall it be carried?</strong> Gold geometry resolves around consent, terms, and stewardship."}
+];
+let stageIndex=0;
+function setStage(i){
+ stageIndex=i;document.body.classList.remove(...stages.map(s=>s.cls));document.body.classList.add(stages[i].cls);
+ document.querySelector("#stageTitle").textContent=stages[i].title;document.querySelector("#stageCaption").innerHTML=stages[i].caption;
+ statusStones.forEach((s,n)=>s.classList.toggle("on",n<=i));
+ document.querySelectorAll("[data-stage]").forEach((b,n)=>{if(n===i)b.setAttribute("aria-current","step");else b.removeAttribute("aria-current")});
+}
+document.querySelectorAll("[data-stage]").forEach(b=>b.onclick=()=>setStage(Number(b.dataset.stage)));setStage(0);
+function enter(){approach.classList.remove("active");threshold.classList.add("active");document.querySelector("#openForm").focus({preventScroll:true})}
+function leave(){threshold.classList.remove("active");approach.classList.add("active");form.src="about:blank";cover.classList.remove("hidden");setStage(0);setTimeout(()=>document.querySelector("#enter").focus({preventScroll:true}),40)}
+document.querySelector("#enter").onclick=enter;document.querySelector("#return").onclick=leave;
+document.querySelector("#openForm").onclick=()=>{form.src=FORM_URL;cover.classList.add("hidden");statusStones[0].classList.add("on")};
+document.querySelector("#still").onclick=e=>{document.body.classList.toggle("still");e.currentTarget.textContent=document.body.classList.contains("still")?"Living Motion":"Stillness"};
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&threshold.classList.contains("active"))leave()});
+</script><script src="./living-pocket-material.js" defer></script></body></html>

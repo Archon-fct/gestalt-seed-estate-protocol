@@ -1,0 +1,688 @@
+/* Living Nexus — organic depth / auric membranes v0.2
+   Decorative only. No hit testing, state ownership, audio, or storage.
+   Source of truth: wix/LIVING_HUD_BASE_SPECIFICATION.md and approved touchstones.
+*/
+#space { isolation:isolate; }
+#space>.organic-depth-field {
+  position:absolute; inset:0; width:100%; height:100%; z-index:1;
+  overflow:hidden; pointer-events:none!important; user-select:none;
+  mix-blend-mode:screen; opacity:.97;
+}
+.organic-depth-field *, .organic-depth-field g, .organic-depth-field path {
+  pointer-events:none!important;
+}
+.organic-depth-field .organ-fog {
+  fill:none; stroke-width:17; opacity:.22; filter:url(#organSoftGlow);
+}
+.organic-depth-field .organ-fiber {
+  fill:none; stroke-width:1.55; stroke-linecap:round;
+  opacity:.55; filter:drop-shadow(0 0 4px rgba(238,225,177,.36));
+}
+.organic-depth-field .organ-neighbor { opacity:.22; stroke-width:1.05; }
+.organic-depth-field .organ-flow {
+  fill:none; stroke-width:2.2; stroke-dasharray:1 11 34 26;
+  stroke-linecap:round; opacity:.28;
+  animation:organTravel 22s linear infinite;
+}
+.organic-depth-field .organ-cell .organ-veil {
+  stroke-width:1; fill-opacity:.47; stroke-opacity:.25;
+  filter:drop-shadow(0 0 13px rgba(127,224,209,.08));
+}
+.organic-depth-field .organ-cell .organ-veil.outer {
+  fill-opacity:.23; stroke-opacity:.22;
+  animation:organEbb 11s ease-in-out infinite alternate;
+}
+.organic-depth-field .organ-cell .organ-veil.inner {
+  fill-opacity:.63; stroke-opacity:.46;
+  animation:organEbb 9s ease-in-out infinite alternate-reverse;
+}
+.organic-depth-field .organ-cell .organ-caustic {
+  fill:none; stroke-width:1.5; stroke-linecap:round;
+  stroke-dasharray:5 21 70 65; stroke-opacity:.65;
+  filter:drop-shadow(0 0 5px rgba(255,236,188,.36));
+  animation:organTravel 19s linear infinite reverse;
+}
+.organic-depth-field .organ-cell:nth-child(2n) .organ-veil { animation-delay:-3.7s; }
+.organic-depth-field .organ-cell:nth-child(3n) .organ-caustic { animation-delay:-8s; }
+.organic-depth-field .organ-core-membrane {
+  stroke-width:1.1; opacity:.69; fill-opacity:.15;
+  filter:drop-shadow(0 0 12px rgba(255,227,171,.12));
+}
+.organic-depth-field .organ-core-membrane.outer {
+  opacity:.31; fill-opacity:.08;
+  animation:organEbb 14s ease-in-out infinite alternate;
+}
+.organic-depth-field .organ-core-membrane.middle {
+  opacity:.53;
+  animation:organEbb 9s ease-in-out infinite alternate-reverse;
+}
+.organic-depth-field .organ-core-membrane.inner {
+  opacity:.8;
+  animation:organEbb 7.5s ease-in-out infinite alternate;
+}
+.organic-depth-field .organ-core-light {
+  fill:none; stroke-width:1.35; opacity:.45;
+  stroke-dasharray:2 16 43 30; animation:organTravel 23s linear infinite;
+}
+.organic-depth-field .organ-connection.is-responsive .organ-fiber,
+.organic-depth-field .organ-connection.is-responsive .organ-flow,
+.organic-depth-field .organ-cell.is-responsive .organ-caustic {
+  opacity:.98; stroke-width:2.3;
+  filter:drop-shadow(0 0 8px rgba(255,240,191,.85));
+}
+.organic-depth-field .organ-connection.is-muted,
+.organic-depth-field .organ-cell.is-muted { opacity:.4; }
+.organic-depth-field .organ-cell.is-visited .organ-veil.inner,
+.organic-depth-field .organ-connection.is-visited .organ-fiber {
+  stroke-opacity:.9; opacity:.94;
+}
+#space .orbit { opacity:.16; box-shadow:none; }
+#space .filament { opacity:.09; box-shadow:none; }
+#space .nerve-field .nerve { opacity:.075; transition:opacity .5s; }
+#space .nerve-field .nerve.hot { opacity:.77; }
+#space .relational-threads path { opacity:.29; }
+#space .relational-threads path.visited-thread { opacity:.68; }
+#space>.node {
+  border-color:color-mix(in srgb, var(--world-light, #a8d7df) 48%, transparent);
+  background:
+    radial-gradient(ellipse 70% 64% at 36% 29%,rgba(255,246,211,.16) 0%,transparent 72%),
+    radial-gradient(ellipse at 50% 53%,var(--world-shadow, #7fe0d138) 0%,#172431dc 42%,#040810f0 79%);
+  box-shadow:inset 0 0 29px var(--world-shadow, #7fe0d122), 0 0 24px var(--world-shadow, #7fe0d133);
+  backdrop-filter:blur(1px);
+}
+#space>.node:before {
+  border-radius:56% 44% 49% 51% / 44% 57% 43% 56%;
+  border-color:color-mix(in srgb, var(--world-light, #a8d7df) 42%, transparent);
+  box-shadow:0 0 20px var(--world-shadow, #7fe0d122),inset 0 0 18px var(--world-shadow, #7fe0d122);
+}
+#space>.node:after {
+  border-radius:43% 57% 52% 48% / 58% 44% 56% 42%;
+  border-color:color-mix(in srgb, var(--world-light, #a8d7df) 32%, transparent);
+  box-shadow:0 0 16px var(--world-shadow, #7fe0d122);
+}
+#space>.node span {
+  text-shadow:0 1px 9px #000,0 0 5px #000;
+  letter-spacing:.075em;
+}
+#space>.nexus {
+  border-color:#e9d5a4a0;
+  background:
+    radial-gradient(ellipse at 48% 38%,rgba(255,248,220,.62) 0%,rgba(251,225,158,.23) 8%,transparent 30%),
+    radial-gradient(ellipse at 45% 58%,rgba(104,225,205,.29),rgba(95,103,180,.14) 48%,#04070ef2 80%);
+  box-shadow:inset 0 0 56px #8ed9cf2c,0 0 44px #f4dcad47,0 0 96px #7fe0d12e;
+}
+#space>.nexus:before, #space>.nexus:after { opacity:.25; border-style:solid; }
+#space>.nexus .nexus-core { text-shadow:0 2px 12px #030609; }
+header .controls { gap:6px; }
+header .controls button, .thread-toggle button {
+  min-height:44px; padding:10px 13px;
+  background:linear-gradient(155deg,#101922a8,#060a11ba);
+  border-color:#d9c28a55;
+  box-shadow:inset 0 0 13px #92d9cc07;
+  backdrop-filter:blur(9px);
+}
+header .controls button:hover, .thread-toggle button:hover,
+header .controls button:focus-visible, .thread-toggle button:focus-visible {
+  border-color:#d8c894b0; box-shadow:0 0 20px #9bd8cf25;
+}
+@keyframes organTravel { to { stroke-dashoffset:-310; } }
+@keyframes organEbb { to { opacity:.47; filter:brightness(1.18); } }
+@media(max-width:900px){
+  #space>.organic-depth-field { opacity:.88; }
+  .organic-depth-field .organ-fog { stroke-width:12; opacity:.17; }
+  .organic-depth-field .organ-cell .organ-veil.outer { fill-opacity:.16; }
+}
+@media(max-width:650px){
+  #space>.organic-depth-field { opacity:.81; }
+  .organic-depth-field .organ-fog { stroke-width:9; opacity:.13; }
+  .organic-depth-field .organ-neighbor { opacity:.12; }
+  header .controls { gap:3px; }
+  header .controls button { padding:9px 10px; font-size:11px; }
+  .thread-toggle button { padding:9px 10px; font-size:11px; }
+  #space>.node span { letter-spacing:.035em; }
+}
+@media(prefers-reduced-motion:reduce){
+ .organic-depth-field * { animation:none!important; transition:none!important; }
+}
+body.still .organic-depth-field * { animation:none!important; transition:none!important; }
+body.still .organic-depth-field .organ-flow { opacity:.12; }
+
+/* v0.3 visual non-regression refinement: energy veining, not extra rigid rings. */
+.organic-depth-field .organ-wisp-bloom {
+  fill:none; stroke-width:12; opacity:.20; stroke-linecap:round;
+  filter:url(#organSoftGlow);
+}
+.organic-depth-field .organ-wisp {
+  fill:none; stroke-width:1.4; opacity:.48; stroke-linecap:round;
+  filter:drop-shadow(0 0 4px rgba(254,239,196,.35));
+  animation:organShimmer 12s ease-in-out infinite alternate;
+}
+.organic-depth-field .organ-wisp.secondary { opacity:.25; stroke-width:.8; animation-delay:-5s; }
+.organic-depth-field .organ-cell.is-responsive .organ-wisp { opacity:.85; }
+.organic-depth-field .organ-core-wisp { stroke-width:1.7; opacity:.49; }
+#space .auric-being .head { opacity:.32; }
+#space .auric-being .axis { opacity:.38; }
+#space .auric-being .meridian { opacity:.36; }
+#space .auric-being .center { opacity:.4; }
+#space .auric-being .wing { opacity:.38; }
+@keyframes organShimmer { to { opacity:.68; filter:drop-shadow(0 0 9px rgba(255,237,183,.55)); } }
+@media(max-width:650px){
+  .organic-depth-field .organ-wisp-bloom { stroke-width:8; opacity:.14; }
+  #status { left:12px;right:12px;bottom:62px;max-width:calc(100vw - 24px);
+    font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    pointer-events:none; }
+}
+@media(prefers-reduced-motion:reduce){
+  .organic-depth-field .organ-wisp { animation:none!important; }
+}
+body.still .organic-depth-field .organ-wisp { animation:none!important; }
+
+
+/* ORGANIC_REFERENCE_V04 — Five new owner-supplied visual references.
+   Visual translation, not copies: cosmic-held nucleus, flowing spectral fabric,
+   arcane-vein geometry, restrained watchful lenses, and living rainbow anatomy.
+   Never rasterize the references into the public application or add pseudo-script.
+*/
+#space::before {
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse 42% 54% at 49% 52%,rgba(31,117,122,.12),transparent 78%),
+    radial-gradient(ellipse 32% 48% at 55% 66%,rgba(71,40,106,.15),transparent 78%),
+    radial-gradient(ellipse 32% 35% at 43% 30%,rgba(19,70,115,.11),transparent 80%);
+}
+#space>.organic-depth-field { opacity:1; mix-blend-mode:screen; }
+.organic-depth-field .organ-ambient-cloud { opacity:.85; }
+.organic-depth-field .organ-river-halo {
+  fill:none; stroke-width:46; stroke-linecap:round; opacity:.41;
+  filter:url(#organVolumeBloom);
+}
+.organic-depth-field .organ-river-sheet {
+  fill:none; stroke-width:15; stroke-linecap:round; opacity:.62;
+  filter:drop-shadow(0 0 11px rgba(126,230,224,.18));
+}
+.organic-depth-field .organ-river-light {
+  fill:none; stroke-width:1.55; stroke-linecap:round; opacity:.47;
+  stroke-dasharray:21 38 47 54; animation:organTravel 21s linear infinite;
+}
+.organic-depth-field .organ-river-tributary {
+  fill:none; stroke-width:2.8; stroke-linecap:round; opacity:.29;
+  filter:drop-shadow(0 0 7px rgba(209,177,249,.28));
+}
+.organic-depth-field .organ-connection.is-responsive .organ-river-halo { opacity:.7; }
+.organic-depth-field .organ-connection.is-responsive .organ-river-sheet { opacity:.91; }
+.organic-depth-field .organ-connection.is-visited .organ-river-light { opacity:.85; }
+.organic-depth-field .organ-connection.is-muted .organ-river-sheet { opacity:.26; }
+.organic-depth-field .organ-neighbor { opacity:.13; }
+.organic-depth-field .organ-heart-matrix {
+  filter:drop-shadow(0 0 18px rgba(123,224,205,.13));
+}
+.organic-depth-field .organ-heart-aura {
+  stroke-width:1.5; stroke-opacity:.52; fill-opacity:.68;
+  animation:organHeartBreathe 10s ease-in-out infinite alternate;
+}
+.organic-depth-field .organ-heart-vein {
+  fill:none; stroke-width:2.2; stroke-linecap:round; opacity:.44;
+  filter:drop-shadow(0 0 8px rgba(125,227,209,.49));
+  animation:organShimmer 12s ease-in-out infinite alternate;
+}
+.organic-depth-field .organ-heart-vein-secondary { stroke-width:1.4; opacity:.31; animation-delay:-4s; }
+.organic-depth-field .organ-world-volume {
+  stroke:none; opacity:.90; filter:drop-shadow(0 0 14px rgba(146,195,232,.10));
+}
+.organic-depth-field .organ-cell .organ-veil.outer {
+  stroke-opacity:.17; fill-opacity:.16; opacity:.52;
+}
+.organic-depth-field .organ-cell .organ-veil.inner {
+  stroke-opacity:.26; fill-opacity:.4; opacity:.78;
+}
+.organic-depth-field .organ-cell .organ-caustic {
+  stroke-opacity:.4; opacity:.32;
+}
+.organic-depth-field .organ-tissue-glow {
+  fill:none; stroke-width:28; stroke-linecap:round; opacity:.57;
+  filter:url(#organVolumeBloom);
+}
+.organic-depth-field .organ-tissue-ribbon {
+  fill:none; stroke-width:10; stroke-linecap:round; opacity:.57;
+  filter:drop-shadow(0 0 7px rgba(254,239,205,.25));
+}
+.organic-depth-field .organ-cell.is-responsive .organ-tissue-ribbon { opacity:.96; }
+.organic-depth-field .organ-cell.is-muted .organ-tissue-ribbon { opacity:.17; }
+.organic-depth-field .organ-aperture { opacity:.3; }
+.organic-depth-field .organ-aperture-fold {
+  stroke-width:1.1; stroke-opacity:.65; fill-opacity:.6;
+  filter:drop-shadow(0 0 7px rgba(237,226,212,.25));
+}
+.organic-depth-field .organ-aperture-core {
+  stroke-width:.7; fill-opacity:.73; filter:drop-shadow(0 0 5px rgba(250,236,195,.3));
+}
+.organic-depth-field .organ-cell.is-responsive .organ-aperture,
+.organic-depth-field .organ-cell.is-visited .organ-aperture { opacity:.77; }
+#space>.node {
+  border-radius:49% 51% 43% 57% / 56% 41% 59% 44%;
+  border-color:color-mix(in srgb,var(--world-light) 34%,transparent);
+  background:
+    radial-gradient(ellipse 66% 57% at 39% 27%,rgba(255,246,225,.22),transparent 68%),
+    radial-gradient(ellipse 95% 85% at 58% 65%,var(--world-shadow),transparent 79%),
+    radial-gradient(ellipse 95% 105% at 43% 43%,#1d2a41c6 0%,#070d16e9 78%);
+  box-shadow:inset 0 0 34px var(--world-shadow),
+    inset 8px -12px 36px rgba(4,6,17,.49),
+    0 0 34px var(--world-shadow);
+}
+#space>.node[data-id="aura"]{border-radius:45% 55% 53% 47% / 57% 39% 61% 43%}
+#space>.node[data-id="aureglossa"]{border-radius:53% 47% 42% 58% / 41% 57% 43% 59%}
+#space>.node[data-id="services"]{border-radius:59% 41% 53% 47% / 47% 59% 41% 53%}
+#space>.node[data-id="gestalt"]{border-radius:42% 58% 52% 48% / 52% 44% 56% 48%}
+#space>.node[data-id="workshops"]{border-radius:47% 53% 57% 43% / 58% 45% 55% 42%}
+#space>.node[data-id="journal"]{border-radius:55% 45% 48% 52% / 45% 54% 46% 55%}
+#space>.node:before, #space>.node:after { border-style:solid; opacity:.3; }
+#space>.node span { text-shadow:0 1px 9px #020308,0 0 9px #020308; }
+#space>.nexus {
+  border-radius:45% 55% 49% 51% / 52% 46% 54% 48%;
+  border-color:rgba(242,217,167,.31);
+  background:
+    radial-gradient(ellipse 65% 60% at 42% 28%,rgba(255,248,211,.34),transparent 78%),
+    radial-gradient(ellipse at 57% 55%,rgba(94,209,199,.29),rgba(78,78,125,.23) 53%,#060912f0 83%);
+  box-shadow:inset 0 0 42px rgba(255,224,170,.15),
+    inset 0 0 60px rgba(98,232,224,.14),
+    0 0 44px rgba(158,225,200,.38),0 0 105px rgba(164,143,251,.13);
+}
+#space>.nexus:before, #space>.nexus:after { border-color:rgba(235,210,159,.19); opacity:.22; }
+#space .nexus-membrane { border-radius:46% 54% 57% 43% / 55% 42% 58% 45%; opacity:.49; }
+#space .auric-being .torso { opacity:.22; border-radius:59% 41% 47% 53% / 26% 32% 68% 74%; }
+#space .auric-being .head { opacity:.17; }
+#space .auric-being .wing { opacity:.18; }
+#space .auric-being .axis { opacity:.27; }
+#space .auric-being .center { opacity:.24; }
+#space .auric-being .meridian { opacity:.24; }
+#space .orbit { opacity:.06; }
+@keyframes organHeartBreathe { to { opacity:.80; filter:brightness(1.18); } }
+@media(min-width:1000px){
+  #space>.node span {font-size:12px;letter-spacing:.07em;}
+}
+@media(max-width:900px){
+  .organic-depth-field .organ-river-halo {stroke-width:35;opacity:.33;}
+  .organic-depth-field .organ-river-sheet {stroke-width:12;opacity:.56;}
+  .organic-depth-field .organ-tissue-glow {stroke-width:22;opacity:.42;}
+}
+@media(max-width:650px){
+  #space>.organic-depth-field {opacity:.94;}
+  .organic-depth-field .organ-river-halo {stroke-width:20;opacity:.28;}
+  .organic-depth-field .organ-river-sheet {stroke-width:8;opacity:.50;}
+  .organic-depth-field .organ-river-light {stroke-width:1;opacity:.32;}
+  .organic-depth-field .organ-tissue-glow {stroke-width:12;opacity:.38;}
+  .organic-depth-field .organ-tissue-ribbon {stroke-width:7;}
+  .organic-depth-field .organ-aperture {opacity:.18;}
+  #space>.node {box-shadow:inset 0 0 22px var(--world-shadow),0 0 23px var(--world-shadow);}
+}
+@media(prefers-reduced-motion:reduce){
+ .organic-depth-field .organ-heart-aura,.organic-depth-field .organ-river-light,
+ .organic-depth-field .organ-heart-vein{animation:none!important;}
+}
+body.still .organic-depth-field .organ-heart-aura,
+body.still .organic-depth-field .organ-river-light,
+body.still .organic-depth-field .organ-heart-vein{animation:none!important;}
+
+/* Motion-study refinement: current interaction owns the brightest current.
+   Idle filaments remain present, but do not endlessly race around the screen. */
+.organic-depth-field .organ-connection .organ-flow{
+  opacity:.12;
+  animation-play-state:paused;
+  transition:opacity .24s ease-out;
+}
+.organic-depth-field .organ-connection.is-responsive .organ-flow,
+.organic-depth-field .organ-connection.is-visited .organ-flow{
+  opacity:.74;
+  animation-play-state:running;
+}
+.organic-depth-field .organ-cell.is-responsive .organ-veil.inner{
+  stroke-opacity:.83;
+  filter:drop-shadow(0 0 12px rgba(255,237,190,.43));
+}
+.organic-depth-field .organ-cell.is-visited .organ-wisp{
+  opacity:.68;
+}
+.organic-depth-field.is-paused *{
+  animation-play-state:paused!important;
+}
+.organic-depth-field[data-quality="low"] .organ-fog,
+.organic-depth-field[data-quality="low"] .organ-wisp-bloom{
+  filter:none;
+}
+@media(prefers-reduced-motion:reduce){
+ .organic-depth-field .organ-flow,
+ .organic-depth-field .organ-connection.is-visited .organ-flow,
+ .organic-depth-field .organ-connection.is-responsive .organ-flow{
+   animation:none!important;
+ }
+}
+body.still .organic-depth-field .organ-flow{
+ animation:none!important;
+}
+
+
+/* ORGANIC_TAPERED_BANDS_V05 — iridescent liquid veils, not rigid tubes. */
+.organic-depth-field .organ-spectral-veil {
+  stroke:none; opacity:.64;
+  filter:drop-shadow(0 0 7px rgba(148,208,220,.15));
+  animation:organSilkBreathe 13s ease-in-out infinite alternate;
+}
+.organic-depth-field .organ-world-sheen {
+  stroke:none; opacity:.49; filter:drop-shadow(0 0 4px rgba(197,185,229,.1));
+  animation:organSilkBreathe 10s ease-in-out infinite alternate-reverse;
+}
+.organic-depth-field .organ-breathscape .organ-fog {
+  opacity:.09; stroke-width:9; filter:url(#organVolumeBloom);
+}
+.organic-depth-field .organ-river-halo {
+  stroke-width:24; opacity:.22; filter:url(#organVolumeBloom);
+}
+.organic-depth-field .organ-river-sheet {
+  stroke-width:4; opacity:.32; filter:drop-shadow(0 0 6px rgba(126,230,224,.16));
+}
+.organic-depth-field .organ-river-light {stroke-width:1.1;opacity:.42;}
+.organic-depth-field .organ-river-tributary {stroke-width:1.4;opacity:.28;}
+.organic-depth-field .organ-tissue-glow {
+  stroke-width:12; opacity:.25; filter:url(#organVolumeBloom);
+}
+.organic-depth-field .organ-tissue-ribbon {stroke-width:3.4;opacity:.34;}
+.organic-depth-field .organ-core-membrane.outer,
+.organic-depth-field .organ-core-membrane.middle {stroke-opacity:.23;}
+.organic-depth-field .organ-core-light {opacity:.22;}
+#space .nexus-membrane {border-color:rgba(137,222,209,.16);opacity:.32;}
+#space .auric-being .layer {opacity:.3;}
+@keyframes organSilkBreathe {to{opacity:.78;filter:brightness(1.2);}}
+.organic-depth-field .organ-cell.is-responsive .organ-world-sheen,
+.organic-depth-field .organ-connection.is-responsive .organ-spectral-veil {opacity:.9;}
+.organic-depth-field .organ-cell.is-muted .organ-world-sheen,
+.organic-depth-field .organ-connection.is-muted .organ-spectral-veil {opacity:.20;}
+@media(max-width:900px){
+ .organic-depth-field .organ-river-halo {stroke-width:15;opacity:.19;}
+ .organic-depth-field .organ-river-sheet {stroke-width:3;opacity:.27;}
+}
+@media(max-width:650px){
+ .organic-depth-field .organ-spectral-veil {opacity:.53;}
+ .organic-depth-field .organ-world-sheen {opacity:.45;}
+ .organic-depth-field .organ-breathscape .organ-fog {opacity:.04;}
+ .organic-depth-field .organ-river-halo {stroke-width:9;opacity:.13;}
+ .organic-depth-field .organ-river-sheet {stroke-width:2;opacity:.22;}
+ .organic-depth-field .organ-tissue-glow {stroke-width:8;opacity:.21;}
+ .organic-depth-field .organ-tissue-ribbon {stroke-width:2;opacity:.29;}
+}
+.organic-depth-field.is-paused * {animation-play-state:paused!important;}
+@media(prefers-reduced-motion:reduce){
+ .organic-depth-field .organ-spectral-veil,
+ .organic-depth-field .organ-world-sheen {animation:none!important;}
+}
+body.still .organic-depth-field .organ-spectral-veil,
+body.still .organic-depth-field .organ-world-sheen {animation:none!important;}
+
+
+/* OPTIONAL_LIVING_CHROMA_V06 — performance-capped volumetric background.
+   Procedural Canvas only; HTML/SVG retains functional pointer priority.
+*/
+#space>.living-chroma-canvas{
+  position:absolute;inset:0;z-index:1;width:100%;height:100%;
+  pointer-events:none!important;user-select:none;
+  mix-blend-mode:screen;opacity:.85;
+  contain:paint;
+}
+#space>.living-chroma-canvas[data-quality="low"]{opacity:.69;}
+@media(max-width:650px){
+  #space>.living-chroma-canvas{opacity:.72;}
+}
+@media(prefers-reduced-motion:reduce){
+  #space>.living-chroma-canvas{transition:none!important;}
+}
+
+/* Auric Fidelity v0.7 — approved continuous-field touchstones.
+ * Replaces opaque discs and disconnected ornamental sweeps with softer
+ * volumetric centers, readable world crests, fine caustics and warm focal light.
+ * Render layer only: HTML controls and private-state boundaries remain intact.
+ */
+.organic-depth-field .organ-breathscape .organ-fog{
+  opacity:.014;
+  stroke-width:4;
+  filter:none;
+}
+.organic-depth-field .organ-corona-ray{
+  fill:none;
+  stroke-width:.9;
+  stroke-linecap:round;
+  opacity:.29;
+  filter:drop-shadow(0 0 5px rgba(255,237,192,.46));
+  animation:organCoronaBreath 8.4s ease-in-out infinite alternate;
+}
+.organic-depth-field .organ-corona-ray:nth-child(3n){opacity:.38;animation-delay:-2.8s}
+.organic-depth-field .organ-corona-ray:nth-child(5n){opacity:.2;animation-delay:-5.3s}
+.organic-depth-field .organ-core-membrane.inner{
+  opacity:.81;
+  stroke-opacity:.59;
+  fill-opacity:.17;
+}
+.organic-depth-field .organ-river-sheet{opacity:.45;stroke-width:4}
+.organic-depth-field .organ-river-light{opacity:.59}
+.organic-depth-field .organ-river-halo{opacity:.25}
+.organic-depth-field .organ-spectral-veil{opacity:.63}
+.organic-depth-field .organ-world-volume{opacity:.71}
+.organic-depth-field .organ-cell .organ-veil.inner{fill-opacity:.42;stroke-opacity:.57}
+.organic-depth-field .organ-cell .organ-veil.outer{stroke-opacity:.38}
+.organic-depth-field .organ-world-sheen{opacity:.66}
+.organic-depth-field .organ-wisp{opacity:.53}
+#space>.node {
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  align-items:center;
+  justify-content:center;
+  border:1px solid color-mix(in srgb,var(--world-light),transparent 28%);
+  background:
+    radial-gradient(ellipse 46% 40% at 44% 17%,rgba(255,253,220,.37),transparent 85%),
+    radial-gradient(ellipse at 55% 40%,color-mix(in srgb,var(--world-light),transparent 79%),transparent 69%),
+    radial-gradient(ellipse at 50% 54%,rgba(7,16,34,.58),rgba(4,8,18,.76) 66%,rgba(1,4,12,.93) 96%);
+  box-shadow:
+    inset -8px -14px 29px rgba(1,3,11,.74),
+    inset 10px 9px 29px var(--world-shadow),
+    0 0 27px var(--world-shadow),0 0 42px color-mix(in srgb,var(--world-light),transparent 88%);
+  backdrop-filter:blur(.7px);
+}
+#space>.node .world-mark{
+  display:block;
+  width:clamp(25px,3.4vw,42px);
+  height:clamp(25px,3.4vw,42px);
+  color:var(--world-light);
+  fill:none;
+  stroke:currentColor;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  stroke-width:1.25;
+  filter:drop-shadow(0 0 8px var(--world-light));
+  pointer-events:none;
+  flex:0 0 auto;
+}
+#space>.node>span{
+  font-size:clamp(9px,.86vw,13px);
+  line-height:1.25;
+  text-shadow:0 1px 10px #000,0 0 10px #000;
+  letter-spacing:.08em;
+}
+#space>.node:focus-visible{
+  outline:2px solid #fff0c7;
+  outline-offset:7px;
+}
+#space>.nexus{
+  background:
+    radial-gradient(circle at 50% 43%,rgba(255,252,232,.84) 0 3%,rgba(255,235,172,.45) 11%,rgba(152,231,214,.31) 31%,rgba(24,54,69,.57) 58%,rgba(6,10,22,.86) 89%);
+  border-color:#f3dca4a6;
+  box-shadow:0 0 45px #ffedbc91,0 0 110px #83ebd35c,inset 0 0 42px #e8e3ba33;
+}
+#space>.nexus .nexus-core{text-shadow:0 1px 10px rgba(1,4,12,.98),0 0 12px #070b13}
+#space .nexus-membrane{opacity:.53}
+@keyframes organCoronaBreath{to{opacity:.69;filter:drop-shadow(0 0 9px rgba(255,241,200,.75))}}
+@media(min-width:1000px){
+  #space>.node{width:132px;height:132px;padding:13px}
+  #space>.node[data-id="aura"],#space>.node[data-id="journal"]{
+    left:calc(50% - 66px);transform:none;
+  }
+  #space>.node[data-id="aura"]:hover,#space>.node[data-id="aura"]:focus-visible,
+  #space>.node[data-id="journal"]:hover,#space>.node[data-id="journal"]:focus-visible{transform:scale(1.07)}
+  #space>.nexus{width:214px;height:214px}
+}
+@media(min-width:651px) and (max-width:999px){
+  #space>.node{width:110px;height:110px;padding:9px}
+  #space>.node[data-id="aura"]{left:calc(50% - 55px);top:14%;right:auto;bottom:auto}
+  #space>.node[data-id="aureglossa"]{left:9%;top:29%;right:auto;bottom:auto}
+  #space>.node[data-id="services"]{right:9%;top:29%;left:auto;bottom:auto}
+  #space>.node[data-id="workshops"]{left:9%;top:63%;right:auto;bottom:auto}
+  #space>.node[data-id="gestalt"]{right:9%;top:63%;left:auto;bottom:auto}
+  #space>.node[data-id="journal"]{left:calc(50% - 55px);bottom:4%;right:auto;top:auto}
+  #space>.nexus{width:168px;height:168px}
+}
+@media(max-width:650px){
+  #space>.node{width:82px;height:82px;padding:5px;gap:2px}
+  #space>.node .world-mark{width:25px;height:25px}
+  #space>.node>span{font-size:9px;letter-spacing:.02em}
+  #space>.node[data-id="aura"]{left:calc(50% - 41px);top:18%;right:auto;bottom:auto}
+  #space>.node[data-id="aureglossa"]{left:6%;top:31%;right:auto;bottom:auto}
+  #space>.node[data-id="services"]{right:6%;top:31%;left:auto;bottom:auto}
+  #space>.node[data-id="workshops"]{left:6%;top:60%;right:auto;bottom:auto}
+  #space>.node[data-id="gestalt"]{right:6%;top:60%;left:auto;bottom:auto}
+  #space>.node[data-id="journal"]{left:calc(50% - 41px);bottom:8%;right:auto;top:auto}
+  #space>.nexus{width:128px;height:128px}
+  .organic-depth-field .organ-corona-ray{opacity:.20}
+  .organic-depth-field .organ-world-sheen{opacity:.48}
+}
+@media(prefers-reduced-motion:reduce){
+  .organic-depth-field .organ-corona-ray{animation:none!important}
+}
+body.still .organic-depth-field .organ-corona-ray{animation:none!important}
+
+/* Auric Fidelity v0.7.1 — review corrections for dark discs and
+   lower-world clashes at 390px / iPad portrait. */
+#space>.node {
+  background:
+    radial-gradient(circle at 43% 24%,rgba(255,255,228,.38),transparent 26%),
+    radial-gradient(ellipse 88% 82% at 46% 46%,
+      color-mix(in srgb,var(--world-light),transparent 72%) 0%,
+      rgba(11,26,48,.39) 50%,rgba(2,6,18,.66) 95%);
+  box-shadow:
+    inset -7px -14px 25px rgba(2,4,14,.58),
+    inset 11px 12px 29px var(--world-shadow),
+    0 0 34px var(--world-shadow),
+    0 0 54px color-mix(in srgb,var(--world-light),transparent 88%);
+}
+header .brand{
+  font-size:clamp(13px,1.4vw,20px);
+  letter-spacing:.21em;
+  line-height:1.45;
+  text-shadow:0 1px 12px #000;
+}
+header .controls button{
+  font-family:system-ui,sans-serif;
+  font-size:12px;
+  letter-spacing:.04em;
+}
+@media(min-width:651px) and (max-width:999px){
+  #space>.node[data-id="journal"]{bottom:14%}
+  .organic-depth-field .organ-breathscape{opacity:.25}
+}
+@media(max-width:650px){
+  #space>.node[data-id="journal"]{bottom:14%}
+  header .brand{font-size:11px}
+  .organic-depth-field .organ-breathscape{opacity:.14}
+}
+
+/* Irregular deep-field starlight: no repetitive dot-grid wallpaper. */
+.sky{
+  opacity:.44;
+  background-image:
+    radial-gradient(ellipse 58vw 53vh at 19% 61%,rgba(57,91,138,.16),transparent 78%),
+    radial-gradient(ellipse 53vw 49vh at 83% 45%,rgba(88,63,146,.15),transparent 79%),
+    radial-gradient(ellipse 48vw 40vh at 49% 87%,rgba(94,56,122,.14),transparent 73%),
+    radial-gradient(circle at 18% 34%,#fff2d6bd 0 .8px,transparent 1.7px),
+    radial-gradient(circle at 76% 67%,#91e8ecad 0 .7px,transparent 1.5px),
+    radial-gradient(circle at 49% 21%,#d8beffb8 0 .65px,transparent 1.5px),
+    radial-gradient(circle at 83% 13%,#ffeccf9b 0 .6px,transparent 1.5px);
+  background-size:
+    100% 100%,100% 100%,100% 100%,
+    211px 257px,317px 373px,443px 409px,281px 331px;
+  background-position: center;
+}
+
+/* Auric Fidelity v0.7.2 — light lives inside the world, not only at its rim. */
+#space>.node .world-refraction{
+  position:absolute;inset:1px;border-radius:inherit;z-index:0;
+  pointer-events:none;mix-blend-mode:screen;
+  background:
+    radial-gradient(ellipse 64% 49% at 33% 25%,rgba(255,251,214,.34),transparent 84%),
+    conic-gradient(from 24deg at 52% 45%,
+      transparent 0 25deg,
+      color-mix(in srgb,var(--world-light),transparent 72%) 45deg,
+      transparent 94deg 166deg,
+      rgba(255,239,194,.15) 197deg,
+      transparent 235deg,
+      color-mix(in srgb,var(--world-light),transparent 83%) 293deg,
+      transparent 346deg);
+  filter:blur(1.2px);
+  opacity:.65;
+  animation:worldRefractionBreathe 11s ease-in-out infinite alternate;
+}
+#space>.node .world-mark,#space>.node>span{position:relative;z-index:2}
+#space>.node .world-mark{
+  stroke-width:1.5;
+  filter:drop-shadow(0 0 9px var(--world-light)) drop-shadow(0 0 4px rgba(255,246,222,.5));
+}
+#space>.node:is(:hover,:focus-visible,.visited,.recommended,.search-hit) .world-refraction{
+  opacity:.9;
+}
+.organic-depth-field .organ-cell .organ-veil.inner{
+  fill-opacity:.68;
+  stroke-opacity:.65;
+}
+.organic-depth-field .organ-cell .organ-veil.outer{
+  fill-opacity:.25;
+  stroke-opacity:.49;
+}
+@keyframes worldRefractionBreathe{to{opacity:.84;transform:scale(1.025)}}
+@media(min-width:1000px){
+  #space>.node{width:154px;height:154px;padding:17px}
+  #space>.node .world-mark{width:50px;height:50px}
+  #space>.node[data-id="aura"]{left:calc(50% - 77px)}
+  #space>.node[data-id="journal"]{left:calc(50% - 77px);bottom:10%}
+}
+@media(max-width:650px){
+  #space>.node .world-refraction{opacity:.52;filter:none}
+}
+@media(prefers-reduced-motion:reduce){
+  #space>.node .world-refraction{animation:none!important}
+}
+body.still #space>.node .world-refraction{animation:none!important}
+
+/* Auric Fidelity v0.7.3 — remove broad diagonal sash artifacts.
+   Light folds belong *inside* a dimension, never as opaque slashes across it.
+   No change to node labels, route targets, or hit testing. */
+.organic-depth-field .organ-cell .organ-world-sheen{
+  opacity:.21;
+  filter:blur(1.4px);
+}
+.organic-depth-field .organ-cell .organ-tissue-glow{
+  opacity:.14;
+  stroke-width:10;
+}
+.organic-depth-field .organ-cell .organ-tissue-ribbon{
+  opacity:.20;
+  stroke-width:1.8;
+}
+.organic-depth-field .organ-cell .organ-wisp-bloom{
+  opacity:.09;
+}
+.organic-depth-field .organ-cell .organ-aperture{
+  opacity:.09;
+}
+.organic-depth-field .organ-cell.is-responsive .organ-world-sheen{
+  opacity:.44;
+}
+@media(max-width:650px){
+ .organic-depth-field .organ-cell .organ-world-sheen{opacity:.16}
+ .organic-depth-field .organ-cell .organ-tissue-ribbon{opacity:.13}
+}

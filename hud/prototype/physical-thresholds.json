@@ -1,0 +1,11 @@
+{
+ "version":"0.1",
+ "privacy":"No attendee identity or private data is encoded in public threshold URLs.",
+ "routes":{
+  "aura-intro":{"world":"aura","path":"aura-dynamics.html?threshold=aura-intro","label":"Aura Dynamics · Living Field"},
+  "connections-workshop":{"world":"workshops","path":"convergence.html?threshold=connections-workshop","label":"Connections & Aura Dynamics Workshop"},
+  "gestalt-contribute":{"world":"gestalt","path":"living-threshold.html?threshold=gestalt-contribute","label":"Soul & Stone Contribution Threshold"},
+  "aureglossa-intro":{"world":"aureglossa","path":"living-tongue.html?threshold=aureglossa-intro","label":"Aureglossa · Living Tongue"},
+  "journal-field-notes":{"world":"journal","path":"astral-journal.html?threshold=journal-field-notes","label":"Archon's Journal · Field Notes"}
+ }
+}
