@@ -30,6 +30,8 @@ jobs:
           git archive --format=zip --output=operational-evidence/source-snapshot.zip "$SOURCE_SHA"
           printf '%s\n' "$SOURCE_SHA" > operational-evidence/SOURCE_SHA.txt
           sha256sum operational-evidence/source-snapshot.zip > operational-evidence/SHA256SUMS.txt
+      - name: Capture existing public preview for a reversible update
+        run: python3 scripts/package-living-nexus-release.py --capture-preview --output operational-evidence/preview-before.zip
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -56,15 +58,11 @@ jobs:
         run: |
           set -o pipefail
           node tests/test-convergence-journey.mjs 2>&1 | tee operational-evidence/convergence.log
-      - name: Build the allowlisted runtime when its packager is installed
+      - name: Build complete validated preview with historical routes preserved
         if: success()
         run: |
-          if test -f scripts/package-living-nexus-release.py; then
-            python3 -m unittest discover -s tests -p 'test-living-nexus-release-package.py'
-            python3 scripts/package-living-nexus-release.py --output operational-evidence/living-nexus-runtime.zip --source-sha "$SOURCE_SHA"
-          else
-            printf '%s\n' 'SOURCE SNAPSHOT ONLY: runtime packaging integration is pending; do not upload source-snapshot.zip to a website.' > operational-evidence/NOT_A_DEPLOYMENT.txt
-          fi
+          python3 tests/test-living-nexus-release-package.py -v
+          python3 scripts/package-living-nexus-release.py --preserve-snapshot operational-evidence/preview-before.zip --output operational-evidence/living-nexus-runtime.zip --source-sha "$SOURCE_SHA"
       - name: Preserve source and actual verification evidence
         if: always()
         uses: actions/upload-artifact@v4
