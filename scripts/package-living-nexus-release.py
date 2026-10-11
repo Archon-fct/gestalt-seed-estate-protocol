@@ -136,6 +136,14 @@ def build(root: Path, snapshot: Path | None, source_sha: str) -> dict[str, bytes
     required = manifest(root)["required"]
     allowed = set(required) | set(HISTORICAL) | {"robots.txt", "release.json"}
     files = public_archive(snapshot.read_bytes(), allowed) if snapshot else {}
+    # Wix inserts this exact public bootstrap on upload. Preserve renderer bytes,
+    # not duplicated hosting markup, when repackaging a captured preview.
+    bootstrap = b'<script id="wix-site-script" src="https://manage.wix.com/_api/headless-business-setup/v1/headless-business/site-script.js" data-client-id="a1a33144-20ee-4374-b66d-ec671bcaca77" async></script>'
+    for name, raw in list(files.items()):
+        if name.endswith(".html") and bootstrap in raw:
+            if raw.count(bootstrap) != 1 or bootstrap + b"</head>" not in raw:
+                raise ValueError("Unexpected Wix bootstrap insertion: " + name)
+            files[name] = raw.replace(bootstrap, b"", 1)
     if snapshot and not set(HISTORICAL).issubset(files):
         raise ValueError("Snapshot is missing an existing comparison route")
     for name in required:

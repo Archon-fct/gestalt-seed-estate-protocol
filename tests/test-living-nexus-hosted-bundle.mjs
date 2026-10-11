@@ -4,6 +4,7 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {chromium, webkit} from 'playwright';
+import {canonicalHostedBytes} from './wix-html-transport.mjs';
 const base = 'https://headless-mfewrcffiie-archonsoulings-140e.wix-site-host.com/';
 const expected = process.env.EXPECTED_SOURCE_SHA;
 assert.match(expected || '', /^[a-f0-9]{40}$/);
@@ -12,7 +13,7 @@ await fs.mkdir(out, {recursive:true});
 const results = [], errors = [];
 async function check(name, run) {
   try { const detail = await run(); results.push({name,status:'PASS',detail}); }
-  catch(e) {results.push({name,status:'FAIL',detail:String(e.message)});}
+  catch(e) {results.push({name,status:'FAIL',detail:String(e.stack||e)});}
 }
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
 async function get(file) {
@@ -30,12 +31,13 @@ try {
   for (const file of Object.keys(release.files)) {
     await check('Hosted resource integrity: '+file,async()=>{
       const bytes = await get(file);
-      assert.equal(sha(bytes),release.files[file],'Served bytes differ from release receipt');
+      const canonical = canonicalHostedBytes(bytes,file);
+      assert.equal(sha(canonical),release.files[file],'Served bytes differ from release receipt');
       if (manifest.required.includes(file)) {
         const source = await fs.readFile(path.join('hud/prototype',file));
-        assert.equal(sha(bytes),sha(source),'Served bytes differ from committed source');
+        assert.equal(sha(canonical),sha(source),'Served bytes differ from committed source');
       }
-      return {bytes:bytes.length,sha256:sha(bytes)};
+      return {bytes:bytes.length,servedSha256:sha(bytes),sourceSha256:sha(canonical),verifiedWixInsertion:file.endsWith(".html")};
     });
   }
   for (const file of manifest.required) assert.ok(release.files[file],`Required file omitted: ${file}`);
