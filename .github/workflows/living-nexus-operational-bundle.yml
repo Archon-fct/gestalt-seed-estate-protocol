@@ -1,0 +1,75 @@
+name: Living Nexus Operational Bundle
+on:
+  push:
+    branches: [feature/public-project-constellation]
+    paths:
+      - '.github/workflows/living-nexus-operational-bundle.yml'
+      - 'hud/prototype/PREVIEW_BUNDLE_MANIFEST.json'
+      - 'scripts/package-living-nexus-release.py'
+      - 'tests/test-living-nexus-release-package.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: living-nexus-operational-bundle-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SOURCE_SHA: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Preserve exact tracked source for reproducible integration
+        run: |
+          mkdir -p operational-evidence
+          git archive --format=zip --output=operational-evidence/source-snapshot.zip "$SOURCE_SHA"
+          printf '%s\n' "$SOURCE_SHA" > operational-evidence/SOURCE_SHA.txt
+          sha256sum operational-evidence/source-snapshot.zip > operational-evidence/SHA256SUMS.txt
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install the existing pinned browser test dependency
+        run: |
+          npm install --no-save --package-lock=false playwright@1.57.0
+          npx playwright install --with-deps chromium
+      - name: Run the unchanged full constellation integration suite
+        run: |
+          set -o pipefail
+          node hud/prototype/test-constellation.mjs 2>&1 | tee operational-evidence/constellation.log
+      - name: Recover exact pre-inquiry visual baseline
+        if: always()
+        run: |
+          mkdir -p .convergence-baseline
+          for file in convergence.html living-pocket-material.css living-pocket-material.js; do
+            git show "7c3703f2ffe8dfe1d15ace82da43333f64ffa28b:hud/prototype/$file" > ".convergence-baseline/$file"
+          done
+      - name: Run committed inquiry and visual regression suite
+        if: always()
+        env:
+          BASELINE_ROOT: .convergence-baseline
+          REPORT_DIR: operational-evidence/convergence-journey
+        run: |
+          set -o pipefail
+          node tests/test-convergence-journey.mjs 2>&1 | tee operational-evidence/convergence.log
+      - name: Build the allowlisted runtime when its packager is installed
+        if: success()
+        run: |
+          if test -f scripts/package-living-nexus-release.py; then
+            python3 -m unittest discover -s tests -p 'test-living-nexus-release-package.py'
+            python3 scripts/package-living-nexus-release.py --output operational-evidence/living-nexus-runtime.zip --source-sha "$SOURCE_SHA"
+          else
+            printf '%s\n' 'SOURCE SNAPSHOT ONLY: runtime packaging integration is pending; do not upload source-snapshot.zip to a website.' > operational-evidence/NOT_A_DEPLOYMENT.txt
+          fi
+      - name: Preserve source and actual verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: living-nexus-operational-${{ github.sha }}
+          path: operational-evidence/
+          retention-days: 14
+          if-no-files-found: error
