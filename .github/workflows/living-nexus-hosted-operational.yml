@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      EXPECTED_SOURCE_SHA: ed92b6f6356bb8a762e7513845f1210ca7afdce5
+      EXPECTED_SOURCE_SHA: e11b280cf060a82ac9308e7b1f1d52bca6e76449
       REPORT_DIR: hosted-operational-evidence
     steps:
       - uses: actions/checkout@v4
