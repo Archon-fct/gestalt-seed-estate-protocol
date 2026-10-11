@@ -1,0 +1,13 @@
+/* Integration-only viewport fitting. The renderer's geometry and material are unchanged. */
+.top-actions{max-width:calc(100% - 16px)}
+.world.guide-relevant::before{border-color:#b5efe0;box-shadow:0 0 25px #91dbc466}
+.world.visited::after{content:'✦';position:absolute;bottom:16%;left:48%;font-size:18px;color:#e4d0a5;pointer-events:none}
+@media(max-width:850px){
+ .world-name{font-size:calc(11px / var(--stage-scale,1));letter-spacing:1px}
+ .world-name small{font-size:calc(8px / var(--stage-scale,1));letter-spacing:.5px}
+ .center-name{font-size:calc(14px / var(--stage-scale,1))}.center-name i{font-size:calc(8px / var(--stage-scale,1))}
+ .brand,.left-inscription,.right-inscription,.bottom-inscription{display:none}
+ .top-actions{left:8px;right:8px;justify-content:flex-end}.top-actions button span{display:inline;font:11px Arial,sans-serif}
+ .top-actions button{padding:8px}.mobile-worlds{bottom:28px}.statusline{bottom:90px}
+ .panel{max-height:calc(100dvh - 210px)}
+}
