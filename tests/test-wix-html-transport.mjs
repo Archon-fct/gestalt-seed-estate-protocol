@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {test} from 'node:test';
+import {createHash} from 'node:crypto';
+import {canonicalHostedBytes,WIX_BOOTSTRAP} from './wix-html-transport.mjs';
+const source='<html><head><title>Original</title></head><body>Unchanged</body></html>';
+const served=source.replace('</head>',WIX_BOOTSTRAP+'</head>');
+const hash=s=>createHash('sha256').update(s).digest('hex');
+test('only the observed insertion is removed',()=>assert.equal(canonicalHostedBytes(Buffer.from(served),'index.html').toString(),source));
+test('unknown script or client identity is rejected',()=>assert.throws(()=>canonicalHostedBytes(Buffer.from(served.replace('a1a33144','deadbeef')),'index.html')));
+test('duplicates are rejected',()=>assert.throws(()=>canonicalHostedBytes(Buffer.from(served.replace(WIX_BOOTSTRAP,WIX_BOOTSTRAP.repeat(2))),'index.html')));
+test('missing insertion is reported, not silently accepted',()=>assert.throws(()=>canonicalHostedBytes(Buffer.from(source),'index.html')));
+test('insertion in another position is rejected',()=>assert.throws(()=>canonicalHostedBytes(Buffer.from(source+WIX_BOOTSTRAP),'index.html')));
+test('meaningful document mutations still fail hash verification',()=>assert.notEqual(hash(canonicalHostedBytes(Buffer.from(served.replace('Unchanged','Changed')),'index.html')),hash(source)));
+test('extra executable code still fails hash verification',()=>assert.notEqual(hash(canonicalHostedBytes(Buffer.from(served.replace('</body>','<script>evil()</script></body>')),'index.html')),hash(source)));
+test('non-HTML content is not normalized',()=>{const bytes=Buffer.from(WIX_BOOTSTRAP);assert.equal(canonicalHostedBytes(bytes,'example.js'),bytes)});
