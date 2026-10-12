@@ -7,12 +7,12 @@ const ctx=canvas.getContext('2d',{alpha:false});if(!ctx)return;
 const W=1536,H=1024,TAU=Math.PI*2,low=matchMedia('(max-width:720px)').matches||Number(navigator.hardwareConcurrency||8)<=4;
 const scale=Math.min(low?.85:1.25,(window.devicePixelRatio||1));canvas.width=Math.round(W*scale);canvas.height=Math.round(H*scale);ctx.setTransform(scale,0,0,scale,0,0);
 const nodes=[
-{id:'aura',x:768,y:158,r:119,col:['#b2fff1','#e9d4a5','#63a8a8'],phase:0},
-{id:'aureglossa',x:440,y:312,r:116,col:['#7baefa','#c1a0fc','#9ee0ff'],phase:1.7},
-{id:'sessions',x:1096,y:310,r:114,col:['#ffd3a6','#fff2cb','#be7d9e'],phase:2.8},
-{id:'workshops',x:438,y:630,r:116,col:['#f6c587','#fce5b5','#e0a0cb'],phase:3.6},
-{id:'gestalt',x:1092,y:630,r:116,col:['#c4a2ff','#8ce5ef','#f4c5b9'],phase:4.7},
-{id:'journal',x:768,y:755,r:118,col:['#c5a4ff','#99b5ff','#e6c2d7'],phase:5.8}];
+{id:'aura',x:768,y:158,r:119,col:['#59f2d6','#f2daa0','#238e9a'],phase:0},
+{id:'aureglossa',x:440,y:312,r:116,col:['#468fff','#b88bff','#23b4e6'],phase:1.7},
+{id:'sessions',x:1096,y:310,r:114,col:['#eda85b','#ffe3a8','#a778b1'],phase:2.8},
+{id:'workshops',x:438,y:630,r:116,col:['#e8a34d','#ffe2a1','#c47cc9'],phase:3.6},
+{id:'gestalt',x:1092,y:630,r:116,col:['#9d75ff','#45dce7','#ce92ff'],phase:4.7},
+{id:'journal',x:768,y:755,r:118,col:['#aa73ff','#568bf5','#df97f4'],phase:5.8}];
 const core={x:768,y:476,r:154};let seed=912301;function rnd(){seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;}
 const stars=Array.from({length:low?240:480},()=>({x:rnd()*W,y:rnd()*H,r:.35+rnd()*1.1,p:rnd()*TAU,v:.1+rnd()*.5,z:.3+rnd()*.7}));
 const motes=Array.from({length:low?110:230},(_,i)=>({edge:i%6,phase:rnd(),lane:rnd()*2-1,r:.4+rnd()*1.2,speed:.018+rnd()*.038,depth:rnd()}));
@@ -26,6 +26,30 @@ ctx.fillStyle='#040710';ctx.fillRect(0,0,W,H);const g=ctx.createRadialGradient(7
 for(let k=0;k<9;k++){const x=[40,1480,650,980,120,1370,420,1150,760][k],y=[120,140,100,80,840,840,950,920,500][k];glow(x+Math.sin(t*.09+k*1.4)*8,y,160+(k%3)*70,k%3===0?'#9c83e1':k%3===1?'#3b8fb8':'#c99b6c',.30);}
 for(const s of stars){const tw=.57+.43*Math.sin(t*s.v+s.p);ctx.globalAlpha=(.16+.48*s.z)*tw;ctx.fillStyle=s.z>.65?'#e7e6df':'#92b3d5';ctx.beginPath();ctx.arc(s.x+Math.sin(t*.06+s.p)*s.z*2,s.y+Math.cos(t*.05+s.p)*s.z*2,s.r,0,TAU);ctx.fill();}ctx.globalAlpha=1;
 for(let i=0;i<12;i++){const a=i*TAU/12+.18,r=480+Math.sin(i*2.1)*75;ctx.beginPath();ctx.ellipse(core.x+Math.cos(a)*r*.75,core.y+Math.sin(a)*r*.55,150,420,a,0,TAU);ctx.strokeStyle=rgba(i%2?'#9b91bd':'#83b5c3',.035);ctx.lineWidth=1.2;ctx.stroke();}
+}
+// Cache the expensive translucent volumetric gradients once. The cache is
+// decorative and has no input listeners, network calls or stored data.
+let volumeCache=null;
+function makeVolumeCache(){
+ const sheet=document.createElement('canvas');sheet.width=canvas.width;sheet.height=canvas.height;
+ const painter=sheet.getContext('2d',{alpha:true});if(!painter)return null;
+ painter.setTransform(scale,0,0,scale,0,0);
+ for(const n of nodes){
+  const radius=n.r*(low?1.52:1.88);
+  const veil=painter.createRadialGradient(n.x-n.r*.18,n.y-n.r*.22,8,n.x,n.y,radius);
+  veil.addColorStop(0,rgba(n.col[0],.18));veil.addColorStop(.34,rgba(n.col[2],.16));
+  veil.addColorStop(.70,rgba(n.col[0],.065));veil.addColorStop(1,rgba(n.col[1],0));
+  painter.fillStyle=veil;painter.beginPath();painter.arc(n.x,n.y,radius,0,TAU);painter.fill();
+ }
+ const gold=painter.createRadialGradient(core.x,core.y,18,core.x,core.y,low?255:335);
+ gold.addColorStop(0,rgba('#ffe7aa',.24));gold.addColorStop(.37,rgba('#e0b983',.13));
+ gold.addColorStop(.76,rgba('#55a9da',.06));gold.addColorStop(1,rgba('#617acc',0));
+ painter.fillStyle=gold;painter.beginPath();painter.arc(core.x,core.y,low?255:335,0,TAU);painter.fill();
+ return sheet;
+}
+function spectralVolume(t){
+ if(!volumeCache)volumeCache=makeVolumeCache();if(!volumeCache)return;
+ ctx.save();ctx.globalAlpha=.86+.085*Math.sin(t*.22);ctx.drawImage(volumeCache,0,0,W,H);ctx.restore();
 }
 function bridge(n,k,t){const dx=n.x-core.x,dy=n.y-core.y,L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L,nx=-uy,ny=ux;
 const a={x:core.x+ux*core.r*.76,y:core.y+uy*core.r*.76},b={x:n.x-ux*n.r*.69,y:n.y-uy*n.r*.69};const curl=Math.sin(k*2.1)*44,wave=Math.sin(t*.27+k*1.7)*9;
@@ -76,6 +100,142 @@ function livingTissue(t){
   }
  }
 }
+// AURIC_DEPTH_01 — source-only material refinement after owner visual/motion study.
+// Six already-functional nodes remain the *only* attraction anchors. No new world
+// positions, hit targets, tracking, images, external requests or fake status.
+function auricConfluence(t){
+ ctx.save();ctx.lineCap='round';ctx.lineJoin='round';
+ for(let k=0;k<nodes.length;k++){
+  const n=nodes[k],f=focus[n.id]||0,{a,b,p1,p2,nx,ny}=bridge(n,k,t);
+  // A broad translucent *sheet* provides body beneath the original fine nerve tissue.
+  // Fewer strata on constrained devices retain the same geometry and functionality.
+  for(let layer=0;layer<(low?1:2);layer++){
+   const separation=layer*9-12,sway=Math.sin(t*.17+n.phase+layer*.85)*5;
+   const dye=ctx.createLinearGradient(a.x,a.y,b.x,b.y);
+   dye.addColorStop(0,rgba('#fff0c9',.015));
+   dye.addColorStop(.27,rgba(layer%2?n.col[1]:n.col[0],.07+f*.018));
+   dye.addColorStop(.65,rgba(layer%2?n.col[2]:n.col[0],.085+f*.025));
+   dye.addColorStop(1,rgba(n.col[0],.012));
+   ctx.beginPath();ctx.moveTo(a.x+nx*separation*.22,a.y+ny*separation*.22);
+   ctx.bezierCurveTo(p1.x+nx*(separation+sway),p1.y+ny*(separation+sway),
+     p2.x-nx*(separation*.65),p2.y-ny*(separation*.65),b.x,b.y);
+   ctx.strokeStyle=dye;ctx.lineWidth=(low?29:36)+layer*13+f*9;ctx.stroke();
+  }
+  // A continuous narrow braid winds across the real bridge, with a moving
+  // luminous current. Its phase is deterministic and advances only with t.
+  for(let strand=0;strand<(low?5:9);strand++){
+   const phase=strand*2.4+k*.61;
+   const offset=(strand-4)*2.6+Math.sin(t*.36+phase)*4;
+   ctx.beginPath();ctx.moveTo(a.x,a.y);
+   ctx.bezierCurveTo(p1.x+nx*offset,p1.y+ny*offset,
+     p2.x-nx*offset*.55,p2.y-ny*offset*.55,b.x,b.y);
+   ctx.strokeStyle=rgba(strand%3===0?'#fff1d0':n.col[strand%3],(strand%3===0?.35:.22)+f*.08);
+   ctx.lineWidth=strand%3===0?1.7:.85;ctx.stroke();
+  }
+  const phase=(t*.019+k*.117)%1;
+  for(let j=0;j<(low?2:4);j++){
+   const u=(phase+j/(low?2:4))%1;
+   const point=curve(a,p1,p2,b,u),fade=Math.sin(Math.PI*u);
+   glow(point.x,point.y,12+fade*11,j%2?n.col[0]:'#ffedcf',(.23+f*.20)*fade);
+  }
+ }
+ ctx.restore();
+}
+function relationalWeave(t){
+ // The six existing worlds define this softly breathing membrane. Bridges are
+ // decoration, not navigation and never suggest a measured or AI-generated state.
+ const order=[0,2,4,5,3,1];
+ ctx.save();ctx.lineCap='round';
+ for(let k=0;k<order.length;k++){
+  const a=nodes[order[k]],b=nodes[order[(k+1)%order.length]];
+  const dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy),ux=dx/len,uy=dy/len;
+  const p0={x:a.x+ux*a.r*.77,y:a.y+uy*a.r*.77};
+  const p3={x:b.x-ux*b.r*.77,y:b.y-uy*b.r*.77};
+  const cx=(p0.x+p3.x)/2-core.x,cy=(p0.y+p3.y)/2-core.y,cl=Math.hypot(cx,cy)||1;
+  const sway=28+Math.sin(t*.16+k*1.81)*6,ox=cx/cl*sway,oy=cy/cl*sway;
+  const p1={x:lerp(p0.x,p3.x,.31)+ox,y:lerp(p0.y,p3.y,.31)+oy};
+  const p2={x:lerp(p0.x,p3.x,.69)+ox,y:lerp(p0.y,p3.y,.69)+oy};
+  const dye=ctx.createLinearGradient(p0.x,p0.y,p3.x,p3.y);
+  dye.addColorStop(0,rgba(a.col[0],.11));dye.addColorStop(.47,rgba('#f8d9ae',.17));
+  dye.addColorStop(1,rgba(b.col[0],.11));
+  ctx.beginPath();ctx.moveTo(p0.x,p0.y);ctx.bezierCurveTo(p1.x,p1.y,p2.x,p2.y,p3.x,p3.y);
+  ctx.lineWidth=low?19:28;ctx.strokeStyle=dye;ctx.stroke();
+  for(let thread=0;thread<(low?2:4);thread++){
+   const offset=(thread-2.5)*2.0+Math.sin(t*.29+thread*1.5+k)*1.8;
+   ctx.beginPath();ctx.moveTo(p0.x,p0.y);
+   ctx.bezierCurveTo(p1.x-uy*offset,p1.y+ux*offset,p2.x-uy*offset*.6,p2.y+ux*offset*.6,p3.x,p3.y);
+   ctx.strokeStyle=rgba(thread%3===0?'#fff2d2':thread%2?a.col[0]:b.col[0],thread%3===0?.39:.24);
+   ctx.lineWidth=thread%3===0?1.1:.75;ctx.stroke();
+  }
+  for(let j=0;j<2;j++){
+   const u=(j*.47+.19+t*.013+k*.07)%1,q=curve(p0,p1,p2,p3,u);
+   glow(q.x,q.y,11+(j*4),'#ffe8bf',.21);
+  }
+ }
+ ctx.restore();
+}
+function auricDepth(n,t,f){
+ const x=n.x,y=n.y,r=n.r;
+ ctx.save();
+ // The inner volume is cached by spectralVolume; moving filaments remain live.
+ // Narrow organic refractive ribbons preserve the orb itself as a pocket world.
+ ctx.beginPath();ctx.arc(x,y,r*.88,0,TAU);ctx.clip();
+ for(let j=0;j<(low?5:8);j++){
+   const spin=(j*2.39996+n.phase+t*.015),spread=r*(.48+j*.025);
+   ctx.beginPath();
+   const x0=x+Math.cos(spin)*spread,y0=y+Math.sin(spin)*spread*.70;
+   ctx.moveTo(x0,y0);
+   ctx.bezierCurveTo(x+Math.cos(spin+.7)*r*.88,y+Math.sin(spin+.7)*r*.35,
+     x+Math.cos(spin+2.3)*r*.78,y+Math.sin(spin+2.3)*r*.88,
+     x+Math.cos(spin+3.6)*spread,y+Math.sin(spin+3.6)*spread*.72);
+   ctx.strokeStyle=rgba(j%3===0?'#fff0d0':n.col[j%3],j%3===0?.34+f*.08:.23+f*.08);
+   ctx.lineWidth=j%3===0?1.65:.9;ctx.stroke();
+ }
+ ctx.restore();
+ // Fine porcelain-gold caustic along the lightward rim. This sits below the
+ // original icon stroke to retain its recognizable audited/abstract symbol.
+ ctx.beginPath();ctx.ellipse(x,y-r*.04,r*.93,r*.92,n.phase*.035,Math.PI*1.08,Math.PI*1.88);
+ ctx.lineWidth=2.6;ctx.strokeStyle=rgba(n.col[1],.49+f*.17);
+ ctx.shadowColor=n.col[0];ctx.shadowBlur=18;ctx.stroke();ctx.shadowBlur=0;
+}
+function spectralLens(n,t,f){
+ const x=n.x,y=n.y,r=n.r;
+ ctx.save();ctx.globalCompositeOperation='screen';
+ for(let j=0;j<(low?1:2);j++){
+   const tilt=.15+j*.54+n.phase*.09+t*.004*(j%2?-1:1),rx=r*(.91+j*.075),ry=r*(.61+j*.08);
+   ctx.beginPath();ctx.ellipse(x,y,rx,ry,tilt,Math.PI*.91,Math.PI*1.94);
+   ctx.lineWidth=j%2?1.8:2.6;
+   ctx.strokeStyle=rgba(j%2?n.col[1]:n.col[0],.48+f*.10);
+   ctx.stroke();
+ }
+ // Localized caustic flares; actual input focus strengthens a world only.
+ for(let j=0;j<2;j++){
+  const a=(j+.2)*TAU/3+n.phase*.4+t*.015;
+  const xx=x+Math.cos(a)*r*1.02,yy=y+Math.sin(a)*r*.92;
+  glow(xx,yy,low?11:17,j===0?'#ffecb9':n.col[j%3],.54+f*.2);
+ }
+ ctx.restore();
+}
+function centralIris(t){
+ const x=core.x,y=core.y,r=core.r;
+ ctx.save();ctx.lineCap='round';
+ // A breathing, reversible iris of filaments is a visible connection to six
+ // worlds, not a progress indicator, artificial scan, or inferred cognition.
+ for(let k=0;k<12;k++){
+   const a=k*TAU/12+t*.011*(k%2?-1:1),radius=r*(.38+.026*k);
+   ctx.beginPath();ctx.moveTo(x+Math.cos(a)*radius,y+Math.sin(a)*radius);
+   ctx.bezierCurveTo(x+Math.cos(a+.8)*radius*1.2,y+Math.sin(a+.8)*radius*1.2,
+     x+Math.cos(a+1.9)*radius*.83,y+Math.sin(a+1.9)*radius*.83,
+     x+Math.cos(a+3.35)*radius,y+Math.sin(a+3.35)*radius);
+   ctx.strokeStyle=rgba(k%3===0?'#fff1ce':k%2?'#8fd8e4':'#d3b3f6',k%3===0?.35:.22);
+   ctx.lineWidth=k%3===0?1.55:.82;ctx.stroke();
+ }
+ const prism=ctx.createRadialGradient(x,y,3,x,y,r*.91);
+ prism.addColorStop(0,rgba('#fff9e9',.56));prism.addColorStop(.12,rgba('#ffeac0',.25));
+ prism.addColorStop(.45,rgba('#8fd7df',.07));prism.addColorStop(1,rgba('#fff7e0',0));
+ ctx.fillStyle=prism;ctx.beginPath();ctx.arc(x,y,r*.91,0,TAU);ctx.fill();
+ ctx.restore();
+}
 function sphere(n,k,t,f){const x=n.x,y=n.y,r=n.r,R=r*(1+.014*Math.sin(t*.41+n.phase));
 const base=ctx.createRadialGradient(x-R*.23,y-R*.27,R*.03,x,y,R*1.15);base.addColorStop(0,rgba(n.col[0],.18));base.addColorStop(.35,rgba(n.col[2],.18));base.addColorStop(.69,'rgba(27,44,73,.32)');base.addColorStop(.89,'rgba(12,23,44,.21)');base.addColorStop(1,'rgba(5,8,18,0)');ctx.beginPath();ctx.arc(x,y,R*1.07,0,TAU);ctx.fillStyle=base;ctx.fill();glow(x,y,R*1.9,n.col[0],.45+f*.18);
 for(let j=0;j<8;j++){ctx.beginPath();ctx.ellipse(x,y,R*(.71+j*.036),R*(.46+j*.064),.24+j*.32+n.phase*.13,0,TAU);ctx.strokeStyle=rgba(j%3===0?'#ffe9bd':n.col[j%3],.075+(j%3===0?.11:0)+f*.045);ctx.lineWidth=j%3===0?1.1:.5;ctx.stroke();}
@@ -111,13 +271,14 @@ for(let j=0;j<6;j++){const a=j*TAU/6,rr=105;glow(x+Math.cos(a)*rr,y+Math.sin(a)*
 function particles(t){for(const p of motes){const n=nodes[p.edge],geo=bridge(n,p.edge,t),u=(p.phase+t*p.speed)%1,q=curve(geo.a,geo.p1,geo.p2,geo.b,u),env=Math.sin(Math.PI*u),offset=p.lane*(8+env*20),x=q.x+geo.nx*offset,y=q.y+geo.ny*offset;ctx.globalAlpha=(.18+.38*p.depth)*env;ctx.fillStyle=p.depth>.55?'#f9e4c3':n.col[0];ctx.beginPath();ctx.arc(x,y,p.r,0,TAU);ctx.fill();if(p.depth>.89)glow(x,y,9,n.col[0],.12*env);}ctx.globalAlpha=1;}
 function draw(){const t=time;ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';background(t);ctx.globalCompositeOperation='screen';
 // Organic material spans the same world positions as the functional hit targets.
-livingTissue(t);
+spectralVolume(t);livingTissue(t);
+relationalWeave(t);auricConfluence(t);
 for(let k=0;k<nodes.length;k++){const n=nodes[k],f=focus[n.id]||0;membrane(n,k,t,f);}
-particles(t);nexus(t);
-for(let k=0;k<nodes.length;k++)sphere(nodes[k],k,t,focus[nodes[k].id]||0);
+particles(t);nexus(t);centralIris(t);
+for(let k=0;k<nodes.length;k++){const f=focus[nodes[k].id]||0;auricDepth(nodes[k],t,f);sphere(nodes[k],k,t,f);spectralLens(nodes[k],t,f);}
 // Subtle connected nerve filaments and micro-stars around the outer web.
 for(let j=0;j<35;j++){const a=j*TAU/35,rad=250+90*Math.sin(j*2.4),x=core.x+Math.cos(a)*rad*1.62,y=core.y+Math.sin(a)*rad*1.2;glow(x,y,4+(j%5)*2,j%3?'#b8c8e2':'#ffe6bd',.12);}
-canvas.dataset.material='procedural-living-constellation-v10';canvas.dataset.frames=String(++frames);canvas.dataset.motion=app.state.still||document.hidden?'paused':'running';canvas.dataset.selected=app.state.selected||'';
+canvas.dataset.material='procedural-living-constellation-v10';canvas.dataset.visualLayer='auric-depth-01';canvas.dataset.cachedVolume=volumeCache?'ready':'unsupported';canvas.dataset.frames=String(++frames);canvas.dataset.motion=app.state.still||document.hidden?'paused':'running';canvas.dataset.selected=app.state.selected||'';
 }
 function frame(now){raf=0;if(app.state.still||document.hidden){draw();return;}if(now-lastFrame<34){raf=requestAnimationFrame(frame);return;}const dt=last?Math.min(.08,Math.max(0,(now-last)/1000)):.033;last=now;lastFrame=now;time+=dt;
 for(const n of nodes){const target=app.state.focus===n.id||app.state.selected===n.id?1:0;focus[n.id]+=(target-focus[n.id])*(1-Math.exp(-dt*2.8));}draw();raf=requestAnimationFrame(frame);}

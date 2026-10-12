@@ -13,7 +13,7 @@ RUNTIME = ROOT/'hud/prototype'
 INTEGRATION = ROOT/'wix/integration'
 PAGES = {'aura':'aura-dynamics.html','aureglossa':'living-tongue.html','sessions':'inner-sanctum.html','workshops':'convergence.html','gestalt':'living-archive.html','journal':'astral-journal.html','threshold':'living-threshold.html'}
 V10 = RUNTIME/'experiments/procedural-v10'
-VERSION = '1.0.0-integration.1'
+VERSION = '1.1.0-auric-preview.1'
 
 def once(text: str, old: str, new: str) -> str:
     if text.count(old) != 1: raise ValueError('Integration anchor changed: '+old[:90])
