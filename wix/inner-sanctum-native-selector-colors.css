@@ -25,7 +25,8 @@ html.as-public #SITE_PAGES #x5jw3 [data-hook="plan"] {
   box-shadow: inset 0 0 45px #80c9cc0c, 0 15px 60px #0004 !important;
 }
 html.as-public #SITE_PAGES #x5jw3 [data-hook="plan"] > div,
-html.as-public #SITE_PAGES #x5jw3 [data-hook="plan"] > div > div {
+html.as-public #SITE_PAGES #x5jw3 [data-hook="plan"] > div > div,
+html.as-public #SITE_PAGES #x5jw3 [data-hook="plan"] > div > div > div {
   background: transparent !important;
   color: inherit !important;
 }
