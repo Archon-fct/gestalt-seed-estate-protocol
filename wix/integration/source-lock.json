@@ -1,7 +1,7 @@
 {
   "hud/prototype/adaptive-guide.js": "eef15ce53c1bf085146f3897d7a1465f531f582f1a60361b79cf4803f3b43cbc",
   "hud/prototype/astral-journal.html": "5c793e784a9367679ad0f76a322295fbc8933be2c6c8f10b7107aad325336889",
-  "hud/prototype/aura-dynamics.html": "dfff76ea4bec6f5a65827ea94f47842bcb69b962a1b851a480e4ed2dc53e0c43",
+  "hud/prototype/aura-dynamics.html": "30b43c8369b10781e083b4cd863ba3e994558a6a0bc2a5aa15664eb942fff6ef",
   "hud/prototype/aureglossa-atlas.css": "eb3179001b5ecb6bc5af2e68b7e74263c69bd377e5164e3d89aa9787c64c4e16",
   "hud/prototype/aureglossa-atlas.js": "840a46420f6bd12f56fd0d9f1d1421011109834205ff863f4c13be12e7e091d6",
   "hud/prototype/constellation-passport.js": "284b6687a9e758f74fa85e515f2c309f56f15fc162eb719520949b319ce0afad",
@@ -16,7 +16,7 @@
   "hud/prototype/experiments/procedural-v10/procedural.js": "150469e11b6c4e6cc9610a05eacbe318e80af61784326cba806dd82c426eebaa",
   "hud/prototype/experiments/procedural-v10/style.css": "73c5fa08f22fa2c7a84ab7ff96b514ed668834662d7b2a18c80efd83749b8b46",
   "hud/prototype/inner-sanctum.html": "986e25002e8f15211425610d03d4518ec5a7c067c245f8ccd768dd3474687d01",
-  "hud/prototype/living-archive.html": "fe0dc2cb6dfd00a38d873d59a9bf8e5c883442c6cfd79c166e2b0e58e74d5e18",
+  "hud/prototype/living-archive.html": "a09de83d5392d859193509390b67df0cad98fed662e76cf1a7cf6297c6f72165",
   "hud/prototype/living-pocket-material.css": "70bad232cd4ce9973c9685f5f7fb00e636659d5b6f5a404966c1cd7ac9164531",
   "hud/prototype/living-pocket-material.js": "8d6dae6a0ed52b508bff7d2208484ead81861fd99172156a7733b314624732fd",
   "hud/prototype/living-thread-state.js": "c9dc812de5677d6a04775f0632ae91894c6ef69a27974c7ecf423a64ce6c0588",
@@ -26,5 +26,6 @@
   "hud/prototype/public-provenance.json": "a680a60434d4dbfc6bc0af78e6f8a3ca0f82fdee1204f4f6a06383199d2a9252",
   "hud/prototype/soul.js": "9d25f81bcdcbe7132775316ae08458e08b3d709d5337a8afbba7fb1b38f32dfa",
   "hud/prototype/public-relationships.json": "7aee5a5f356ed12e25d79528aa73c5c438246d7804c4875e9eb03bc39676616d",
-  "hud/prototype/experiments/procedural-v10/material-atlas.js": "61375038958c8e6bc83e76b20a0bab87f7f453441dbd965cc2d00053ac72f882"
+  "hud/prototype/experiments/procedural-v10/material-atlas.js": "61375038958c8e6bc83e76b20a0bab87f7f453441dbd965cc2d00053ac72f882",
+  "hud/prototype/layer-lens.js": "e0603a9bd0f785480d96dcc647b91b5878f46f6efa8822cded494c5334d374fe"
 }
