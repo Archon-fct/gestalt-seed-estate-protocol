@@ -64,13 +64,21 @@ return {a,b,p1:{x:lerp(a.x,b.x,.33)+nx*(curl+wave),y:lerp(a.y,b.y,.33)+ny*(curl+
 // and selective caustics instead of uniformly spaced wireframe ellipses.
 function silk(p,x1,y1,x2,y2,bend,width,color,phase){
  const dx=x2-x1,dy=y2-y1,L=Math.hypot(dx,dy),nx=-dy/L,ny=dx/L;
- for(let j=0;j<132;j++){
-  const u=j/131-.5,fold=Math.sin(u*6.2+phase)*.65+u*.65,side=fold*width;
-  p.beginPath();p.moveTo(x1+nx*side*.65,y1+ny*side*.65);
-  p.bezierCurveTo(lerp(x1,x2,.23)+nx*(bend+side*.23),lerp(y1,y2,.23)+ny*(bend+side*.23),lerp(x1,x2,.69)+nx*(-bend*.42+side*.8),lerp(y1,y2,.69)+ny*(-bend*.42+side*.8),x2+nx*side*.65,y2+ny*side*.65);
-  const glint=Math.pow(.5+.5*Math.cos(u*11+phase),12),a=.013+glint*.055;
-  const g=p.createLinearGradient(x1,y1,x2,y2);g.addColorStop(0,rgba(color,.004));g.addColorStop(.28,rgba(color,a));g.addColorStop(.55,rgba(glint>.7?'#ffebc7':color,a*1.2));g.addColorStop(.83,rgba(color,a));g.addColorStop(1,rgba(color,.003));
-  p.strokeStyle=g;p.lineWidth=1.1;p.stroke();
+ const lanes=160,samples=64;
+ for(let j=0;j<lanes;j++){
+  const v=j/(lanes-1)-.5,fold=Math.sin(v*5.9+phase)*.65+v*.65,side=fold*width;
+  const glint=Math.pow(.5+.5*Math.cos(v*13+phase),18);
+  p.beginPath();
+  for(let st=0;st<=samples;st++){
+   const u=st/samples,envelope=Math.sin(Math.PI*u),swirl=Math.sin(u*TAU+phase)*bend*envelope;
+   const gathered=Math.pow(Math.abs(Math.cos(u*Math.PI*1.35+phase*.15)),2)*.7+.12;
+   const displace=side*(.35+.65*envelope)*gathered+swirl+Math.sin(u*12+fold*3+phase)*envelope*width*.1;
+   const xx=lerp(x1,x2,u)+nx*displace,yy=lerp(y1,y2,u)+ny*displace;
+   st?p.lineTo(xx,yy):p.moveTo(xx,yy);
+  }
+  const a=.008+glint*.11,g=p.createLinearGradient(x1,y1,x2,y2);
+  g.addColorStop(0,rgba(color,.003));g.addColorStop(.2,rgba(color,a*.8));g.addColorStop(.5,rgba(glint>.7?'#ffecd0':color,a));g.addColorStop(.83,rgba(color,a*.75));g.addColorStop(1,rgba(color,.003));
+  p.strokeStyle=g;p.lineWidth=glint>.7?.8:1.3;p.stroke();
  }
 }
 function makeWeb(){
@@ -85,14 +93,27 @@ function makeWeb(){
  // Large flowing envelope embraces the field. It is material, not landscape.
  const paths=[[-130,700,490,65,-230,160,'#c5a78c'],[160,930,1310,845,-160,140,'#799aab'],[1070,90,1550,760,215,120,'#b1bbd2'],[340,180,1180,720,260,180,'#829fb5'],[80,550,1380,360,-145,155,'#d2b895'],[260,885,1250,90,-170,180,'#989bba']];
  for(let i=0;i<paths.length;i++)silk(p,...paths[i],i*.75);
+ for(let k=0;k<6;k++){
+  const n=nodes[k],tilt=n.phase*.45;
+  for(let band=0;band<4;band++)for(let j=0;j<65;j++){
+   const v=j/64,r=n.r*(1.04+v*.38),start=tilt+band*1.58,span=2.2;
+   p.beginPath();
+   for(let st=0;st<=70;st++){
+    const a=start+st/70*span,bulge=1+.065*Math.sin(a*3+v*4+n.phase)+.08*Math.sin(a*2-v*2),xx=n.x+Math.cos(a)*r*bulge,yy=n.y+Math.sin(a)*r*bulge*.96;
+    st?p.lineTo(xx,yy):p.moveTo(xx,yy);
+   }
+   const crest=Math.pow(.5+.5*Math.sin(v*10+band),16);
+   p.strokeStyle=rgba(band%2?'#efd4ac':n.col[0],(.003+crest*.07)*(1-v*.6));p.lineWidth=crest>.5?.7:1.1;p.stroke();
+  }
+ }
  // Soft micro-granulation follows the surfaces, with empty intervals.
- for(let i=0;i<2100;i++){
+ for(let i=0;i<5000;i++){
   const a=rnd()*TAU,rr=210+rnd()*440,x=core.x+Math.cos(a)*rr*1.35,y=core.y+Math.sin(a)*rr*.92;
   if(y<90||y>960)continue;
-  const q=fbm(x*.007,y*.007);if(q<.54)continue;
-  p.fillStyle=rgba(i%4?'#c3bea9':'#a8d6e4',.08+rnd()*.3);const r=.25+rnd()*.72;p.fillRect(x,y,r,r);
+  const q=fbm(x*.007,y*.007);if(q<.50)continue;
+  p.fillStyle=rgba(i%4?'#c3bea9':'#a8d6e4',.10+rnd()*.45);const r=.22+rnd()*.72;p.fillRect(x,y,r,r);
  }
- for(const [x,y,r]of [[255,176,10],[603,370,9],[942,469,10],[201,587,8],[1258,497,10],[979,856,12],[373,820,9],[760,889,14],[1411,269,6]])flare(p,x,y,r,'#ffe1af',.72);
+ for(const [x,y,r]of [[255,176,10],[603,370,9],[942,469,10],[201,587,8],[1258,497,10],[979,856,12],[373,820,9],[760,889,14],[1411,269,6]])flare(p,x,y,r,'#ffe1af',.95);
  return c;
 }
 function livingTissue(t){if(!webCache)webCache=makeWeb();if(webCache){ctx.save();ctx.globalCompositeOperation='screen';ctx.globalAlpha=.94+.035*Math.sin(t*.22);ctx.drawImage(webCache,0,0,W,H);ctx.restore();}}
@@ -122,7 +143,8 @@ function makeShell(n){
   const rim=Math.exp(-Math.pow((rad-(.948+.018*Math.sin(ang*5+n.phase)))/.033,2));
   const inner=clamp(1-rad),cloud=Math.pow(clamp(turbulence*1.8-.53),2.5)*clamp(1-rad*rad);
   const facing=clamp(-X*.5-Y*.6+.3),fresnel=Math.pow(clamp(rad),5);
-  const glowRim=rim*(.28+facing*.7),surface=ribbon*(.03+fresnel*.13)*clamp((1.09-rad)*12),volume=cloud*.48;
+  const caustic=.4+.6*Math.pow(.5+.5*Math.sin(ang*5+v*9),2);
+  const glowRim=rim*(.10+facing*.63)*caustic,surface=ribbon*(.05+fresnel*.2)*clamp((1.09-rad)*12),volume=cloud*.4;
   const i=(y*size+x)*4;
   d[i]=3+base[0]*(volume+surface*.7)+light[0]*glowRim*.76;
   d[i+1]=6+base[1]*(volume+surface)+light[1]*glowRim*.78;
@@ -140,7 +162,27 @@ function makeShell(n){
    step?p.lineTo(xx,yy):p.moveTo(xx,yy);
   }
   const highlight=Math.pow(.5+.5*Math.sin(u*12+band*1.3),12);
-  p.strokeStyle=rgba(band===0?'#e7d4af':n.col[band%3],.006+highlight*.033);p.lineWidth=.8;p.stroke();
+  const rimLight=p.createLinearGradient(cx-r,cy-r,cx+r,cy+r);rimLight.addColorStop(0,rgba(n.col[0],.008+highlight*.035));rimLight.addColorStop(.3,rgba('#f6e4c4',.01+highlight*.033));rimLight.addColorStop(.5,rgba(n.col[band%3],.003));rimLight.addColorStop(.8,rgba(n.col[0],.006+highlight*.02));rimLight.addColorStop(1,rgba('#e7d4af',.003));p.strokeStyle=rimLight;p.lineWidth=.8;p.stroke();
+ }
+ // Curled translucent tongues skim the shell, with dark pockets between them.
+ for(let k=0;k<7;k++)for(let j=0;j<28;j++){
+  const lane=j/27,phase=k*TAU/7+n.phase,baseAngle=phase+(lane-.5)*.2;
+  p.beginPath();
+  for(let st=0;st<=48;st++){
+   const u=st/48,a=baseAngle+u*2.65,rr=r*(.78+.16*Math.sin(u*3.1+lane*.8)+.05*Math.sin(a*4+lane));
+   const xx=cx+Math.cos(a)*rr,yy=cy+Math.sin(a)*rr*.88;
+   st?p.lineTo(xx,yy):p.moveTo(xx,yy);
+  }
+  const light=Math.pow(.5+.5*Math.sin(lane*9+k),8);
+  p.strokeStyle=rgba(j%6===0?'#f8dcb0':n.col[k%3],.011+light*.026);p.lineWidth=.7;p.stroke();
+ }
+ // Surface granulation produces tiny bright folds rather than a uniform outline.
+ for(let j=0;j<2800;j++){
+  const a=rnd()*TAU,rad=.64+rnd()*.41,rr=rad*r;
+  const w=fbm(Math.cos(a)*7+n.phase,Math.sin(a)*7+rad*4),crest=Math.pow(.5+.5*Math.sin(a*7+rad*16+w*8),8);
+  if(crest<.35)continue;
+  p.fillStyle=rgba(j%4===0?'#ffe7c2':n.col[0],crest*(.08+rnd()*.3));
+  const px=cx+Math.cos(a)*rr,py=cy+Math.sin(a)*rr*.93,size=.2+rnd()*.7;p.fillRect(px,py,size,size);
  }
  for(let j=0;j<8;j++){
   const a=j*2.399+n.phase,rr=r*(.75+rnd()*.28);flare(p,cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.94,2+rnd()*3,j%2?n.col[0]:'#ffe6b6',.42+rnd()*.28);
