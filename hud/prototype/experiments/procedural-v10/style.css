@@ -18,3 +18,8 @@
 /* Protect the right-side inscription from the persistent booking action. */
 .right-inscription{top:153px}
 .center-name{background:radial-gradient(ellipse at center,#050a16ca 0%,#08101a88 45%,#090e1600 81%)}
+
+/* Fidelity lock, material 02: type is embedded in light, without a label card. */
+.center-name{color:#261b12;background:none;text-shadow:0 1px 7px #fff2c9,0 0 18px #f6d99e;padding:13px 16px}
+.center-name small{color:#30231a;text-shadow:0 0 9px #ffeac4}.center-name i{color:#2c2119}
+.brand-sigil{box-shadow:0 0 24px #e9c79518}.world-name:not(.center-name){text-shadow:0 2px 9px #01040c,0 0 6px #01040c,0 0 20px #01040c}
