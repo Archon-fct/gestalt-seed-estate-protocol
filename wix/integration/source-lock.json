@@ -11,9 +11,9 @@
   "hud/prototype/convergence.html": "ebbbd2b3d2888a1c84bf9e6d6c55f2899e836d7a38f3b5931e5831bc28ea50ad",
   "hud/prototype/experiments/procedural-v10/app.js": "4acc2cd4fd1a3eaeb7e4b395a32fb2c54b242b0d06c3a93ab26b8aaecb73aa4f",
   "hud/prototype/experiments/procedural-v10/gaze.js": "28e3be10b6ed5f6ce90f344e760038db8221c4dcaf0f04ed42f8553ac1c2e184",
-  "hud/prototype/experiments/procedural-v10/index.html": "e9b59c02c85c6eec2c3e800125e112b7b4dbe6c9ad9e9b1a7c485167750e0ba7",
+  "hud/prototype/experiments/procedural-v10/index.html": "213dbf625838fc87b18e388d96757b3aa9dfc3eb93587ff3456969685867ae41",
   "hud/prototype/experiments/procedural-v10/portal.js": "25c0b0065bdf0f340eace89f0d8cf09b5d61e4b1c26979e18946527788054ce6",
-  "hud/prototype/experiments/procedural-v10/procedural.js": "ae1b70d3f841dd5634eee7c2cc1c8d5ce811c77a01e3cbf2235883bb1c466dc8",
+  "hud/prototype/experiments/procedural-v10/procedural.js": "0e5393daab043f33940fc3f46ec3ae6969f44edc1c6da85a804cdea490e540b8",
   "hud/prototype/experiments/procedural-v10/style.css": "37ff005124a8175cbfbf875d6b51319c05f15abcc7b59f01a7df969f4cca688a",
   "hud/prototype/inner-sanctum.html": "986e25002e8f15211425610d03d4518ec5a7c067c245f8ccd768dd3474687d01",
   "hud/prototype/living-archive.html": "fe0dc2cb6dfd00a38d873d59a9bf8e5c883442c6cfd79c166e2b0e58e74d5e18",
@@ -25,5 +25,6 @@
   "hud/prototype/public-graph.json": "0e49d2baa4412b0cd4efa6a6c60d1b4f7583ddc2bac25f08f18e0039d37a4b7c",
   "hud/prototype/public-provenance.json": "a680a60434d4dbfc6bc0af78e6f8a3ca0f82fdee1204f4f6a06383199d2a9252",
   "hud/prototype/soul.js": "9d25f81bcdcbe7132775316ae08458e08b3d709d5337a8afbba7fb1b38f32dfa",
-  "hud/prototype/public-relationships.json": "7aee5a5f356ed12e25d79528aa73c5c438246d7804c4875e9eb03bc39676616d"
+  "hud/prototype/public-relationships.json": "7aee5a5f356ed12e25d79528aa73c5c438246d7804c4875e9eb03bc39676616d",
+  "hud/prototype/experiments/procedural-v10/material-atlas.js": "61375038958c8e6bc83e76b20a0bab87f7f453441dbd965cc2d00053ac72f882"
 }
