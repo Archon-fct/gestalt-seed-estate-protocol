@@ -131,6 +131,13 @@
       navigation.querySelector('.nav-silence').onclick = () => { this.silence(); this.say('Silence — sound stopped.'); };
       navigation.querySelector('.nav-book').onclick = () => { this.closeNavigation(); this.navigate('sessions'); };
       navigation.addEventListener('cancel', e => { e.preventDefault(); this.closeNavigation(); });
+      navigation.addEventListener('keydown', e => {
+        if(e.key !== 'Tab') return;
+        const controls=[...navigation.querySelectorAll('button,input,a[href]')].filter(el=>!el.disabled && el.getClientRects().length);
+        const first=controls[0], last=controls.at(-1), active=this.shadowRoot.activeElement;
+        if(e.shiftKey && active===first){e.preventDefault();last?.focus();}
+        else if(!e.shiftKey && active===last){e.preventDefault();first?.focus();}
+      });
       navigation.addEventListener('click', e => {
         const r = navigation.getBoundingClientRect();
         if(e.target === navigation && (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom)) { e.stopPropagation(); this.closeNavigation(); }
