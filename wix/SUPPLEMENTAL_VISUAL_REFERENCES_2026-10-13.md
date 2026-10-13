@@ -1,7 +1,7 @@
-# Supplemental visual references — 2026-10-13, 11:26 America/Denver
+# Authoritative material and motion references — 2026-10-13
 
 Owner supplied one still and four recordings as more visuals to work with while building.
-Supplemental material/motion references only. Existing six-world auric Nexus composition and separate cyan/violet SPECTRA iris remain authoritative. No replacement architecture or new visual acceptance is implied.
+Owner promoted these references to the authoritative baseline at 11:43 America/Denver on 2026-10-13. They are binding material, depth, geometry and motion standards, not optional inspiration. Existing six-world auric Nexus composition and separate cyan/violet SPECTRA iris remain authoritative alongside them. No replacement architecture or acceptance of the current running implementation is implied.
 
 ## Inspection
 Still inspected in conversation. Three frames sampled per recording at 15%, 50%, and 85% duration. This is sampled-frame analysis, not full playback or verified timing/easing.
@@ -58,3 +58,4 @@ Raw references remain private source material, not public runtime assets. Screen
 ## Continuity
 Public material04 preview remains unchanged by this reference intake.
 Private Studio login correction and stage diagnostics are published; Nox runtime unlock remains unresolved per PR8 diagnosis receipt. Do not let visual work erase or relabel that blocker.
+
