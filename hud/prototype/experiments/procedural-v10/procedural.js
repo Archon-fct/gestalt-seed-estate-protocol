@@ -236,11 +236,37 @@ function centralIris(t){
  ctx.fillStyle=prism;ctx.beginPath();ctx.arc(x,y,r*.91,0,TAU);ctx.fill();
  ctx.restore();
 }
+// Filled refractive shells give the existing worlds depth without moving targets.
+// One reusable bitmap per world; no per-frame allocation for the shell material.
+const shellCache=new Map();
+function refractiveShell(n){
+ let image=shellCache.get(n.id);
+ if(!image){
+  image=document.createElement('canvas');image.width=image.height=320;
+  const p=image.getContext('2d');if(!p)return;
+  const r=132,x=160,y=160;
+  let g=p.createRadialGradient(x-r*.2,y-r*.25,r*.05,x,y,r);
+  g.addColorStop(0,'rgba(5,12,25,.65)');g.addColorStop(.65,'rgba(3,8,19,.88)');
+  g.addColorStop(.84,rgba(n.col[2],.48));g.addColorStop(.93,rgba(n.col[0],.54));
+  g.addColorStop(.985,rgba(n.col[1],.76));g.addColorStop(1,rgba(n.col[0],0));
+  p.fillStyle=g;p.beginPath();p.arc(x,y,r,0,TAU);p.fill();
+  p.globalCompositeOperation='screen';
+  for(let j=0;j<3;j++){
+   p.save();p.translate(x,y);p.rotate(-.65+j*.16+n.phase*.12);
+   const light=p.createRadialGradient(-32,-55,3,-20,-20,r);
+   light.addColorStop(0,rgba('#fff0cd',.54-j*.1));light.addColorStop(.5,rgba(n.col[0],.18));light.addColorStop(1,rgba(n.col[0],0));
+   p.fillStyle=light;p.beginPath();p.ellipse(-20,-30,r*.76,r*.91,0,0,TAU);p.fill();p.restore();
+  }
+  shellCache.set(n.id,image);
+ }
+ ctx.save();ctx.globalCompositeOperation='source-over';
+ const size=n.r*2.42;ctx.drawImage(image,n.x-size/2,n.y-size/2,size,size);ctx.restore();
+}
 function sphere(n,k,t,f){const x=n.x,y=n.y,r=n.r,R=r*(1+.014*Math.sin(t*.41+n.phase));
 const base=ctx.createRadialGradient(x-R*.23,y-R*.27,R*.03,x,y,R*1.15);base.addColorStop(0,rgba(n.col[0],.18));base.addColorStop(.35,rgba(n.col[2],.18));base.addColorStop(.69,'rgba(27,44,73,.32)');base.addColorStop(.89,'rgba(12,23,44,.21)');base.addColorStop(1,'rgba(5,8,18,0)');ctx.beginPath();ctx.arc(x,y,R*1.07,0,TAU);ctx.fillStyle=base;ctx.fill();glow(x,y,R*1.9,n.col[0],.45+f*.18);
 for(let j=0;j<8;j++){ctx.beginPath();ctx.ellipse(x,y,R*(.71+j*.036),R*(.46+j*.064),.24+j*.32+n.phase*.13,0,TAU);ctx.strokeStyle=rgba(j%3===0?'#ffe9bd':n.col[j%3],.075+(j%3===0?.11:0)+f*.045);ctx.lineWidth=j%3===0?1.1:.5;ctx.stroke();}
 for(let j=0;j<14;j++){const a=j*TAU/14+n.phase*.3,rr=R*(.71+.18*Math.sin(j*1.72)),x0=x+Math.cos(a)*rr,y0=y+Math.sin(a)*rr;ctx.beginPath();ctx.moveTo(x0,y0);ctx.quadraticCurveTo(x+Math.cos(a+.35)*R*.29,y+Math.sin(a+.35)*R*.24,x+Math.cos(a+.8)*R*.28,y+Math.sin(a+.8)*R*.27);ctx.strokeStyle=rgba(j%2?n.col[0]:'#ffe5b2',.09+f*.12);ctx.lineWidth=.8;ctx.stroke();}
-for(let layer=0;layer<5;layer++){
+for(let layer=0;layer<3;layer++){
  const radius=R*(1.02+layer*.055),pts=90;
  ctx.beginPath();
  for(let j=0;j<=pts;j++){
@@ -250,7 +276,7 @@ for(let layer=0;layer<5;layer++){
   const px=x+Math.cos(a)*rx,py=y+Math.sin(a)*ry;
   j?ctx.lineTo(px,py):ctx.moveTo(px,py);
  }
- ctx.closePath();ctx.strokeStyle=rgba(layer%2?'#a3d9ee':n.col[layer%3],.29-layer*.015+f*.08);ctx.lineWidth=layer%2?1.1:.7;ctx.stroke();
+ ctx.closePath();ctx.strokeStyle=rgba(layer%2?'#a3d9ee':n.col[layer%3],.15-layer*.015+f*.08);ctx.lineWidth=layer%2?1.1:.7;ctx.stroke();
 }
 const rim=ctx.createLinearGradient(x-R,y-R,x+R,y+R);rim.addColorStop(0,rgba(n.col[0],.05));rim.addColorStop(.25,rgba('#fff4d4',.67));rim.addColorStop(.5,rgba(n.col[1],.21));rim.addColorStop(.75,rgba(n.col[0],.44));rim.addColorStop(1,rgba('#fff1ce',.18));ctx.beginPath();ctx.arc(x,y,R*.92,0,TAU);ctx.lineWidth=1.8;ctx.strokeStyle=rim;ctx.shadowColor=n.col[0];ctx.shadowBlur=15+f*22;ctx.stroke();ctx.shadowBlur=0;
 for(let j=0;j<5;j++){const a=t*.045*(j%2?-1:1)+j*TAU/5+n.phase;glow(x+Math.cos(a)*R*.94,y+Math.sin(a)*R*.94,9+(j%2)*5,j%2?'#fff0c9':n.col[0],.25+f*.18);}
@@ -275,7 +301,7 @@ spectralVolume(t);livingTissue(t);
 relationalWeave(t);auricConfluence(t);
 for(let k=0;k<nodes.length;k++){const n=nodes[k],f=focus[n.id]||0;membrane(n,k,t,f);}
 particles(t);nexus(t);centralIris(t);
-for(let k=0;k<nodes.length;k++){const f=focus[nodes[k].id]||0;auricDepth(nodes[k],t,f);sphere(nodes[k],k,t,f);spectralLens(nodes[k],t,f);}
+for(let k=0;k<nodes.length;k++){const f=focus[nodes[k].id]||0;refractiveShell(nodes[k]);auricDepth(nodes[k],t,f);sphere(nodes[k],k,t,f);spectralLens(nodes[k],t,f);}
 // Subtle connected nerve filaments and micro-stars around the outer web.
 for(let j=0;j<35;j++){const a=j*TAU/35,rad=250+90*Math.sin(j*2.4),x=core.x+Math.cos(a)*rad*1.62,y=core.y+Math.sin(a)*rad*1.2;glow(x,y,4+(j%5)*2,j%3?'#b8c8e2':'#ffe6bd',.12);}
 canvas.dataset.material='procedural-living-constellation-v10';canvas.dataset.visualLayer='auric-depth-01';canvas.dataset.cachedVolume=volumeCache?'ready':'unsupported';canvas.dataset.frames=String(++frames);canvas.dataset.motion=app.state.still||document.hidden?'paused':'running';canvas.dataset.selected=app.state.selected||'';
