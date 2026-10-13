@@ -23,3 +23,9 @@
 .center-name{color:#261b12;background:none;text-shadow:0 1px 7px #fff2c9,0 0 18px #f6d99e;padding:13px 16px}
 .center-name small{color:#30231a;text-shadow:0 0 9px #ffeac4}.center-name i{color:#2c2119}
 .brand-sigil{box-shadow:0 0 24px #e9c79518}.world-name:not(.center-name){text-shadow:0 2px 9px #01040c,0 0 6px #01040c,0 0 20px #01040c}
+
+/* Continuous mobile canvas edges; atmosphere cannot look like a pasted panel. */
+.app{background:#05070e}#livingScene{mask-image:linear-gradient(to bottom,transparent 0%,#000 6%,#000 88%,transparent 100%)}
+.mobile-intro{display:none}
+@media(max-width:850px){.mobile-intro{display:block;position:absolute;z-index:1;top:124px;left:0;right:0;text-align:center;pointer-events:none;color:#ddd0b5;font:19px Georgia;letter-spacing:3px}.mobile-intro small{display:block;margin-top:10px;font:8px Arial;letter-spacing:3px;color:#aaadad}.world-name:not(.center-name){text-shadow:0 1px 5px #000,0 0 4px #000,0 0 14px #000}.mobile-worlds{background:transparent;border-radius:0;scrollbar-width:thin;scrollbar-color:#cab48c44 transparent}.mobile-worlds button{background:transparent;border-color:#cbb88a44;border-radius:99px}.center-name{text-shadow:0 0 4px #fff4c8,0 0 9px #fff4c8}.center-name small,.center-name i{text-shadow:0 0 4px #fff4c8}}
+@media(min-width:600px) and (max-width:850px){.mobile-intro{top:100px}}
