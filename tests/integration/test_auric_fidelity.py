@@ -1,4 +1,4 @@
-"""Source-only visual refinement guard. No images or private motion footage bundled."""
+"""Visual source guards. Only original generated material is bundled; no reference footage."""
 from pathlib import Path
 import hashlib, json, re
 ROOT = Path(__file__).resolve().parents[2]
@@ -39,10 +39,21 @@ def test_only_exact_changed_renderer_sources_receive_new_locks():
     for path in ['hud/prototype/experiments/procedural-v10/procedural.js',
                  'hud/prototype/experiments/procedural-v10/style.css']:
         assert lock[path] == hashlib.sha256((ROOT/path).read_bytes()).hexdigest()
-    assert len(lock) == 27
+    assert len(lock) == 28
 
 def test_compiler_preserves_v10_family_but_marks_candidate_separately():
     build = (ROOT/'scripts/build-living-nexus-element.py').read_text()
     assert "VERSION = '1.1.0-auric-preview.1'" in build
     assert "'procedural-living-constellation-v10'" in RENDER.read_text()
     assert 'wix-site-host.com' in (ROOT/'wix/integration/element.js').read_text()  # existing review-origin allowlist
+
+
+def test_material_atlas_is_local_bounded_and_fail_safe():
+    code = RENDER.read_text()
+    atlas = ROOT / 'hud/prototype/experiments/procedural-v10/material-atlas.js'
+    lock = json.loads(LOCK.read_text())
+    assert lock[str(atlas.relative_to(ROOT))] == hashlib.sha256(atlas.read_bytes()).hexdigest()
+    assert 'data:image/webp;base64,' in atlas.read_text()
+    assert 'atlas.naturalWidth===1536&&atlas.naturalHeight===1024' in code
+    assert "atlas.onerror=()=>{atlasReady=false;refresh();};" in code
+    assert 'function makeShell(n)' in code  # procedural material remains the fallback
