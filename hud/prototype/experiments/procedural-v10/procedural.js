@@ -90,6 +90,20 @@ function silk(p,x1,y1,x2,y2,bend,width,color,phase){
 }
 function makeWeb(){
  const c=layer(canvas.width,canvas.height),p=c.getContext('2d');if(!p)return null;p.scale(scale,scale);p.globalCompositeOperation='screen';
+ // Persistent broad tissue joins the existing world surfaces to the Meeting Field.
+ // Bake fine strands once; the live layer only carries restrained highlights.
+ for(let k=0;k<nodes.length;k++){
+  const n=nodes[k],dx=n.x-core.x,dy=n.y-core.y,L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L;
+  for(const side of [-1,1]){
+   const nx=-uy*side,ny=ux*side;
+   silk(p,core.x+ux*core.r*.52+nx*core.r*.46,core.y+uy*core.r*.52+ny*core.r*.46,
+     n.x-ux*n.r*.62+nx*n.r*.52,n.y-uy*n.r*.62+ny*n.r*.52,
+     side*(38+k%2*12),76,'#e8c898',k*.43+side*.21);
+   silk(p,core.x+ux*core.r*.72+nx*core.r*.32,core.y+uy*core.r*.72+ny*core.r*.32,
+     n.x-ux*n.r*.70+nx*n.r*.38,n.y-uy*n.r*.70+ny*n.r*.38,
+     side*27,43,n.col[0],k*.43+side*.21);
+  }
+ }
  // Perimeter membranes pass around the six existing anchors.
  const order=[0,2,4,5,3,1];
  for(let k=0;k<6;k++){
@@ -228,7 +242,9 @@ function sphere(n,k,t,f){
 }
 function nexus(t){
  ctx.save();ctx.globalCompositeOperation='screen';const x=core.x,y=core.y,r=core.r;
- if(atlasReady){ctx.save();ctx.globalAlpha=.34;const size=r*2.65;ctx.drawImage(atlas,1024,0,512,512,x-size/2,y-size/2,size,size);ctx.restore();}
+ // Keep the core optically distinct from the six material sprites.
+ // A lighter membrane preserves the luminous center instead of a muddy shell.
+ if(atlasReady){ctx.save();ctx.globalAlpha=.16;const size=r*2.65;ctx.drawImage(atlas,1024,0,512,512,x-size/2,y-size/2,size,size);ctx.restore();}
  mist(ctx,x,y,r*1.62,'#efc988',.78);mist(ctx,x,y,r*.73,'#ffe9b8',.8);
  const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,'#fff0c6');g.addColorStop(.22,'rgba(255,223,169,.89)');g.addColorStop(.43,'rgba(219,174,111,.48)');g.addColorStop(.73,'rgba(191,164,125,.1)');g.addColorStop(1,'rgba(183,168,142,0)');ctx.fillStyle=g;ctx.fillRect(x-r,y-r,r*2,r*2);
  for(let j=0;j<30;j++){const phase=j*.618,a=phase+t*.004;
@@ -242,7 +258,7 @@ function draw(){const t=time;ctx.globalAlpha=1;ctx.globalCompositeOperation='sou
  for(let k=0;k<6;k++)membrane(nodes[k],k,t,focus[nodes[k].id]||0);
  nexus(t);centralIris(t);particles(t);
  for(let k=0;k<6;k++){const n=nodes[k],f=focus[n.id]||0;refractiveShell(n,t,f);auricDepth(n,t,f);sphere(n,k,t,f);spectralLens(n,t,f);}
- canvas.dataset.material='procedural-living-constellation-v10';canvas.dataset.visualLayer='auric-depth-01';canvas.dataset.materialRevision='auric-material-03';canvas.dataset.materialAtlas=atlasReady?'ready':'procedural-fallback';canvas.dataset.cachedVolume=volumeCache?'ready':'unsupported';canvas.dataset.frames=String(++frames);canvas.dataset.motion=app.state.still||document.hidden?'paused':'running';canvas.dataset.selected=app.state.selected||'';
+ canvas.dataset.material='procedural-living-constellation-v10';canvas.dataset.visualLayer='auric-depth-01';canvas.dataset.materialRevision='auric-material-04';canvas.dataset.materialAtlas=atlasReady?'ready':'procedural-fallback';canvas.dataset.cachedVolume=volumeCache?'ready':'unsupported';canvas.dataset.frames=String(++frames);canvas.dataset.motion=app.state.still||document.hidden?'paused':'running';canvas.dataset.selected=app.state.selected||'';
 }
 function frame(now){raf=0;if(app.state.still||document.hidden){draw();return;}if(now-lastFrame<34){raf=requestAnimationFrame(frame);return;}const dt=last?Math.min(.08,Math.max(0,(now-last)/1000)):.033;last=now;lastFrame=now;time+=dt;
 for(const n of nodes){const target=app.state.focus===n.id||app.state.selected===n.id?1:0;focus[n.id]+=(target-focus[n.id])*(1-Math.exp(-dt*2.8));}draw();raf=requestAnimationFrame(frame);}
