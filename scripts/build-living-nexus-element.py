@@ -20,6 +20,9 @@ def once(text: str, old: str, new: str) -> str:
     return text.replace(old,new,1)
 
 def patch_app(s: str) -> str:
+    # Returning from a pocket must preserve the host's explicit Stillness choice.
+    # Otherwise app startup reports its default motion state back to the host.
+    s=once(s,"still:matchMedia('(prefers-reduced-motion:reduce)').matches", "still:window.__NexusHost.still")
     s=once(s,"const base='https://headless-mfewrcffiie-archonsoulings-140e.wix-site-host.com/';","const base=window.__NexusHost.routeBase;")
     old=s[s.index('// Only a visitor'):s.index('const elWorlds=')]
     s=once(s,old,'state.thread=window.__NexusHost.getJourneyForApp();\n')
