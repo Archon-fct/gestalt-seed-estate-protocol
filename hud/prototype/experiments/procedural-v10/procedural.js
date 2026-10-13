@@ -221,7 +221,36 @@ function refractiveShell(n,t,f){
  let c=shellCache.get(n.id);if(!c){c=makeShell(n);if(c)shellCache.set(n.id,c);}if(!c)return;
  const size=n.r*2.51*(1+.007*Math.sin(t*.43+n.phase));ctx.save();ctx.globalCompositeOperation='source-over';ctx.drawImage(c,n.x-size/2,n.y-size/2,size,size);ctx.restore();
 }
-function auricDepth(n,t,f){ctx.save();ctx.globalCompositeOperation='screen';mist(ctx,n.x-n.r*.58,n.y-n.r*.42,n.r*.88,n.col[0],.13+f*.15);ctx.restore();}
+// MATERIAL_05: an inner polyhedral volume, separate from the orb silhouette.
+// Fixed topology, depth-sorted faces and bounded motion keep the six identities intact.
+const phi=(1+Math.sqrt(5))/2;
+const crystalVertices=[];
+for(const a of [-1,1])for(const b of [-phi,phi]){
+ crystalVertices.push([0,a,b],[a,b,0],[b,0,a]);
+}
+const crystalEdges=[];
+for(let a=0;a<12;a++)for(let b=a+1;b<12;b++){
+ if(Math.abs(Math.hypot(...crystalVertices[a].map((v,i)=>v-crystalVertices[b][i]))-2)<.001)crystalEdges.push([a,b]);
+}
+function innerCrystal(n,t,f){
+ const angle=n.phase*.41+Math.sin(t*.075+n.phase)*.14,ca=Math.cos(angle),sa=Math.sin(angle),tilt=.32;
+ const points=crystalVertices.map(([x,y,z])=>{
+  const xx=x*ca+z*sa,zz=z*ca-x*sa,yy=y*Math.cos(tilt)-zz*Math.sin(tilt),depth=y*Math.sin(tilt)+zz*Math.cos(tilt);
+  const perspective=1/(1-depth*.065),size=n.r*.36;
+  return {x:n.x+xx*size*perspective,y:n.y-n.r*.19+yy*size*perspective,z:depth};
+ });
+ ctx.save();ctx.beginPath();ctx.arc(n.x,n.y,n.r*.88,0,TAU);ctx.clip();
+ // Keep the lower inscription band free of luminous geometry.
+ ctx.beginPath();ctx.rect(n.x-n.r,n.y-n.r,n.r*2,n.r*1.38);ctx.clip();ctx.globalCompositeOperation='screen';
+ for(const [a,b] of crystalEdges.slice().sort((u,v)=>(points[u[0]].z+points[u[1]].z)-(points[v[0]].z+points[v[1]].z))){
+  const p=points[a],q=points[b],depth=clamp((p.z+q.z+4)/8);
+  ctx.strokeStyle=rgba(depth>.55?'#ffe4b5':n.col[0],.07+depth*.23+f*.12);ctx.lineWidth=.45+depth*.55;
+  ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();
+ }
+ for(const p of points)if(p.z>.4)flare(ctx,p.x,p.y,1.4+p.z*.45,n.col[1],.22+f*.16);
+ ctx.restore();
+}
+function auricDepth(n,t,f){ctx.save();ctx.globalCompositeOperation='screen';mist(ctx,n.x-n.r*.58,n.y-n.r*.42,n.r*.88,n.col[0],.13+f*.15);ctx.restore();innerCrystal(n,t,f);}
 function spectralLens(n,t,f){ctx.save();ctx.globalCompositeOperation='screen';for(let j=0;j<2;j++){const a=n.phase+j*2.5+Math.sin(t*.09+j)*.17;flare(ctx,n.x+Math.cos(a)*n.r*.97,n.y+Math.sin(a)*n.r*.93,4.5+j*1.2,j?n.col[0]:'#ffe6b2',.48+f*.3);}ctx.restore();}
 function sphere(n,k,t,f){
  const x=n.x,y=n.y-n.r*.17;ctx.save();ctx.translate(x,y);ctx.globalCompositeOperation='screen';ctx.strokeStyle=rgba(n.col[1],.68+f*.2);ctx.lineWidth=.92;ctx.shadowColor=n.col[0];ctx.shadowBlur=9;
@@ -258,7 +287,7 @@ function draw(){const t=time;ctx.globalAlpha=1;ctx.globalCompositeOperation='sou
  for(let k=0;k<6;k++)membrane(nodes[k],k,t,focus[nodes[k].id]||0);
  nexus(t);centralIris(t);particles(t);
  for(let k=0;k<6;k++){const n=nodes[k],f=focus[n.id]||0;refractiveShell(n,t,f);auricDepth(n,t,f);sphere(n,k,t,f);spectralLens(n,t,f);}
- canvas.dataset.material='procedural-living-constellation-v10';canvas.dataset.visualLayer='auric-depth-01';canvas.dataset.materialRevision='auric-material-04';canvas.dataset.materialAtlas=atlasReady?'ready':'procedural-fallback';canvas.dataset.cachedVolume=volumeCache?'ready':'unsupported';canvas.dataset.frames=String(++frames);canvas.dataset.motion=app.state.still||document.hidden?'paused':'running';canvas.dataset.selected=app.state.selected||'';
+ canvas.dataset.material='procedural-living-constellation-v10';canvas.dataset.visualLayer='auric-depth-01';canvas.dataset.materialRevision='auric-material-05';canvas.dataset.materialAtlas=atlasReady?'ready':'procedural-fallback';canvas.dataset.cachedVolume=volumeCache?'ready':'unsupported';canvas.dataset.frames=String(++frames);canvas.dataset.motion=app.state.still||document.hidden?'paused':'running';canvas.dataset.selected=app.state.selected||'';
 }
 function frame(now){raf=0;if(app.state.still||document.hidden){draw();return;}if(now-lastFrame<34){raf=requestAnimationFrame(frame);return;}const dt=last?Math.min(.08,Math.max(0,(now-last)/1000)):.033;last=now;lastFrame=now;time+=dt;
 for(const n of nodes){const target=app.state.focus===n.id||app.state.selected===n.id?1:0;focus[n.id]+=(target-focus[n.id])*(1-Math.exp(-dt*2.8));}draw();raf=requestAnimationFrame(frame);}
