@@ -1,4 +1,4 @@
-/* LIVING MATERIAL 10 — original procedural rendering, not image warp.
+/* LIVING MATERIAL 10 — responsive procedural field with generated world materials.
    Continuous membranes, cocoons, refracted filaments and coherent particles.
    No network, storage, camera or inference. Stillness preserves rich static art. */
 (()=>{'use strict';
@@ -24,7 +24,7 @@ function curve(p0,p1,p2,p3,t){const q=1-t;return {x:q*q*q*p0.x+3*q*q*t*p1.x+3*q*
 
 // AURIC_DEPTH_01 retained as the source contract; MATERIAL_02 replaces line-only
 // rendering with deterministic volumetric textures and folded silk membranes.
-// All caches are generated locally. No reference images or external assets.
+// All caches are generated locally. No reference-image wallpaper or external requests. Generated individual world materials are bundled locally.
 const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
 const rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
 function hash(x,y){let v=Math.imul(x,374761393)^Math.imul(y,668265263);v=Math.imul(v^(v>>>13),1274126177);return ((v^(v>>>16))>>>0)/4294967295;}
@@ -38,6 +38,13 @@ function flare(p,x,y,r,color,alpha=1){
  for(let j=0;j<2;j++){p.save();p.translate(x,y);p.rotate(j*Math.PI/2+.08);const ray=p.createLinearGradient(-r*3,0,r*3,0);ray.addColorStop(0,rgba(color,0));ray.addColorStop(.48,rgba(color,alpha*.13));ray.addColorStop(.5,rgba('#fffae8',alpha*.7));ray.addColorStop(.52,rgba(color,alpha*.13));ray.addColorStop(1,rgba(color,0));p.fillStyle=ray;p.fillRect(-r*3,-.4,r*6,.8);p.restore();}p.restore();
 }
 let volumeCache=null,webCache=null;const shellCache=new Map();
+// Individual material sprites, not a pre-rendered interface or full-scene artwork.
+// All text, audited symbols, input, journeys, particles and light remain live.
+let atlasReady=false;const atlas=document.createElement('img');atlas.decoding='async';
+atlas.onload=()=>{atlasReady=atlas.naturalWidth===1536&&atlas.naturalHeight===1024;refresh();};
+atlas.onerror=()=>{atlasReady=false;refresh();};
+if(typeof window.__NEXUS_MATERIAL_ATLAS_DATA==='string'&&window.__NEXUS_MATERIAL_ATLAS_DATA.startsWith('data:image/webp;base64,'))atlas.src=window.__NEXUS_MATERIAL_ATLAS_DATA;
+
 function makeVolumeCache(){
  const c=layer(768,512),p=c.getContext('2d');if(!p)return null;
  const data=p.createImageData(c.width,c.height),d=data.data;
@@ -92,7 +99,7 @@ function makeWeb(){
  }
  // Large flowing envelope embraces the field. It is material, not landscape.
  const paths=[[-130,700,490,65,-230,160,'#c5a78c'],[160,930,1310,845,-160,140,'#799aab'],[1070,90,1550,760,215,120,'#b1bbd2'],[340,180,1180,720,260,180,'#829fb5'],[80,550,1380,360,-145,155,'#d2b895'],[260,885,1250,90,-170,180,'#989bba']];
- for(let i=0;i<paths.length;i++)silk(p,...paths[i],i*.75);
+ for(let i=0;i<paths.length;i++){p.globalAlpha=.45;silk(p,...paths[i],i*.75);}p.globalAlpha=1;
  for(let k=0;k<6;k++){
   const n=nodes[k],tilt=n.phase*.45;
   for(let band=0;band<4;band++)for(let j=0;j<65;j++){
@@ -191,6 +198,11 @@ function makeShell(n){
  return c;
 }
 function refractiveShell(n,t,f){
+ if(atlasReady){
+  const i=nodes.indexOf(n),size=n.r*2.85*(1+.009*Math.sin(t*.4+n.phase)),dx=Math.sin(t*.13+n.phase)*1.2,dy=Math.cos(t*.11+n.phase)*.9;
+  ctx.save();ctx.globalCompositeOperation='source-over';ctx.drawImage(atlas,(i%3)*512,Math.floor(i/3)*512,512,512,n.x-size/2+dx,n.y-size/2+dy,size,size);ctx.restore();return;
+ }
+
  let c=shellCache.get(n.id);if(!c){c=makeShell(n);if(c)shellCache.set(n.id,c);}if(!c)return;
  const size=n.r*2.51*(1+.007*Math.sin(t*.43+n.phase));ctx.save();ctx.globalCompositeOperation='source-over';ctx.drawImage(c,n.x-size/2,n.y-size/2,size,size);ctx.restore();
 }
@@ -228,7 +240,7 @@ function draw(){const t=time;ctx.globalAlpha=1;ctx.globalCompositeOperation='sou
  for(let k=0;k<6;k++)membrane(nodes[k],k,t,focus[nodes[k].id]||0);
  nexus(t);centralIris(t);particles(t);
  for(let k=0;k<6;k++){const n=nodes[k],f=focus[n.id]||0;refractiveShell(n,t,f);auricDepth(n,t,f);sphere(n,k,t,f);spectralLens(n,t,f);}
- canvas.dataset.material='procedural-living-constellation-v10';canvas.dataset.visualLayer='auric-depth-01';canvas.dataset.materialRevision='folded-volume-02';canvas.dataset.cachedVolume=volumeCache?'ready':'unsupported';canvas.dataset.frames=String(++frames);canvas.dataset.motion=app.state.still||document.hidden?'paused':'running';canvas.dataset.selected=app.state.selected||'';
+ canvas.dataset.material='procedural-living-constellation-v10';canvas.dataset.visualLayer='auric-depth-01';canvas.dataset.materialRevision='auric-material-03';canvas.dataset.materialAtlas=atlasReady?'ready':'procedural-fallback';canvas.dataset.cachedVolume=volumeCache?'ready':'unsupported';canvas.dataset.frames=String(++frames);canvas.dataset.motion=app.state.still||document.hidden?'paused':'running';canvas.dataset.selected=app.state.selected||'';
 }
 function frame(now){raf=0;if(app.state.still||document.hidden){draw();return;}if(now-lastFrame<34){raf=requestAnimationFrame(frame);return;}const dt=last?Math.min(.08,Math.max(0,(now-last)/1000)):.033;last=now;lastFrame=now;time+=dt;
 for(const n of nodes){const target=app.state.focus===n.id||app.state.selected===n.id?1:0;focus[n.id]+=(target-focus[n.id])*(1-Math.exp(-dt*2.8));}draw();raf=requestAnimationFrame(frame);}
