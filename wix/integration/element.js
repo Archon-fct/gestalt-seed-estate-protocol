@@ -47,7 +47,7 @@
       this.soulAPI = sharedSoul(this.sessionStore);
       this.guideAPI = sharedGuide(); this.searchAPI = sharedSearch();
       this.paused = document.hidden; this.offscreen = false;
-      this.onVisibility = () => { this.paused = document.hidden || this.offscreen; if (this.paused) this.silence();try{this.frame?.contentDocument?.dispatchEvent(new Event('visibilitychange'));}catch{} };
+      this.onVisibility = () => { this.paused = document.hidden || this.offscreen; if (this.paused) { this.silence(); this.closeNavigation(false); }try{this.frame?.contentDocument?.dispatchEvent(new Event('visibilitychange'));}catch{} };
       this.observer = new IntersectionObserver(entries => { this.offscreen = !entries[0].isIntersecting; this.onVisibility(); });
       this.onPageHide = () => this.silence();
       this.onReduce = () => { if (this.reduce.matches) this.setStill(true); };
@@ -61,7 +61,7 @@
       this.renderWorld(this.getAttribute('world') || 'nexus');
     }
     disconnectedCallback() {
-      this.live = false; this.disposeFrame();
+      this.closeNavigation(false); this.live = false; this.disposeFrame();
       document.removeEventListener('visibilitychange', this.onVisibility);
       window.removeEventListener('pagehide', this.onPageHide);
       this.reduce.removeEventListener('change', this.onReduce);this.observer.disconnect();
@@ -99,17 +99,23 @@
       <section class="environment" aria-label="Archon Soulings Living Nexus">
         <div class="view"></div>
         <nav class="utility" aria-label="Living field controls">
-          <button data-action="return" aria-label="Return to the Living Nexus">← Nexus</button>
-          <button data-action="journey">Thread <span class="count">0</span></button>
+          <button data-action="explore" aria-haspopup="dialog" aria-controls="navigation" aria-expanded="false">Explore</button>
+          <button data-action="journey">Thread <span class="count">0</span></button><button data-action="booking">Book</button>
           <button data-action="still" aria-pressed="false">Stillness</button>
           <button data-action="silence">Silence</button>
         </nav>
         <span class="notice" role="status" aria-live="polite"></span>
-        <dialog aria-labelledby="journeyTitle"><header><h2 id="journeyTitle">The Living Thread</h2><button data-action="close" aria-label="Close Living Thread">✕</button></header><div class="journey-content"></div><footer><button data-action="save">Save this journey</button><button data-action="dissolve">Let it dissolve</button></footer></dialog>
+        <dialog class="journey" aria-labelledby="journeyTitle"><header><h2 id="journeyTitle">The Living Thread</h2><button data-action="close" aria-label="Close Living Thread">✕</button></header><div class="journey-content"></div><footer><button data-action="save">Save this journey</button><button data-action="dissolve">Let it dissolve</button></footer></dialog>
+        <dialog id="navigation" class="navigation" aria-labelledby="navigationTitle">
+          <header><h2 id="navigationTitle">Explore the Nexus</h2><button class="nav-close" aria-label="Close navigation">Close</button></header>
+          <div class="nav-content"></div>
+          <footer><button class="nav-still">Stillness</button><button class="nav-silence">Silence</button><button class="nav-book">Book a session</button></footer>
+        </dialog>
       </section>`;
       for (const button of this.shadowRoot.querySelectorAll('[data-action]')) button.addEventListener('click', () => {
         const action = button.dataset.action;
-        if (action === 'return') this.navigate('nexus');
+        if (action === 'explore') this.openNavigation();
+        if (action === 'booking') this.navigate('sessions');
         if (action === 'journey') this.openJourney();
         if (action === 'still') this.setStill(!this.still);
         if (action === 'silence') { this.silence(); this.say('Silence — sound stopped.'); }
@@ -117,13 +123,67 @@
         if (action === 'save') this.save();
         if (action === 'dissolve') this.dissolve();
       });
-      const dialog = this.shadowRoot.querySelector('dialog');
+      const dialog = this.shadowRoot.querySelector('dialog.journey');
       dialog.addEventListener('cancel', e => { e.preventDefault(); this.closeJourney(); });
+      const navigation = this.shadowRoot.querySelector('.navigation');
+      navigation.querySelector('.nav-close').onclick = () => this.closeNavigation();
+      navigation.querySelector('.nav-still').onclick = () => this.setStill(!this.still);
+      navigation.querySelector('.nav-silence').onclick = () => { this.silence(); this.say('Silence — sound stopped.'); };
+      navigation.querySelector('.nav-book').onclick = () => { this.closeNavigation(); this.navigate('sessions'); };
+      navigation.addEventListener('cancel', e => { e.preventDefault(); this.closeNavigation(); });
+      navigation.addEventListener('click', e => {
+        const r = navigation.getBoundingClientRect();
+        if(e.target === navigation && (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom)) { e.stopPropagation(); this.closeNavigation(); }
+      });
       this.sync();
+    }
+    openNavigation() {
+      this.closeJourney(); this.renderNavigation('primary');
+      const dialog = this.shadowRoot.querySelector('.navigation');
+      if(!dialog.open) dialog.showModal();
+      this.shadowRoot.querySelector('[data-action="explore"]').setAttribute('aria-expanded','true');
+      dialog.querySelector('.nav-content button').focus();
+    }
+    closeNavigation(restore = true) {
+      const dialog = this.shadowRoot.querySelector('.navigation');
+      if(!dialog?.open) return;
+      dialog.close();
+      const trigger = this.shadowRoot.querySelector('[data-action="explore"]');
+      trigger.setAttribute('aria-expanded','false');
+      if(restore) trigger.focus();
+    }
+    renderNavigation(mode) {
+      const content = this.shadowRoot.querySelector('.nav-content'); content.replaceChildren();
+      content.classList.toggle('radial', mode === 'primary' || mode === 'worlds');
+      const add = (label, action) => { const b=document.createElement('button'); b.textContent=label; b.onclick=action; content.append(b); return b; };
+      const go = world => { this.closeNavigation(); this.navigate(world); };
+      const view = next => { this.renderNavigation(next); content.querySelector('input,button')?.focus(); };
+      if(mode === 'primary') {
+        add('Nexus',()=>go('nexus')); add('About',()=>view('about')); add('Guide Me',()=>view('guide'));
+        add('Search',()=>view('search')); add('Living Thread',()=>{this.closeNavigation();this.openJourney();}); add('More',()=>view('worlds'));
+      } else {
+        const back=add('Back',()=>{ view('primary'); [...content.querySelectorAll('button')].find(b=>b.textContent === ({worlds:'More',about:'About',guide:'Guide Me',search:'Search'}[mode]))?.focus(); }); back.className='nav-back';
+        if(mode === 'worlds') for(const world of ['aura','aureglossa','sessions','workshops','gestalt','journal']) add(LABELS[world],()=>go(world));
+        if(mode === 'about') { const p=document.createElement('p'); p.textContent='The Living Nexus connects six Archon Soulings worlds: Aura Dynamics, Aureglossa, Sessions, Workshops, Gestalt and Journal / Stories. Your Living Thread stays in this tab unless you choose Save.';content.append(p); }
+        if(mode === 'guide') for(const prompt of this.guideAPI.prompts) add(prompt.label,()=>{
+          content.replaceChildren(); add('Back to intentions',()=>view('guide'));
+          for(const world of this.guideAPI.recommend(prompt.id,this.threadAPI.getJourney()).map(toWorld)) if(hasWorld(world)) add(LABELS[world],()=>go(world));
+          content.querySelector('button').focus();
+        });
+        if(mode === 'search') {
+          const label=document.createElement('label');label.textContent='Search public worlds';
+          const input=document.createElement('input');input.type='search';label.append(input);content.append(label);
+          const results=document.createElement('div');results.className='search-results';results.setAttribute('aria-live','polite');content.append(results);
+          input.oninput=()=>{results.replaceChildren(); const matches=this.searchAPI.searchConstellation(input.value,GRAPH).nodes;
+            for(const match of matches){const world=toWorld(match.id);if(!hasWorld(world))continue;const b=document.createElement('button');b.textContent=LABELS[world];b.onclick=()=>go(world);results.append(b);}
+            if(!results.childElementCount) results.textContent=input.value.trim()?'No matching public world.':'Type a topic to explore.';
+          }; input.oninput();
+        }
+      }
     }
     renderWorld(world) {
       if (!hasWorld(world)) world = 'nexus';
-      this.closeJourney(); this.disposeFrame(); this.pendingWorld = world;
+      this.closeNavigation(); this.closeJourney(); this.disposeFrame(); this.pendingWorld = world;
       const frame = document.createElement('iframe'); this.frame = frame;
       frame.title = `${LABELS[world]} — Archon Soulings`;
       frame.setAttribute('allow','microphone \'none\'; geolocation \'none\'; camera \'self\'');
@@ -178,6 +238,7 @@
       const count = this.getJourneyForApp().length;
       const indicator = this.shadowRoot.querySelector('.count'); if (indicator) indicator.textContent = String(count);
       const button = this.shadowRoot.querySelector('[data-action="still"]'); if (button) { button.setAttribute('aria-pressed',String(this.still)); button.textContent = this.still ? 'Resume motion' : 'Stillness'; }
+      const navStill = this.shadowRoot.querySelector('.nav-still'); if(navStill) { navStill.setAttribute('aria-pressed',String(this.still)); navStill.textContent=this.still?'Resume motion':'Stillness'; }
       const win = this.frame?.contentWindow;
       try { if (win?.NexusApp) { win.NexusApp.state.thread = this.getJourneyForApp(); win.document.getElementById('threadCount').textContent = String(count); for(const node of win.document.querySelectorAll('.world'))node.classList.toggle('visited',win.NexusApp.state.thread.includes(node.dataset.world)); } } catch {}
     }
@@ -207,10 +268,10 @@
       } else {paragraph('A browser-local Soul exists in this tab. It is not a wallet, ownership claim, or financial asset.');const remove=document.createElement('button');remove.textContent='Dissolve local Soul';remove.onclick=()=>{this.soulAPI.dissolveLocalSoul();this.fillJourney();};content.append(remove);}
     }
     openJourney() {
-      if (!this.live) return; this.silence();this.fillJourney();const dialog=this.shadowRoot.querySelector('dialog');
+      if (!this.live) return; this.silence();this.fillJourney();const dialog=this.shadowRoot.querySelector('dialog.journey');
       if (!dialog.open) dialog.showModal();
     }
-    closeJourney() { const dialog=this.shadowRoot.querySelector('dialog');if (dialog?.open) { dialog.close();this.shadowRoot.querySelector('[data-action="journey"]')?.focus(); } }
+    closeJourney() { const dialog=this.shadowRoot.querySelector('dialog.journey');if (dialog?.open) { dialog.close();this.shadowRoot.querySelector('[data-action="journey"]')?.focus(); } }
     save() {
       this.threadAPI.saveJourney();
       this.localStore.setItem(SAVED, JSON.stringify({version:1,journey:this.threadAPI.getJourney(),passport:this.passportAPI.getPassport()}));
