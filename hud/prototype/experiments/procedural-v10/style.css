@@ -28,4 +28,4 @@
 .app{background:#05070e}#livingScene{mask-image:linear-gradient(to bottom,transparent 0%,#000 6%,#000 88%,transparent 100%)}
 .mobile-intro{display:none}
 @media(max-width:850px){.mobile-intro{display:block;position:absolute;z-index:1;top:124px;left:0;right:0;text-align:center;pointer-events:none;color:#ddd0b5;font:19px Georgia;letter-spacing:3px}.mobile-intro small{display:block;margin-top:10px;font:8px Arial;letter-spacing:3px;color:#aaadad}.world-name:not(.center-name){text-shadow:0 1px 5px #000,0 0 4px #000,0 0 14px #000}.mobile-worlds{background:transparent;border-radius:0;scrollbar-width:thin;scrollbar-color:#cab48c44 transparent}.mobile-worlds button{background:transparent;border-color:#cbb88a44;border-radius:99px}.center-name{text-shadow:0 0 4px #fff4c8,0 0 9px #fff4c8}.center-name small,.center-name i{text-shadow:0 0 4px #fff4c8}}
-@media(min-width:600px) and (max-width:850px){.mobile-intro{top:100px}}
+@media(min-width:600px) and (max-width:850px){.mobile-intro{top:20px;left:22px;right:auto;text-align:left;font-size:17px}.mobile-intro small{font-size:7px}}
