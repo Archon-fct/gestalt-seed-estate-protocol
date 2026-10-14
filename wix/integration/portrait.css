@@ -11,3 +11,6 @@
  .top-actions button{padding:8px}.mobile-worlds{bottom:28px}.statusline{bottom:90px}
  .panel{max-height:calc(100dvh - 210px)}
 }
+
+/* One governing inscription on desktop; preserve the compact mobile mark. */
+@media (min-width:851px){.bottom-mark{display:none}}

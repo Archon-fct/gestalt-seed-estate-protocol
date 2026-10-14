@@ -13,13 +13,16 @@ RUNTIME = ROOT/'hud/prototype'
 INTEGRATION = ROOT/'wix/integration'
 PAGES = {'aura':'aura-dynamics.html','aureglossa':'living-tongue.html','sessions':'inner-sanctum.html','workshops':'convergence.html','gestalt':'living-archive.html','journal':'astral-journal.html','threshold':'living-threshold.html'}
 V10 = RUNTIME/'experiments/procedural-v10'
-VERSION = '1.0.0-integration.1'
+VERSION = '1.1.0-auric-preview.1'
 
 def once(text: str, old: str, new: str) -> str:
     if text.count(old) != 1: raise ValueError('Integration anchor changed: '+old[:90])
     return text.replace(old,new,1)
 
 def patch_app(s: str) -> str:
+    # Returning from a pocket must preserve the host's explicit Stillness choice.
+    # Otherwise app startup reports its default motion state back to the host.
+    s=once(s,"still:matchMedia('(prefers-reduced-motion:reduce)').matches", "still:window.__NexusHost.still")
     s=once(s,"const base='https://headless-mfewrcffiie-archonsoulings-140e.wix-site-host.com/';","const base=window.__NexusHost.routeBase;")
     old=s[s.index('// Only a visitor'):s.index('const elWorlds=')]
     s=once(s,old,'state.thread=window.__NexusHost.getJourneyForApp();\n')
