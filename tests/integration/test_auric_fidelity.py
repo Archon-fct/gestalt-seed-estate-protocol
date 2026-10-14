@@ -39,7 +39,9 @@ def test_only_exact_changed_renderer_sources_receive_new_locks():
     for path in ['hud/prototype/experiments/procedural-v10/procedural.js',
                  'hud/prototype/experiments/procedural-v10/style.css']:
         assert lock[path] == hashlib.sha256((ROOT/path).read_bytes()).hexdigest()
-    assert len(lock) == 28
+    assert len(lock) == 29
+    layer = 'hud/prototype/layer-lens.js'
+    assert lock[layer] == hashlib.sha256((ROOT/layer).read_bytes()).hexdigest()
 
 def test_compiler_preserves_v10_family_but_marks_candidate_separately():
     build = (ROOT/'scripts/build-living-nexus-element.py').read_text()
