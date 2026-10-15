@@ -106,6 +106,22 @@ Every approved Stone receives:
 
 A Stone can exist publicly without being cryptocurrency.
 
+## Aureglossa canon bridge
+
+Aureglossa is an approved provenance/learning layer inside Soul without becoming a speculative asset.
+
+A consent-created Soul may record public-safe **canon marks** such as:
+- discovery of one of the recorded 32 alphabet entries;
+- completed language-learning milestones;
+- provenance of an approved Aureglossa contribution or edition;
+- an explicit relationship to a public Stone that USES_CANON.
+
+Canon marks are descriptive attestations. They do not create ownership of the language, a financial balance, a royalty right, governance power, or guaranteed eligibility for future Souls currency.
+
+Aureglossa can generate revenue **before** currency activation through ordinary USD products and services: consultations, workshops, lessons, commissioned inscriptions, creator-approved editions, recordings, and licensed works. A token sale is not required for the language to become economically productive.
+
+The current public language surface may link to already-live Archon Soulings booking paths. Any new product SKU, paid membership, token redemption, reward rate, sale price, royalty promise, or revenue-share mechanic remains a separate approval and implementation decision.
+
 ## Value model
 
 Do not manufacture a fake market price.
