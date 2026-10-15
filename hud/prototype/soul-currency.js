@@ -16,12 +16,23 @@ export const SOULS_CURRENCY = Object.freeze({
   status: "reserved",
   transferable: false,
   monetaryValueEnabled: false,
-  mainnetEnabled: false
+  mainnetEnabled: false,
+  aureglossa: Object.freeze({
+    status: "provenance-utility-only",
+    canonMarks: Object.freeze([
+      "alphabet-discovery",
+      "language-learning-milestone",
+      "approved-contribution-attestation",
+      "edition-provenance"
+    ]),
+    rewardPolicy: "none-active",
+    salePolicy: "no-token-sale-authorized"
+  })
 });
 
 export function currencyStatus() {
   return {
     ...SOULS_CURRENCY,
-    notice: "Souls is a reserved ecosystem-currency concept. No monetary token has been issued."
+    notice: "Souls is a reserved ecosystem-currency concept. Aureglossa provenance utility may be recorded off-chain, but no monetary token, reward schedule, token sale, or mainnet economics has been activated."
   };
 }
