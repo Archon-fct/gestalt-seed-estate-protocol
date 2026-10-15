@@ -24,6 +24,11 @@ main{display:block}.wrap{width:min(1180px,92vw);margin:0 auto}.hero{min-height:c
 .return-section{text-align:center;padding:88px 0 110px}.return-section h2{font-weight:400;font-size:clamp(38px,5vw,66px);margin:0 0 10px}.return-section p{max-width:630px;margin:0 auto;color:#9fb0b4;line-height:1.7}.return-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:24px}footer{border-top:1px solid #e0bd732e;padding:24px max(18px,4vw) 34px;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;color:#809398;font-size:10px;letter-spacing:.18em;text-transform:uppercase}.footer-motto{color:var(--gold)}
 @media(max-width:980px){header{align-items:flex-start}.nav a.hide-mobile{display:none}.hero{grid-template-columns:1fr;padding-top:18px}.aura-stage{min-height:560px}.aura-art{max-height:650px}.axis-label{display:none}.explore-grid{grid-template-columns:1fr 1fr}.field-lab,.host-grid{grid-template-columns:1fr}.field-detail{border-left:0;border-top:1px solid #72dfd735;padding:22px 0 0}.resources{grid-template-columns:1fr}.host-paths{grid-template-columns:1fr}.section{padding:62px 0}}
 @media(max-width:620px){.brand{font-size:10px}.brand small{display:none}.nav{gap:6px}.nav a,.pill{padding:9px 12px;font-size:13px}.hero h1{font-size:64px}.aura-stage{min-height:470px}.aura-caption{right:0;bottom:2%;max-width:210px}.explore-grid{grid-template-columns:1fr}.resource{grid-template-columns:42px 1fr}.resource .tag{display:none}.host-shell{border-radius:24px;padding:28px 18px}.section-title{text-align:left}.section-title .divider{margin-left:0}.return-section{text-align:left}.return-actions{justify-content:flex-start}}
+.field-shell{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);border-radius:50%;background:transparent;border:1px solid transparent;color:transparent;cursor:pointer;z-index:3;transition:border-color .35s,box-shadow .35s,opacity .35s,transform .35s}
+.field-shell:focus-visible{outline:3px solid var(--aqua);outline-offset:5px}
+.shell-outer{width:86%;height:78%}.shell-relational{width:72%;height:67%}.shell-vital{width:57%;height:56%}.shell-inner{width:42%;height:45%}
+.field-shell.active{border-color:#fff0bb66;box-shadow:0 0 34px #e0bd7340,inset 0 0 28px #72dfd722;transform:translate(-50%,-50%) scale(1.018)}
+.still .field-shell{transition:none!important}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition-duration:.01ms!important}}
 </style>
 </head>
@@ -57,6 +62,10 @@ main{display:block}.wrap{width:min(1180px,92vw);margin:0 auto}.hero{min-height:c
     <div class="aura-stage" aria-label="Layered subtle-field illustration">
       <span class="axis-label">same field · different perspectives</span>
       <img class="aura-art" src="https://static.wixstatic.com/media/4b6994_fd821e12c07b4faca6c0a6de9c6bd1cd~mv2.png" alt="Luminous human figure surrounded by layered subtle fields, flowing energy lines, geometric structures, and a cosmic field">
+      <button class="field-shell shell-outer" data-layer="outer" type="button" aria-label="Inspect outer field"></button>
+      <button class="field-shell shell-relational" data-layer="relational" type="button" aria-label="Inspect relational field"></button>
+      <button class="field-shell shell-vital" data-layer="vital" type="button" aria-label="Inspect vital field"></button>
+      <button class="field-shell shell-inner active" data-layer="inner" type="button" aria-label="Inspect inner field"></button>
       <div class="aura-caption"><strong>Living Field Model</strong>Use the image as a comparative map—not as proof that every tradition describes the same anatomy.</div>
     </div>
   </section>
@@ -72,14 +81,14 @@ main{display:block}.wrap{width:min(1180px,92vw);margin:0 auto}.hero{min-height:c
       </div>
       <div class="field-lab" aria-label="Interactive Aura Dynamics field lab">
         <div class="field-controls">
-          <button class="pill field-control" data-focus="inner" aria-current="true">01 · Sense — Inner Field</button>
-          <button class="pill field-control" data-focus="vital">02 · Shape — Vital Field</button>
-          <button class="pill field-control" data-focus="relational">03 · Connect — Relational Field</button>
-          <button class="pill field-control" data-focus="outer">04 · Expand — Outer Field</button>
-          <button class="pill field-control" data-focus="integrate">05 · Integrate — Whole Field</button>
+          <button class="pill field-control" data-step="0" data-focus="inner" aria-current="step">01 · Sense — Inner Field</button>
+          <button class="pill field-control" data-step="1" data-focus="vital">02 · Shape — Vital Field</button>
+          <button class="pill field-control" data-step="2" data-focus="outer">03 · Expand — Outer Field</button>
+          <button class="pill field-control" data-step="3" data-focus="relational">04 · Connect — Relational Field</button>
+          <button class="pill field-control" data-step="4" data-focus="integrate">05 · Integrate — Whole Field</button>
         </div>
         <div class="field-detail" aria-live="polite">
-          <div class="labtag" id="labTag">SENSE · INNER FIELD</div>
+          <div class="labtag" id="hint">SENSE · INNER FIELD</div>
           <h3 id="labTitle">Notice before naming.</h3>
           <p id="labCopy">Begin with the nearest boundary of sensation. Notice changes in pressure, temperature, attention, emotion, imagery, or spatial awareness. Treat the report as experience first and explanation second.</p>
           <div class="epistemic">Aura Dynamics presents metaphysical, historical, experiential, psychological, and parapsychological models comparatively. A meaningful experience is not automatically evidence for one particular explanation.</div>
@@ -153,7 +162,10 @@ vital:["SHAPE · VITAL FIELD","Give attention a boundary.","Explore how posture,
 relational:["CONNECT · RELATIONAL FIELD","Notice relationship without losing center.","Bring another person, place, memory, symbol, or reported presence to mind. Observe changes while preserving a distinction between direct experience, inference, expectation, and story."],
 outer:["EXPAND · OUTER FIELD","Increase the radius gently.","Let attention widen beyond the body. Notice what becomes clearer, quieter, more ambiguous, or more socially influenced as the sensory radius expands."],
 integrate:["INTEGRATE · WHOLE FIELD","Return with what was useful.","Let the layers settle together. Keep what improved attention, grounding, boundaries, curiosity, or relational clarity. Release what did not. Integration completes the exercise."]};
-document.querySelectorAll("[data-focus]").forEach(function(b){b.addEventListener("click",function(){document.querySelectorAll("[data-focus]").forEach(function(x){x.removeAttribute("aria-current")});b.setAttribute("aria-current","true");var v=lab[b.dataset.focus];document.querySelector("#labTag").textContent=v[0];document.querySelector("#labTitle").textContent=v[1];document.querySelector("#labCopy").textContent=v[2]})});
+function activateLayer(name){document.querySelectorAll("[data-layer]").forEach(function(x){x.classList.toggle("active",x.dataset.layer===name)})}
+function showFocus(name,button){document.querySelectorAll("[data-focus]").forEach(function(x){x.removeAttribute("aria-current")});if(button)button.setAttribute("aria-current","step");var v=lab[name];document.querySelector("#hint").textContent=v[0];document.querySelector("#labTitle").textContent=v[1];document.querySelector("#labCopy").textContent=v[2];activateLayer(name==="integrate"?"inner":name)}
+document.querySelectorAll("[data-focus]").forEach(function(b){b.addEventListener("click",function(){showFocus(b.dataset.focus,b)})});
+document.querySelectorAll("[data-layer]").forEach(function(layer){var inspect=function(){var name=layer.dataset.layer;activateLayer(name);var v=lab[name];if(v){document.querySelector("#hint").textContent=v[0];document.querySelector("#labTitle").textContent=v[1];document.querySelector("#labCopy").textContent=v[2]}};layer.addEventListener("focus",inspect);layer.addEventListener("click",inspect)});
 document.querySelector("#still").addEventListener("click",function(e){document.body.classList.toggle("still");e.currentTarget.textContent=document.body.classList.contains("still")?"Living Motion":"Stillness"});
 let audioCtx=null,audioNodes=[];function silence(){audioNodes.forEach(function(n){try{if(n.stop)n.stop()}catch(e){}try{if(n.disconnect)n.disconnect()}catch(e){}});audioNodes=[];if(audioCtx)audioCtx.suspend();document.querySelector("#sound").textContent="Atmosphere"}async function atmosphere(){audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();await audioCtx.resume();silence();await audioCtx.resume();var master=audioCtx.createGain();master.gain.value=.014;master.connect(audioCtx.destination);[174,261,349].forEach(function(freq,i){var o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=i===1?"sine":"triangle";o.frequency.value=freq;g.gain.value=i===2?.12:(i===1?.2:.34);o.connect(g).connect(master);o.start();audioNodes.push(o,g)});audioNodes.push(master);document.querySelector("#sound").textContent="Silence"}document.querySelector("#sound").addEventListener("click",function(){document.querySelector("#sound").textContent==="Silence"?silence():atmosphere()});
 function passport(){try{return JSON.parse(sessionStorage.getItem("archonPassport.v1")||"[]")}catch(e){return[]}}function markPassport(id){var p=passport();if(!p.includes(id))p.push(id);sessionStorage.setItem("archonPassport.v1",JSON.stringify(p))}function journey(){try{return JSON.parse(sessionStorage.getItem("archonLivingThread.session.v1")||"[]")}catch(e){return[]}}function remember(id){var j=journey();if(!j.includes(id))j.push(id);sessionStorage.setItem("archonLivingThread.session.v1",JSON.stringify(j))}remember("aura");markPassport("entered-living-field");document.querySelectorAll("[data-focus]").forEach(function(b){b.addEventListener("click",function(){if(b.dataset.focus==="integrate")markPassport("integrated-aura")})});
