@@ -45,7 +45,7 @@ export function loadSoul() {
   }
 }
 
-export function createSoul({ journey = [], marks = [], relationships = [] } = {}) {
+export function createSoul({ journey = [], marks = [], relationships = [], canonMarks = [] } = {}) {
   if (loadSoul()) return loadSoul();
   const id = randomId();
   const soul = {
@@ -56,6 +56,7 @@ export function createSoul({ journey = [], marks = [], relationships = [] } = {}
     journey: [...new Set(journey)].slice(0, 24),
     marks: [...new Set(marks)].slice(0, 48),
     relationships: [...new Set(relationships)].slice(0, 96),
+    canonMarks: [...new Set(canonMarks)].slice(0, 64),
     chain: null,
     economic: false
   };
@@ -63,12 +64,13 @@ export function createSoul({ journey = [], marks = [], relationships = [] } = {}
   return soul;
 }
 
-export function updateSoulSelection({ journey, marks, relationships } = {}) {
+export function updateSoulSelection({ journey, marks, relationships, canonMarks } = {}) {
   const soul = loadSoul();
   if (!soul) return null;
   if (Array.isArray(journey)) soul.journey = [...new Set(journey)].slice(0, 24);
   if (Array.isArray(marks)) soul.marks = [...new Set(marks)].slice(0, 48);
   if (Array.isArray(relationships)) soul.relationships = [...new Set(relationships)].slice(0, 96);
+  if (Array.isArray(canonMarks)) soul.canonMarks = [...new Set(canonMarks)].slice(0, 64);
   sessionStorage.setItem(SOUL_KEY, JSON.stringify(soul));
   return soul;
 }
@@ -83,6 +85,7 @@ export function soulReceipt(soul = loadSoul()) {
     journey: soul.journey,
     marks: soul.marks,
     relationships: soul.relationships,
+    canonMarks: soul.canonMarks || [],
     chain: soul.chain,
     economic: false,
     notice: "This Soul is a consent-created identity/provenance object, not ownership of a person and not a financial asset."
