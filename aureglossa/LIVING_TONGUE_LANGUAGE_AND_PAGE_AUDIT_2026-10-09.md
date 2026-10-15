@@ -54,3 +54,24 @@ The chapter UI uses an actual native `<dialog>`, keyboard-operable tabs, focus v
 - `hud/prototype/test-constellation.mjs` — structural language regression tests.
 
 **THARAVEL · KOSMATHRA ~ ✦**
+
+## 6. October 15, 2026 implementation addendum
+
+The earlier alphabet-asset boundary above is now **partially resolved**. The source-backed 32-entry letter/name/phonetic inventory from **Aureglossa Language Pack v0.3** has been imported as structured runtime data and a machine-readable canon file. This is an additive reconciliation with the recovered Canonical Master lineage, not a restoration of superseded v0.3 productive grammar.
+
+Implemented on `feature/public-project-constellation`:
+
+- `aureglossa/AUREGLOSSA_ALPHABET_CANON_v1.json` — exact 32 recorded letter forms, names, phonetic values and source notes.
+- `hud/prototype/aureglossa-canon.js` — accessible interactive 32-letter lattice and local canon-mark bridge.
+- `hud/prototype/aureglossa-atlas.js` — new Alphabet chapter sourced from the runtime canon object.
+- `hud/prototype/aureglossa-gestalt-metadata.json` — public-safe Gestalt Seed/collaboration metadata.
+- `hud/prototype/soul.js` — optional local `canonMarks` for consent-created Soul provenance.
+- `hud/prototype/soul-currency.js` — Aureglossa provenance utility namespace while monetary Souls remains inactive.
+- `hud/prototype/public-provenance.json` and `public-graph.json` — canon/provenance/economic relationship records.
+- `aureglossa/AUREGLOSSA_NEXUS_ECONOMIC_PROTOCOL_2026-10-15.md` — additive economic/utility integration contract.
+
+**Still unresolved:** the separate custom Aureglossa glyph-art/font assets. The interface therefore uses the recorded letterforms rather than fabricating pseudo-glyphs. Any future custom glyph system requires recovered approved source assets or an explicit new human canon decision.
+
+**Revenue distinction:** existing Archon Soulings USD booking paths may be surfaced from the language experience immediately. This does not activate a Souls token sale, reward rate, redemption promise, liquidity market, revenue share, or mainnet issuance.
+
+**Deployment status:** repository implementation is not evidence of production publication. Promotion remains subject to CI, preview/device review and explicit production approval.
