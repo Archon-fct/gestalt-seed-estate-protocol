@@ -7,6 +7,7 @@ changes production records, or rewrites the original renderer or pocket sources.
 from __future__ import annotations
 import argparse, hashlib, json, re
 from pathlib import Path
+from html.parser import HTMLParser
 
 ROOT = Path(__file__).resolve().parents[1]
 RUNTIME = ROOT/'hud/prototype'
@@ -14,6 +15,38 @@ INTEGRATION = ROOT/'wix/integration'
 PAGES = {'aura':'aura-dynamics.html','aureglossa':'living-tongue.html','sessions':'inner-sanctum.html','workshops':'convergence.html','gestalt':'living-archive.html','journal':'astral-journal.html','threshold':'living-threshold.html'}
 V10 = RUNTIME/'experiments/procedural-v10'
 VERSION = '1.1.0-auric-preview.1'
+
+EXTERNAL_CONTRIBUTION_URL = 'https://headless-yhummxtbwsd-archonsoulings-140e.wix-site-host.com/'
+
+def validate_preview_dependencies(html: str, world: str) -> None:
+    """Permit the existing external contribution anchor, never a runtime load."""
+    class Anchor(HTMLParser):
+        def __init__(self):
+            super().__init__(convert_charrefs=True)
+            self.attributes = []
+        def handle_starttag(self, tag, attrs):
+            if tag == 'a': self.attributes.append(attrs)
+
+    def mask_approved_href(match):
+        tag = match.group(0)
+        parser = Anchor()
+        parser.feed(tag)
+        if len(parser.attributes) != 1: return tag
+        pairs = parser.attributes[0]
+        attrs = dict(pairs)
+        if len(attrs) != len(pairs): return tag
+        if (attrs.get('href') == EXTERNAL_CONTRIBUTION_URL
+                and attrs.get('target') == '_blank'
+                and {'noopener', 'noreferrer'} <= set((attrs.get('rel') or '').split())):
+            # Mask only the URL in href. Other attributes/scripts remain checked.
+            return re.sub(r'(\bhref\s*=\s*)([\"\x27])' + re.escape(EXTERNAL_CONTRIBUTION_URL) + r'\2',
+                          lambda m: m.group(1) + m.group(2) + 'approved-contribution-link' + m.group(2),
+                          tag, count=1, flags=re.I)
+        return tag
+
+    inspected = re.sub(r'<a\b[^>]*>', mask_approved_href, html, flags=re.I)
+    if 'wix-site-host.com' in inspected.lower():
+        raise ValueError('Stale preview dependency in ' + world)
 
 def once(text: str, old: str, new: str) -> str:
     if text.count(old) != 1: raise ValueError('Integration anchor changed: '+old[:90])
@@ -121,7 +154,7 @@ def build(output: Path, source: str) -> dict:
         csp="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; media-src blob:; connect-src 'none'; frame-src https://archonsoulings.wixforms.com; font-src 'none'; base-uri 'none'"
         html=once(html,'<head>','<head><meta http-equiv="Content-Security-Policy" content="'+csp+'"><script>'+bridge+'</script>')
         if world=='nexus':html=once(html,'</head>','<style>'+(INTEGRATION/'portrait.css').read_text()+'</style></head>')
-        if 'wix-site-host.com' in html:raise ValueError('Stale preview dependency in '+world)
+        validate_preview_dependencies(html, world)
         documents[world]=html
     report={'version':VERSION,'sourceCommit':source,'upstreamBaseline':'d9a6f3952bb7a400eadd4b2e0ae46019fbe8abb6','sourceFiles':lock,'productionInstalled':False,'productionVerified':False}
     code=(INTEGRATION/'element.js').read_text()
@@ -144,3 +177,4 @@ def build(output: Path, source: str) -> dict:
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--output',type=Path,required=True);parser.add_argument('--source-sha',required=True);args=parser.parse_args()
     print(json.dumps(build(args.output,args.source_sha)))
+
