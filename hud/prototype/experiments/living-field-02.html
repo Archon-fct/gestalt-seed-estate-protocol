@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark"><meta name="referrer" content="no-referrer">
+<title>Living Nexus · Aura Unfolding 02</title>
+<style>
+:root{color-scheme:dark;--ink:#e5eadf;--quiet:#a3b5b8;--pearl:#daeaf0;--gold:#e5d1a4;--jade:#a4dfcc}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;min-height:420px;background:#020508;color:var(--ink)}
+body{font-family:Georgia,'Times New Roman',serif;overflow:hidden}#field{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+header{position:fixed;inset:max(25px,env(safe-area-inset-top)) 36px auto;display:flex;justify-content:space-between;gap:20px;z-index:3;pointer-events:none}
+.brand{font-size:18px;letter-spacing:.24em;font-weight:400;line-height:1.6}.motto{display:block;color:var(--gold);font-size:10px;letter-spacing:.28em}
+.study{font:10px/1.8 system-ui,sans-serif;letter-spacing:.17em;text-align:right;color:var(--quiet);text-transform:uppercase}.study span{display:block;color:#d6ddd5;font-size:11px}
+.controls{position:fixed;bottom:40px;right:36px;display:flex;gap:18px;z-index:6}button{font:12px/1.4 system-ui,sans-serif;letter-spacing:.06em;border:0;color:var(--pearl);background:transparent;cursor:pointer;min-height:44px;min-width:44px;padding:10px 12px;border-bottom:1px solid #7ca09c40}
+button:focus-visible{outline:2px solid var(--jade);outline-offset:6px;border-radius:3px}button:hover{color:white;border-color:#b6ecdd}button:disabled{color:#75827f;cursor:default;border-color:transparent}button[hidden]{display:none}
+#worldTarget{position:fixed;z-index:5;transform:translate(-50%,-50%);width:190px;min-height:70px;padding:12px;text-align:center;border:0;font:16px/1.5 Georgia,serif;letter-spacing:.14em;color:#c3eadb;text-shadow:0 2px 10px #000,0 0 18px #000}
+#worldTarget .worldCaption{position:absolute;left:50%;top:100%;transform:translateX(-50%);display:block;width:210px;padding-top:14px}#worldTarget small{display:block;font:10px/1.7 system-ui,sans-serif;letter-spacing:.13em;color:#b6c7c5;margin-top:4px}
+#nexusLabel{position:fixed;z-index:2;transform:translate(-50%,-50%);text-align:center;pointer-events:none;font-size:17px;letter-spacing:.22em;text-shadow:0 2px 10px #000}
+#nexusLabel small{display:block;font:8px/1.6 system-ui,sans-serif;letter-spacing:.20em;margin-top:9px;color:#b3c6c7}
+#worldDescription{position:fixed;left:50%;top:77%;width:min(460px,80%);text-align:center;transform:translateX(-50%);opacity:0;pointer-events:none;transition:opacity .6s;color:#b8c7c7;font:13px/1.8 system-ui,sans-serif}
+#worldDescription strong{display:block;font:21px/1.8 Georgia,serif;letter-spacing:.15em;color:#d7eadd}body[data-state="aura"] #worldDescription{opacity:1}
+footer{position:fixed;left:36px;bottom:44px;max-width:50%;z-index:3;font:10px/1.7 system-ui,sans-serif;letter-spacing:.035em;color:#9caaad}footer strong{font-weight:400;display:block;color:#cbd5d0;font-size:11px;margin-bottom:4px}
+#fallback{position:fixed;left:50%;top:48%;width:min(520px,85%);transform:translate(-50%,-50%);padding:25px;background:#07101c;line-height:1.7;text-align:center;z-index:8}#fallback[hidden]{display:none}#fallback button{display:block;margin:auto}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+@media(max-width:650px){header{left:19px;right:19px;top:22px}.brand{font-size:12px;letter-spacing:.18em}.motto{font-size:8px;letter-spacing:.13em}.study{font-size:8px;max-width:120px}.study span{font-size:9px}.controls{bottom:max(28px,env(safe-area-inset-bottom));right:17px;gap:9px}.controls button{font-size:10px;padding:10px 8px}footer{left:20px;bottom:92px;max-width:87%;font-size:9px}footer strong{font-size:10px}#nexusLabel{font-size:13px;letter-spacing:.14em}#nexusLabel small{font-size:7px;letter-spacing:.08em}#worldTarget{font-size:14px;width:172px;min-height:65px}#worldTarget .worldCaption{position:absolute;left:50%;top:100%;transform:translateX(-50%);display:block;width:210px;padding-top:14px}#worldTarget small{font-size:9px}#worldDescription{top:75%;font-size:11px}#worldDescription strong{font-size:17px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+/* Continuation 02: original field composition retained; learning controls emerge only inside Aura. */
+#exercise[hidden]{display:none!important}
+#exercise{position:fixed;z-index:4;left:50%;bottom:106px;transform:translateX(-50%);width:min(650px,88vw);text-align:center;background:radial-gradient(ellipse at 50% 60%,#020508f5 28%,#020508b0 67%,transparent 91%);padding:14px 18px 3px}
+.lesson-tabs{display:flex;justify-content:center;gap:9px;flex-wrap:wrap}
+.lesson-tabs button{font-size:10px;letter-spacing:.09em;color:#94b7b6;padding:7px 9px;min-height:44px;line-height:1.4}
+.lesson-tabs button[aria-current=step]{color:#e4efd7;border-bottom-color:#b7d5a0;text-shadow:0 0 13px #a8d9c559}
+#lessonHint{font:9px/1.5 system-ui;letter-spacing:.15em;color:#b4cdb8;margin:12px 0 6px}
+#lessonTitle{font:22px/1.45 Georgia,serif;color:#dceadd;font-weight:400;letter-spacing:.055em;margin:0 0 8px}
+#lessonCopy{font:12px/1.75 system-ui;color:#bfcfca;max-width:560px;margin:0 auto;min-height:44px}
+.lesson-actions{display:flex;justify-content:center;gap:16px;margin-top:7px}
+.lesson-actions button{font-size:11px;min-height:44px}
+#integrateReturn{color:#ebd6ab}
+#fieldLabel{position:fixed;pointer-events:none;transform:translate(-50%,-50%);z-index:2;text-align:center;color:#d6eadb;font:14px/1.6 Georgia,serif;letter-spacing:.19em;text-shadow:0 2px 12px #000;opacity:0}
+#fieldLabel small{display:block;font:8px/1.8 system-ui;letter-spacing:.15em;color:#9fbeb5}
+body[data-state=aura] #fieldLabel{opacity:1}
+body[data-state=aura] footer{max-width:45%;font-size:9px}
+@media(max-width:650px){
+ #exercise{bottom:136px;width:96vw;padding:10px 9px 0}
+ .lesson-tabs{gap:0;flex-wrap:nowrap}
+ .lesson-tabs button{font-size:9px;padding:6px 7px;min-width:48px;letter-spacing:0}
+ #lessonHint{font-size:8px;margin:8px 0 4px}#lessonTitle{font-size:17px;margin-bottom:5px;line-height:1.45}
+ #lessonCopy{font-size:11px;line-height:1.6;min-height:55px;max-width:350px}
+ .lesson-actions{margin-top:4px;gap:10px}.lesson-actions button{font-size:10px;padding:9px 7px}
+ body[data-state=aura] footer{max-width:93%;bottom:87px;font-size:8px}body[data-state=aura] footer strong{font-size:9px}
+ #fieldLabel{font-size:12px}#fieldLabel small{font-size:7px}
+}
+@media(max-height:650px) and (min-width:651px){#exercise{bottom:68px;width:53vw;left:70%;padding:4px}#lessonCopy{font-size:10px;line-height:1.5}#lessonTitle{font-size:17px}.lesson-tabs{gap:0}.lesson-tabs button{font-size:9px;padding:5px}.controls{bottom:14px}footer{bottom:16px}header{top:14px}.study{display:none}}
+@media(max-height:730px) and (max-width:650px){#exercise{bottom:123px;padding-top:0}#lessonCopy{font-size:10px;line-height:1.45;min-height:48px}#lessonTitle{font-size:15px}#lessonHint{margin-top:3px}.lesson-tabs button{min-height:44px}.lesson-actions{margin-top:0}#fieldLabel{opacity:0!important}header .study{display:none}}
+</style>
+</head>
+<body data-state="nexus">
+<canvas id="field" aria-hidden="true"></canvas>
+<header><div class="brand">ARCHON SOULINGS<span class="motto">THARAVEL ~ KOSMATHRA</span></div><div class="study">Living field <span>02 / Aura unfolding</span>Development preview</div></header>
+<main aria-label="Experimental Nexus and one connected world">
+<div id="nexusLabel">NEXUS<small>THE MEETING FIELD</small></div><div id="fieldLabel">AURA DYNAMICS<small>THE LIVING FIELD</small></div>
+<button id="worldTarget" aria-label="Enter Aura Dynamics"><span class="worldCaption">AURA DYNAMICS<small>ENTER THE FIELD →</small></span></button>
+<section id="exercise" hidden aria-label="Aura Dynamics experiential path">
+  <nav class="lesson-tabs" aria-label="Choose an exercise stage">
+    <button data-lesson="0" aria-current="step">01 · Sense</button><button data-lesson="1">02 · Shape</button><button data-lesson="2">03 · Expand</button><button data-lesson="3">04 · Connect</button><button data-lesson="4">05 · Integrate</button>
+  </nav>
+  <div class="lesson-content" aria-live="polite" aria-atomic="true"><div id="lessonHint"></div><h1 id="lessonTitle"></h1><p id="lessonCopy"></p></div>
+  <div class="lesson-actions"><button id="previousLesson">← Previous</button><button id="nextLesson">Continue →</button><button id="integrateReturn" hidden>Integrate &amp; return ↗</button></div>
+</section>
+</main>
+<div class="controls"><button id="dissolve" hidden>Let it dissolve</button><button id="back" hidden>← Return to Nexus</button><button id="still" aria-pressed="false">Stillness</button></div>
+<footer><strong id="stateText">Nexus · one connected world</strong><span id="privacyText">Journey stays in this tab’s memory. Nothing saved or sent.</span></footer>
+<div id="fallback" hidden role="status"><strong>The 3D field is unavailable in this browser.</strong><p>The labels and controls still work. This fallback is not visual acceptance.</p><button id="retry">Retry rendering</button></div>
+<div id="announcement" class="sr" aria-live="polite"></div>
+<script>
+/* Living Field 02. Continuation of Field Proof 01.3; not a replacement application.
+   3D filament geometry projected into Canvas; not a fluid simulation or reference footage.
+   No network calls, storage, recording, audio, identity, or private app imports. Completion is volatile tab memory only.
+   Base project: 09681fbdc9082db0e163d8655b9fda0b3c100aa5. */
+'use strict';
+
+/* Renderer bridge contract: optional observer, no writes to the legacy app or storage.
+   Tested against the original Aura controller's data-step/aria-current and .still interface.
+   Use attach(root, renderCallback) only when deliberately mounting this renderer. */
+window.LivingFieldBridge=Object.freeze({
+ attachAura(root,render){
+  if(!root||typeof root.querySelector!=='function'||typeof render!=='function')throw new TypeError('An Aura root and render callback are required');
+  const initial=root.querySelector('[data-step][aria-current="step"]');
+  if(!initial)throw new Error('No active Aura step found; adapter was not attached');
+  let disposed=false,last='';
+  const sync=()=>{if(disposed)return;const active=root.querySelector('[data-step][aria-current="step"]'),step=Number(active?.dataset.step);if(!active||!Number.isInteger(step)||step<0||step>4)return;const world='aura',still=root.classList.contains('still');const key=step+':'+still;if(key===last)return;last=key;render(Object.freeze({world,step,still}));};
+  const watch=new MutationObserver(sync);watch.observe(root,{subtree:true,attributes:true,attributeFilter:['aria-current','class']});sync();
+  return()=>{disposed=true;watch.disconnect();};
+ }
+});
+
+(()=>{
+const canvas=document.querySelector('#field'), target=document.querySelector('#worldTarget'), back=document.querySelector('#back'), stillButton=document.querySelector('#still'), label=document.querySelector('#nexusLabel'), stateText=document.querySelector('#stateText'), announcement=document.querySelector('#announcement'), fallback=document.querySelector('#fallback');
+const media=matchMedia('(prefers-reduced-motion: reduce)');
+let disposed=false,lost=false,W=innerWidth,H=innerHeight,dpr=1,time=0,last=0,raf=0,frames=0,manualStill=false,progress=0,wanted=0,resonance=0,hovered=false,transitionStart=0,transitionFrom=0,transitioning=false,meanMs=0,paintMs=0;
+const stats={version:'living-field-02.1',base:'09681fbdc9082db0e163d8655b9fda0b3c100aa5',renderer:'unavailable',draws:0,vertices:0,points:0,errors:[]};
+const tau=Math.PI*2, clamp=(n,a,b)=>Math.max(a,Math.min(b,n)),mix=(a,b,t)=>a+(b-a)*t;
+let seed=63191;const rand=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296};
+const pause=()=>manualStill||media.matches;
+const exercise=document.querySelector('#exercise'),fieldLabel=document.querySelector('#fieldLabel'),dissolve=document.querySelector('#dissolve');
+let lesson=0,completed=false,returnPulse=0,spread=0,hostUnsubscribe=null;
+const lessonWeights=[[1,.24,.12,.12],[.28,1,.26,.16],[.18,.26,1,.3],[.24,.24,.44,1],[.82,.82,.82,.82]];
+let weights=[...lessonWeights[0]];
+// Verbatim experiential path from aura-dynamics.html at the pinned repository base.
+// Reuses the teaching sequence; does not measure or infer an aura.
+const lessons=[
+["SENSE · INNER FIELD","Notice before naming.","Begin with the nearest boundary of sensation. What changes when attention rests close to the body? Treat what you notice as experience first, interpretation second.","inner"],
+["SHAPE · VITAL FIELD","Give attention a boundary.","Explore how posture, breath, imagination, and directed attention change the felt shape of your immediate field. The exercise is observational, not a demand for a particular interpretation.","vital"],
+["EXPAND · OUTER FIELD","Increase the radius gently.","Let attention widen beyond the body. Notice what becomes clearer, quieter, or more ambiguous as the sensory radius expands. Keep uncertainty visible.","outer"],
+["CONNECT · RELATIONAL FIELD","Notice relationship without losing center.","Bring another person, place, memory, or symbol to mind. Observe changes while keeping a distinction between your direct experience and the story you attach to it.","relational"],
+["INTEGRATE · WHOLE FIELD","Return with what was useful.","Let the layers settle together. Keep what helped you become more attentive, grounded, or deliberate; release what did not. Integration completes the journey.","inner"]
+];
+function renderLesson(){
+ const s=lessons[lesson];document.querySelector('#lessonHint').textContent=s[0];document.querySelector('#lessonTitle').textContent=s[1];document.querySelector('#lessonCopy').textContent=s[2];
+ document.querySelectorAll('[data-lesson]').forEach((b,i)=>i===lesson?b.setAttribute('aria-current','step'):b.removeAttribute('aria-current'));
+ document.querySelector('#previousLesson').disabled=lesson===0;
+ document.querySelector('#nextLesson').hidden=lesson===4;document.querySelector('#integrateReturn').hidden=lesson!==4;
+ document.body.dataset.lessonIndex=String(lesson);announcement.textContent=s[0]+'. '+s[1];
+}
+function selectLesson(index){
+ if(!Number.isInteger(index)||index<0||index>=lessons.length)return false;
+ lesson=index;renderLesson();if(pause()){weights=[...lessonWeights[lesson]];spread=lesson===2?.105:lesson===3?.05:0;paint()}return true;
+}
+function completeAndReturn(){if(document.body.dataset.state!=='aura'||lesson!==4)return;completed=true;returnPulse=1;enter(0)}
+function clearJourney(){completed=false;returnPulse=0;dissolve.hidden=true;stateText.textContent='Nexus · the journey has dissolved';announcement.textContent='The Aura completion trace was cleared. Nothing was saved.';paint();target.focus({preventScroll:true})}
+function morphGeometry(data){
+ const out=new Float32Array(data.length/10*4);
+ for(let o=0;o<data.length;o+=10){const j=o/10*4;if(data[o+7]!==2)continue;
+  const x=data[o],y=data[o+1],z=data[o+2],ph=data[o+8],theta=Math.atan2(y,x),rho=Math.hypot(x,y),band=Math.floor(((ph%tau)+tau)%tau/tau*4);
+  const shell=[.62,.84,1.13,.99][band],corrugation=rho-.65;
+  const radial=shell+corrugation*.62+.077*Math.sin(theta*3+ph)+.033*Math.cos(theta*7-ph);
+  out[j]=radial*Math.cos(theta)*(1+.1*Math.cos(theta*2+ph));
+  out[j+1]=radial*Math.sin(theta)*(.86+.09*Math.cos(ph))+.06*Math.sin(theta*3+ph);
+  out[j+2]=z*1.7+.21*Math.sin(theta*2+ph)+(1.5-band)*.09;
+  out[j+3]=band;
+ }
+ return out;
+}
+let ctx=null,lineData=null,pointData=null,lineMorph=null,pointMorph=null,sprites=[],busy=false;
+const shades=[[173,209,220],[103,177,194],[219,192,132],[119,206,174],[108,145,184]];
+function makeSprites(){
+ sprites=shades.map(rgb=>{const el=document.createElement('canvas');el.width=el.height=48;const c=el.getContext('2d');const g=c.createRadialGradient(24,24,0,24,24,24);g.addColorStop(0,'rgba(246,253,242,1)');g.addColorStop(.13,'rgba('+rgb+',.95)');g.addColorStop(.28,'rgba('+rgb+',.32)');g.addColorStop(.65,'rgba('+rgb+',.045)');g.addColorStop(1,'rgba('+rgb+',0)');c.fillStyle=g;c.fillRect(0,0,48,48);return el});
+}
+let lines=[],points=[];
+function v(p,c,k=0,ph=0,size=1){return [...p,...c,k,ph,size]}
+function segment(a,b,c,k=0,ph=0){lines.push(...v(a,c,k,ph),...v(b,c,k,ph));}
+function dot(p,c,k=0,ph=0,size=3){points.push(...v(p,c,k,ph,size))}
+function rotate(p,ax,ay,az){let[x,y,z]=p;let Y=y*Math.cos(ax)-z*Math.sin(ax),Z=y*Math.sin(ax)+z*Math.cos(ax);y=Y;z=Z;let X=x*Math.cos(ay)+z*Math.sin(ay);Z=-x*Math.sin(ay)+z*Math.cos(ay);x=X;z=Z;return[x*Math.cos(az)-y*Math.sin(az),x*Math.sin(az)+y*Math.cos(az),z]}
+function path(fn,n,c,k,ph,dots=0){let prev=fn(0);for(let j=1;j<=n;j++){const p=fn(j/n);segment(prev,p,c,k,ph);if(dots&&j%dots===0)dot(p,[c[0],c[1],c[2],Math.min(.8,c[3]*3.2)],k,ph,2.3+rand()*3);prev=p}}
+function geometry(){
+ lines=[];points=[];seed=63191;
+ // Hundreds of individually phased 3D filaments build the annular field.
+ const mobile=W<600,threads=mobile?74:134,steps=mobile?100:140;
+ for(let i=0;i<threads;i++){
+  const ph=rand()*tau,span=tau*(.6+rand()*.6),off=rand()*tau,th=.11+rand()*.19,roll=rand()*tau,osc=3+rand()*9;
+  const pal=i%7<3?[.73,.87,.91]:i%7<5?[.37,.73,.78]:[.92,.81,.57];
+  path(t=>{let a=off+t*span,q=a*osc+ph;let r=.64+th*Math.cos(q)+.035*Math.sin(a*17+roll);return[r*Math.cos(a),r*Math.sin(a)*.94,th*Math.sin(q)+.045*Math.cos(a*11+roll)]},steps,[...pal,.055+rand()*.09],0,ph,17);
+ }
+ // Irregular expanding envelopes: no solid disc and no opaque field wallpaper.
+ for(let i=0;i<(mobile?58:100);i++){
+  let a0=rand()*tau,ph=rand()*tau,r0=.76+rand()*.19,extent=.28+Math.pow(rand(),2)*.95;
+  path(t=>{let a=a0+(.11+randFixed(i)*.14)*Math.sin(t*Math.PI)+.037*Math.sin(t*9+ph);let r=r0+extent*Math.pow(Math.sin(t*Math.PI),1.2);return[r*Math.cos(a),r*Math.sin(a),.16*Math.sin(t*tau+ph)]},82,[.49,.71,.74,.024+rand()*.026],0,ph,23);
+ }
+ // Nested orbital planes with scattered beads: abstract geometry, no pseudo-script.
+ for(let i=0;i<6;i++){
+  const R=.95+i*.087,ax=[.50,-.40,.95,-.8,.1,.65][i],ay=[.78,-.52,-.3,.20,1.10,-.84][i],az=i*.49;
+  const start=rand()*tau,arc=tau*(.64+rand()*.30);
+  path(t=>rotate([R*Math.cos(start+t*arc),R*Math.sin(start+t*arc),0],ax,ay,az),260,[.43,.75,.89,i%2?.13:.24],1,i);
+  for(let j=0;j<20;j++){let a=start+j/20*arc;let p=rotate([R*Math.cos(a),R*Math.sin(a),0],ax,ay,az);if(j%4===0)dot(p,[.69,.89,.96,.75],1,i+j,8+rand()*3);else{let b=rotate([(R+.016)*Math.cos(a),(R+.016)*Math.sin(a),0],ax,ay,az);segment(p,b,[.63,.82,.86,.43],1,i+j)}}
+ }
+ // A small, independent warm thread just inside the hollow nucleus.
+ path(t=>{let a=t*tau;return[.31*Math.cos(a),.31*Math.sin(a),.018*Math.sin(a*6)]},220,[.96,.82,.54,.36],0,12);
+ for(let i=0;i<130;i++){let a=rand()*tau,r=.35+rand()*.61;dot([r*Math.cos(a),r*Math.sin(a),rand()*.52-.26],[.85,.86,.74,.16+rand()*.40],0,i,2+rand()*4.0)}
+ // Aura world: woven surface, smaller hollow core, layered jade/pearl matter.
+ for(let i=0;i<(mobile?58:88);i++){
+  let ph=rand()*tau,a0=rand()*tau,m=.14+rand()*.14,osc=3+rand()*5;
+  path(t=>{let a=a0+t*tau;let q=a*osc+ph,r=.65+m*Math.cos(q);return[r*Math.cos(a),r*Math.sin(a),m*Math.sin(q)]},115,[i%3?.41:.80,.87,i%3?.70:.89,.10+rand()*.13],2,ph,19);
+ }
+ for(let i=0;i<3;i++)path(t=>rotate([(.92+i*.1)*Math.cos(t*tau),(.92+i*.1)*Math.sin(t*tau),0],i*.55+.2,-i*.4,i*.44),180,[.55,.89,.78,.18],2,i);
+ // True relation bundle, tapered at both world boundaries with distributed energy beads.
+ for(let i=0;i<(mobile?22:35);i++){
+  let ph=i*.47,off=(i-17)*.002;
+  const fn=t=>{let f=.20+t*.67;let edge=Math.sin(t*Math.PI);return[f,Math.sin(t*tau+ph)*.085*edge+Math.sin(t*Math.PI)*(.055+off),Math.sin(ph+t*tau)*.1]};
+  path(fn,110,[.47,.84,.75,.105],3,ph,0);
+  for(let j=1;j<6;j++)dot(fn(j/6),[.82,.93,.83,.32],3,ph,3.8);
+ }
+ // Irregular local particle bridges, drawn at several scales rather than radial spokes.
+ let cloud=[];for(let i=0;i<220;i++){let a=rand()*tau,r=.87+rand()*.48;cloud.push([r*Math.cos(a),r*Math.sin(a),rand()*.48-.24]);}
+ cloud.forEach((p,i)=>{dot(p,[.51,.77,.84,.20],0,i,2.3);for(let j=i+1;j<cloud.length;j++){const q=cloud[j];let d=Math.hypot(p[0]-q[0],p[1]-q[1],p[2]-q[2]);if(d<.10)segment(p,q,[.47,.75,.80,.045],0,i)}});
+ for(let i=0;i<140;i++)dot([rand()*2-1,rand()*2-1,0],[.40,.60,.70,.09+rand()*.15],4,i,1.2+rand()*2);
+}
+function randFixed(i){return(Math.sin(i*17.357)*517.7)%1}
+function initialize(){
+ try{
+  ctx=canvas.getContext('2d',{alpha:false});if(!ctx)throw Error('Canvas unavailable');
+  geometry();lineData=new Float32Array(lines);pointData=new Float32Array(points);lineMorph=morphGeometry(lineData);pointMorph=morphGeometry(pointData);stats.vertices=lineData.length/10;stats.points=pointData.length/10;lines=[];points=[];
+  stats.renderer='Canvas 2D; CPU projection of 3D filament geometry';makeSprites();lost=false;fallback.hidden=true;resize();sync();
+ }catch(e){stats.errors.push(String(e));fallback.hidden=false;cancelAnimationFrame(raf);raf=0;lost=true;layout();}
+}
+function resize(){if(disposed)return;W=innerWidth;H=innerHeight;dpr=Math.min(W<650?1.5:1.7,devicePixelRatio||1);canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);if(ctx)ctx.setTransform(dpr,0,0,dpr,0,0);layout();if(pause())paint()}
+let C=[0,0,1,0],A=[0,0,1,0];
+function layout(){
+ const narrow=W<650;
+ const coreR=narrow?Math.min(W*.31,H*.205):Math.min(W*.225,H*.286),worldR=coreR*.35;
+ const cx=narrow?W*.49:W*.395,cy=narrow?H*.43:H*.51;
+ const ax=narrow?W*.67:W*.79,ay=narrow?H*.70:H*.39;
+ C=[mix(cx,narrow?-W*.30:-W*.27,progress),mix(cy,H*.48,progress),coreR*(1+progress*.25),0];
+ A=[mix(ax,W*(W>650&&H<650?.27:.50),progress),mix(ay,H*(narrow?.32:.36),progress),mix(worldR,coreR*(narrow?.88:.91),progress),0];
+ fieldLabel.style.left=A[0]+'px';fieldLabel.style.top=A[1]+'px';
+ label.style.left=C[0]+'px';label.style.top=C[1]+'px';label.style.opacity=String(1-progress);
+ target.style.left=A[0]+'px';target.style.top=A[1]+'px';target.style.width=target.style.height=Math.max(65,A[2]*2.4)+'px';target.style.opacity=String(1-progress);
+ target.style.visibility=progress>.95?'hidden':'visible';
+}
+function paint(){
+ if(!ctx||lost||disposed||busy)return;busy=true;const start=performance.now();
+ ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';ctx.fillStyle='#020508';ctx.fillRect(0,0,W,H);
+ const ry=.11*Math.sin(time*.17)+.12,rx=.16*Math.sin(time*.13+.7);
+ const trig=[[Math.cos(rx),Math.sin(rx),Math.cos(ry),Math.sin(ry)],[Math.cos(rx-.24),Math.sin(rx-.24),Math.cos(ry+.12),Math.sin(ry+.12)]];
+ const dx=A[0]-C[0],dy=A[1]-C[1],len=Math.max(1,Math.hypot(dx,dy)),nx=-dy/len,ny=dx/len;
+ const paths=Array.from({length:40},()=>new Path2D());
+ function project(data,o){
+  let x=data[o],y=data[o+1],z=data[o+2],k=data[o+7],ph=data[o+8],alpha=data[o+6];let tr=k<1.5?C:A;
+  if(k>1.5&&k<2.5){
+    const m=data===lineData?lineMorph:pointMorph,j=o/10*4,band=m[j+3];const u=clamp((progress-.20)/.80,0,1),opening=u*u*(3-2*u);
+    const expansion=1+opening*spread;
+    x=mix(x,m[j]*expansion,opening);y=mix(y,m[j+1]*expansion,opening);z=mix(z,m[j+2],opening);
+    alpha*=mix(1,.30+.82*weights[band],opening);
+  }
+  if(k<.5||(k>1.5&&k<2.5)){const phase=time*.35+ph;const pulse=1+.048*Math.sin(time*.71+ph*.12);x*=pulse;y*=pulse;const xx=x;x+=Math.sin(y*5.1+phase)*.014;y+=Math.cos(xx*4.3-phase*.73)*.014;z+=Math.sin(xx*6+y*3+phase)*.028;}
+  if(k<2.5){let r=trig[k>1.5?1:0];if(k>.5&&k<1.5){let extra=.21*Math.sin(time*.24+ph);r=[Math.cos(rx+extra),Math.sin(rx+extra),Math.cos(ry-extra*.7),Math.sin(ry-extra*.7)];}if(k>1.5){const grow=1+resonance*.055;x*=grow;y*=grow;z*=grow;}let xx=x*r[2]+z*r[3],zz=-x*r[3]+z*r[2];x=xx;let yy=y*r[0]-zz*r[1];z=y*r[1]+zz*r[0];y=yy;}
+  let perspective=4.7/(4.7-z),X=tr[0]+x*tr[2]*perspective,Y=tr[1]+y*tr[2]*perspective;
+  if(k<1.5)alpha*=1-progress*.78;
+  if(k>1.5&&k<2.5)alpha*=1+resonance*.24;
+  if(k>2.5&&k<3.5){const f=x,edge=Math.sin(f*Math.PI),off=(y+Math.sin(time*.39+f*7+ph)*.016*edge)*C[2];X=mix(C[0],A[0],f)+nx*off;Y=mix(C[1],A[1],f)+ny*off;alpha*=.65+.35*Math.sin(f*tau-time*.6+ph*.2);alpha*=1+resonance*.8;}
+  if(k>3.5){X=(data[o]*.5+.5)*W;Y=(data[o+1]*.5+.5)*H;perspective=1;alpha*=.7+.3*Math.sin(time*.2+ph);}
+  let dep=clamp((z+.65)/1.2,0,1);dep=dep*dep*(3-2*dep);alpha*=(.32+.68*dep)*(.8+.2*Math.sin(time*.24+ph+x*1.4));
+  const color=k>1.5&&k<3.5?3:k>3.5?4:data[o+3]>.9?2:data[o+3]<.5?1:0;
+  return[X,Y,alpha,color,perspective];
+ }
+ ctx.globalCompositeOperation='lighter';
+ for(let o=0;o<lineData.length;o+=20){const a=project(lineData,o),b=project(lineData,o+10);if((a[0]<0&&b[0]<0)||(a[0]>W&&b[0]>W)||(a[1]<0&&b[1]<0)||(a[1]>H&&b[1]>H))continue;const level=clamp(Math.floor(a[2]*40),0,7),p=paths[a[3]*8+level];p.moveTo(a[0],a[1]);p.lineTo(b[0],b[1]);}
+ ctx.lineWidth=.70;
+ for(let j=0;j<paths.length;j++){const c=Math.floor(j/8),level=j%8;ctx.strokeStyle='rgba('+shades[c]+','+((level+.65)/26)+')';ctx.stroke(paths[j]);}
+ for(let o=0;o<pointData.length;o+=10){const p=project(pointData,o);const size=pointData[o+9]*p[4]*1.6;if(p[0]<-size||p[0]>W+size||p[1]<-size||p[1]>H+size)continue;ctx.globalAlpha=clamp(p[2]*1.5,0,1);ctx.drawImage(sprites[p[3]],p[0]-size/2,p[1]-size/2,size,size);}
+ if(completed){
+  const f=wanted===0?progress:0,X=mix(C[0],A[0],f)+Math.cos(-.78)*C[2]*.40*(1-f),Y=mix(C[1],A[1],f)+Math.sin(-.78)*C[2]*.40*(1-f)-Math.sin(f*Math.PI)*C[2]*.14;
+  const size=12+returnPulse*8;ctx.globalAlpha=.9;ctx.drawImage(sprites[2],X-size/2,Y-size/2,size,size);
+ }
+ ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';paintMs=performance.now()-start;stats.draws+=40;frames++;busy=false;
+}
+function step(now){
+ raf=0;if(document.hidden||pause()||lost||disposed){last=0;return}
+ const delta=last?Math.min((now-last)/1000,.09):0;last=now;time+=delta;meanMs=meanMs*.94+delta*1000*.06;resonance=mix(resonance,hovered?1:0,1-Math.exp(-delta*6));weights=weights.map((a,i)=>mix(a,lessonWeights[lesson][i],1-Math.exp(-delta*4)));returnPulse=Math.max(0,returnPulse-delta*.45);spread=mix(spread,lesson===2?.105:lesson===3?.05:0,1-Math.exp(-delta*4));
+ if(transitioning){const u=clamp((now-transitionStart)/1750,0,1);const q=u*u*u*(u*(u*6-15)+10);progress=mix(transitionFrom,wanted,q);layout();if(u===1){transitioning=false;finish()}}
+ paint();raf=requestAnimationFrame(step);
+}
+function finish(){
+ document.body.dataset.state=wanted?'aura':'nexus';exercise.hidden=!wanted;
+ stateText.textContent=wanted?'Aura Dynamics · experiential path':completed?'Living Thread · Aura integrated':'Nexus · returned to the same field';
+ document.querySelector('#privacyText').textContent=wanted?'An attention exercise, not an aura measurement. No data is saved.':'Journey stays in this tab’s memory. Nothing saved or sent.';
+ dissolve.hidden=!!wanted||!completed;announcement.textContent=stateText.textContent;
+ if(!wanted){back.hidden=true;target.focus({preventScroll:true});hovered=true}
+}
+function enter(n){
+ if(disposed)return;wanted=n;exercise.hidden=true;dissolve.hidden=true;document.body.dataset.state=n?'crossing':'returning';back.hidden=false;stateText.textContent=n?'Approaching Aura Dynamics…':'Returning to the Nexus…';announcement.textContent=stateText.textContent;
+ if(n){selectLesson(0);weights=[...lessonWeights[0]];back.focus({preventScroll:true});}
+ if(pause()||lost){progress=n;transitioning=false;layout();finish();paint();return}
+ transitionFrom=progress;transitionStart=performance.now();transitioning=true;sync();
+}
+function sync(){
+ if(disposed)return;const stopped=pause();stillButton.setAttribute('aria-pressed',String(stopped));stillButton.textContent=media.matches?'Reduced motion':manualStill?'Resume motion':'Stillness';canvas.dataset.motion=document.hidden||stopped||lost?'paused':'running';
+ if(document.hidden||stopped||lost){cancelAnimationFrame(raf);raf=0;last=0;if(stopped&&transitioning){progress=wanted;transitioning=false;layout();finish()}if(!document.hidden)paint();return}
+ if(!raf){last=0;raf=requestAnimationFrame(step)}
+}
+document.querySelectorAll('[data-lesson]').forEach(b=>b.addEventListener('click',()=>selectLesson(Number(b.dataset.lesson))));
+ document.querySelector('#previousLesson').addEventListener('click',()=>selectLesson(Math.max(0,lesson-1)));
+ document.querySelector('#nextLesson').addEventListener('click',()=>{if(lesson<4){selectLesson(lesson+1);if(lesson===4)document.querySelector('#integrateReturn').focus({preventScroll:true})}});
+ document.querySelector('#integrateReturn').addEventListener('click',completeAndReturn);dissolve.addEventListener('click',clearJourney);
+ renderLesson();
+ target.addEventListener('click',()=>enter(1));back.addEventListener('click',()=>enter(0));target.addEventListener('pointerenter',()=>{hovered=true;if(pause()){resonance=1;paint()}});target.addEventListener('pointerleave',()=>{hovered=false;if(pause()){resonance=0;paint()}});target.addEventListener('focus',()=>{hovered=true;if(pause()){resonance=1;paint()}});target.addEventListener('blur',()=>{hovered=false;if(pause()){resonance=0;paint()}});
+stillButton.addEventListener('click',()=>{if(media.matches){announcement.textContent='Reduced motion follows your device setting.';return}manualStill=!manualStill;sync()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&(wanted||progress>0)){e.preventDefault();enter(0)}});document.addEventListener('visibilitychange',sync);media.addEventListener('change',sync);window.addEventListener('resize',resize);
+document.querySelector('#retry').onclick=()=>location.reload();
+window.__fieldProof={snapshot:()=>({...stats,width:W,height:H,dpr,time,frames,state:document.body.dataset.state,progress,lesson,layer:lessons[lesson][3],opening:clamp((progress-.2)/.8,0,1),completed,spread,weights:[...weights],motion:canvas.dataset.motion,meanFrameMs:meanMs,lastSubmitMs:paintMs,resourceRequests:performance.getEntriesByType('resource').map(r=>r.name)}),stop:()=>{manualStill=true;sync()},
+ applyHostState:(s)=>{
+   if(disposed||!s||!['nexus','aura'].includes(s.world)||!Number.isInteger(s.step)||s.step<0||s.step>4||typeof s.still!=='boolean')return false;
+   manualStill=s.still;if(wanted!==(s.world==='aura'?1:0))enter(s.world==='aura'?1:0);selectLesson(s.step);sync();return true;
+ },
+ onHostDetach:()=>{hostUnsubscribe?.();hostUnsubscribe=null;},
+ dispose:()=>{disposed=true;hostUnsubscribe?.();cancelAnimationFrame(raf);lineData=null;pointData=null;lineMorph=null;pointMorph=null;sprites=[];}};
+initialize();
+})();
+</script>
+</body></html>

@@ -1,0 +1,51 @@
+name: Convergence Inquiry Journey
+on:
+  pull_request:
+    paths:
+      - 'hud/prototype/convergence.html'
+      - 'hud/prototype/convergence-journey.*'
+      - 'hud/prototype/living-pocket-material.*'
+      - 'tests/test-convergence-journey.mjs'
+      - '.github/workflows/convergence-journey.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: convergence-inquiry-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned browser test dependency
+        run: |
+          npm install --no-save --package-lock=false playwright@1.57.0
+          npx playwright install --with-deps chromium
+      - name: Recover the exact pre-change visual baseline
+        run: |
+          mkdir -p .convergence-baseline
+          for file in convergence.html living-pocket-material.css living-pocket-material.js; do
+            git show "7c3703f2ffe8dfe1d15ace82da43333f64ffa28b:hud/prototype/$file" > ".convergence-baseline/$file"
+          done
+      - name: Run inquiry, privacy, audio and visual non-regression checks
+        env:
+          BASELINE_ROOT: .convergence-baseline
+          REPORT_DIR: test-artifacts/convergence-journey
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: node tests/test-convergence-journey.mjs
+      - name: Preserve actual browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: convergence-inquiry-evidence
+          path: test-artifacts/convergence-journey/
+          retention-days: 14
+          if-no-files-found: warn

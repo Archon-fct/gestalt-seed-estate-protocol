@@ -1,0 +1,72 @@
+name: Living Nexus Hosted Diagnostics (not a release gate)
+on:
+  push:
+    branches: [feature/public-project-constellation]
+    paths: ['.github/workflows/living-nexus-hosted-diagnostics.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Capture public deployed source and exact HTML transport differences
+        run: |
+          mkdir -p hosted-diagnostics
+          python3 scripts/package-living-nexus-release.py --capture-preview --output hosted-diagnostics/deployed-public.zip
+          python3 - <<'PY'
+          import difflib,hashlib,json,pathlib,urllib.request,zipfile
+          out=pathlib.Path('hosted-diagnostics')
+          changes=[]
+          with zipfile.ZipFile(out/'deployed-public.zip') as z:
+              receipt=json.loads(z.read('release.json'))
+              assert receipt['sourceCommit']=='ed92b6f6356bb8a762e7513845f1210ca7afdce5'
+              for name,digest in receipt['files'].items():
+                  assert hashlib.sha256(z.read(name)).hexdigest()==digest,name
+              for name in ['index.html','convergence.html','experiments/living-nexus-procedural-v10.html']:
+                  stored=z.read(name).decode()
+                  served=urllib.request.urlopen('https://headless-mfewrcffiie-archonsoulings-140e.wix-site-host.com/'+name,timeout=30).read().decode()
+                  (out/(name.replace('/','-')+'.served.txt')).write_text(served)
+                  ops=difflib.SequenceMatcher(None,stored,served).get_opcodes()
+                  changes.append({'path':name,'storedLength':len(stored),'servedLength':len(served),'changes':[{'operation':tag,'storedStart':a,'storedEnd':b,'servedStart':c,'servedEnd':d,'stored':stored[a:b],'served':served[c:d]} for tag,a,b,c,d in ops if tag!='equal']})
+          (out/'html-differences.json').write_text(json.dumps(changes,indent=2))
+          PY
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install only the diagnostic browser
+        run: |
+          npm install --no-save --package-lock=false playwright@1.57.0
+          npx playwright install --with-deps webkit
+      - name: Record phone journey stages without sending data
+        run: |
+          cat > diagnose-webkit.mjs <<'JS'
+          import {webkit} from 'playwright';
+          import fs from 'node:fs/promises';
+          const browser=await webkit.launch({headless:true});
+          const context=await browser.newContext({viewport:{width:390,height:900},hasTouch:true,reducedMotion:'reduce'});
+          await context.route('**/*',r=>r.request().method()==='GET'&&r.request().url().startsWith('https://headless-mfewrcffiie-archonsoulings-140e.wix-site-host.com/')?r.continue():r.abort());
+          const page=await context.newPage();page.setDefaultTimeout(7000);
+          const report={stages:[],errors:[],releaseGate:false};page.on('pageerror',e=>report.errors.push(String(e)));
+          await page.addInitScript(()=>{window.__events=[];for(const name of ['pointerdown','pointerup','click'])document.addEventListener(name,e=>window.__events.push({type:name,target:e.target.closest('[data-id]')?.getAttribute('data-id')||e.target.id}),true);});
+          async function stage(name,fn){try{await fn();report.stages.push({name,ok:true});}catch(e){report.stages.push({name,ok:false,error:String(e.stack)});}const state=await page.evaluate(()=>({thread:document.querySelector('#threadButton')?.textContent,veil:document.querySelector('#veil')?.getAttribute('aria-hidden'),status:document.querySelector('#status')?.textContent,events:window.__events,active:document.activeElement?.outerHTML.slice(0,500)}));report.stages.at(-1).state=state;await page.screenshot({path:'hosted-diagnostics/'+name+'.png',fullPage:true});}
+          await stage('load',()=>page.goto('https://headless-mfewrcffiie-archonsoulings-140e.wix-site-host.com/',{waitUntil:'networkidle'}));
+          await stage('click-aura',async()=>{await page.locator('[data-id="aura"].node').click();await page.waitForFunction(()=>document.querySelector('#threadButton').textContent.includes('1'));});
+          await stage('escape',async()=>{await page.keyboard.press('Escape');await page.waitForFunction(()=>document.querySelector('#veil').getAttribute('aria-hidden')==='true');});
+          await stage('dissolve',async()=>{await page.locator('#threadButton').click();await page.locator('#dissolveJourney').click();});
+          await fs.writeFile('hosted-diagnostics/webkit-stages.json',JSON.stringify(report,null,2));
+          await browser.close();
+          JS
+          node diagnose-webkit.mjs
+      - name: Preserve diagnostic evidence without asserting release approval
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: living-nexus-hosted-diagnostics-${{ github.sha }}
+          path: hosted-diagnostics/
+          retention-days: 14
+          if-no-files-found: error

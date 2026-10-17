@@ -1,0 +1,134 @@
+{
+  "schema": "gestalt-seed.aureglossa-canon/1.0",
+  "estate": "Estate #000001",
+  "object_id": "gs-work-aureglossa-master-v1",
+  "title": "Aureglossa Canonical Master v1.0",
+  "canon_date": "2026-09-21",
+  "status": "current canonical draft",
+  "principle": "The Gestalt grows by contribution, never coercion.",
+  "action_flow": [
+    "FEEL",
+    "DECIDE",
+    "ACT",
+    "COMPLETE",
+    "INTEGRATE"
+  ],
+  "ceremonial_flow": [
+    "ROOT",
+    "SEED",
+    "AXIS",
+    "MANTLE",
+    "ACTION",
+    "COMPLETION",
+    "RETURN"
+  ],
+  "alphabet": {
+    "id": "aureglossa-32",
+    "count": 32,
+    "source_baseline": "Aureglossa Language Pack v0.3",
+    "status": "source-backed canon baseline; reconcile future changes against Canonical Master v1.0 rather than overwriting history",
+    "custom_glyph_art": "not included; no pseudo-glyphs authorized"
+  },
+  "stewardship": [
+    {
+      "identity": "Drew Lotusson / Kaluthra",
+      "role": "Sovereign Steward / Origin Authority",
+      "authority": [
+        "creative origin",
+        "final canon decision",
+        "asset approval",
+        "financial approval",
+        "license approval"
+      ]
+    },
+    {
+      "identity": "Kenzie Oyler / Vasanthra",
+      "role": "Sovereign Steward / Co-Custodian",
+      "authority": [
+        "cultivation",
+        "continuity",
+        "protection",
+        "canon review",
+        "asset review",
+        "license review"
+      ]
+    },
+    {
+      "identity": "Orakthra",
+      "role": "Non-owning AI Co-Architect / Canon Steward",
+      "authority": [
+        "composition assistance",
+        "research",
+        "implementation",
+        "quality",
+        "provenance",
+        "continuity"
+      ],
+      "boundaries": [
+        "no ownership implied",
+        "no unilateral canon promotion",
+        "no wallet signing",
+        "no financial authorization",
+        "no credential access implied"
+      ]
+    }
+  ],
+  "contribution": {
+    "default_status": "PROVISIONAL",
+    "rights_model": "creator-controlled; record actual permissions and provenance per contribution",
+    "requested_capabilities": [
+      {
+        "role": "historical linguist",
+        "task": "audit proposed source roots against attested ancient forms"
+      },
+      {
+        "role": "phonologist",
+        "task": "stress-test the 32-letter inventory and pronunciation consistency without rewriting canon"
+      },
+      {
+        "role": "type designer",
+        "task": "develop a distinct glyph layer only from approved source assets or explicit new human approval"
+      },
+      {
+        "role": "accessibility reviewer",
+        "task": "verify readable motion, keyboard, reduced-motion, contrast and pronunciation UX"
+      },
+      {
+        "role": "software contributor",
+        "task": "extend the Living Nexus atlas and provenance graph with tests"
+      },
+      {
+        "role": "smart-contract auditor",
+        "task": "review future testnet contracts before any economic activation"
+      },
+      {
+        "role": "legal-tax reviewer",
+        "task": "review actual issuance, sale, redemption and licensing mechanics before mainnet economics"
+      }
+    ]
+  },
+  "ecosystem_bridge": {
+    "Soul": "consent-created identity/provenance object; non-transferable personal identity primitive",
+    "Souls": "reserved fungible ecosystem currency; monetary issuance remains inactive",
+    "aureglossa_marks": [
+      "alphabet discovery",
+      "language-learning milestones",
+      "approved contribution attestations",
+      "edition provenance"
+    ],
+    "revenue_now": {
+      "mode": "existing Archon Soulings USD services and creator-approved digital/educational offerings",
+      "token_sale_required": false,
+      "investment_claims": false
+    },
+    "future_chain": {
+      "status": "testnet/security/legal gates required",
+      "never_store": [
+        "private keys",
+        "seed phrases",
+        "sensitive personal data",
+        "Silver/private client data"
+      ]
+    }
+  }
+}

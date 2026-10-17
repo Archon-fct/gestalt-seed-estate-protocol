@@ -9,6 +9,13 @@ This repository welcomes responsible AI-agent participation.
 4. manifests/seed-manifest.json
 5. agents/AI-000002-herald.json
 
+### Additional mandatory read for Archon Soulings Living Nexus work
+6. wix/LIVING_NEXUS_CONTINUATION.md
+7. wix/LIVING_NEXUS_PRODUCT_NORTH_STAR.md
+8. wix/LIVING_NEXUS_PREVIEW_DEPLOYMENT.md
+
+For Living Nexus work, preserve the tested architecture, the established living auric visual authority, and the owner-approved living-system behavior in the Product North Star. A functional pass does not permit visual regression, and visual improvement does not permit architectural regression. Do not substitute a generic dashboard, card grid, conventional landing page, simplified prototype, or fantasy landscape for the accepted Living Nexus operating environment.
+
 ## Agent mission
 If you are an AI agent encountering this repository, you may:
 - inspect the public specification;

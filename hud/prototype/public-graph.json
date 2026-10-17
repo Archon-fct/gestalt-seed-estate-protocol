@@ -1,0 +1,180 @@
+{
+  "schema": "gestalt-public-estate-graph/0.3",
+  "generated_at": "2026-10-06T00:00:00-06:00",
+  "estate_id": "archon-soulings-public-constellation-v0.1",
+  "nodes": [
+    {
+      "id": "archon-soulings",
+      "label": "Archon Soulings",
+      "kind": "nexus",
+      "state": "public",
+      "canon": "approved-public",
+      "description": "Public threshold into the wider body of work.",
+      "source_ids": [
+        "archon-public"
+      ],
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    {
+      "id": "aura-dynamics",
+      "label": "Aura Dynamics",
+      "kind": "learning",
+      "state": "public",
+      "canon": "reviewed-public",
+      "description": "Training and experiential exercises.",
+      "source_ids": [
+        "archon-public"
+      ],
+      "x": -2,
+      "y": 2,
+      "z": 1
+    },
+    {
+      "id": "aureglossa",
+      "label": "Aureglossa",
+      "kind": "language",
+      "state": "public",
+      "canon": "canonical-or-reviewed",
+      "description": "Constructed language and living creative corpus.",
+      "source_ids": [
+        "aureglossa-public"
+      ],
+      "x": 2,
+      "y": 2,
+      "z": 1,
+      "alphabet_count": 32,
+      "canon_asset": "aureglossa/AUREGLOSSA_ALPHABET_CANON_v1.json",
+      "gestalt_metadata": "hud/prototype/aureglossa-gestalt-metadata.json",
+      "provenance_state": "ACTIVE_OFFCHAIN",
+      "revenue_state": "LIVE_USD_SERVICE_PATHS",
+      "souls_currency_state": "RESERVED_NOT_MONETARY"
+    },
+    {
+      "id": "gestalt-seed",
+      "label": "Gestalt Seed · Soul & Stone",
+      "kind": "contribution",
+      "state": "public",
+      "canon": "protocol-v1",
+      "description": "Provenance-aware collaborative creation.",
+      "source_ids": [
+        "gestalt-public"
+      ],
+      "x": -3,
+      "y": 0,
+      "z": 0
+    },
+    {
+      "id": "journal",
+      "label": "Journal · Stories",
+      "kind": "publication",
+      "state": "public",
+      "canon": "reviewed-public",
+      "description": "Field notes, stories and public reflections.",
+      "source_ids": [
+        "archon-public"
+      ],
+      "x": 3,
+      "y": 0,
+      "z": 0
+    },
+    {
+      "id": "workshops",
+      "label": "Workshops",
+      "kind": "teaching",
+      "state": "public",
+      "canon": "reviewed-public",
+      "description": "Live learning and collaboration opportunities.",
+      "source_ids": [
+        "archon-public"
+      ],
+      "x": -1,
+      "y": -2,
+      "z": 1
+    },
+    {
+      "id": "sessions",
+      "label": "Sessions · Services",
+      "kind": "service",
+      "state": "public",
+      "canon": "reviewed-public",
+      "description": "Public service pathways of Archon Soulings.",
+      "source_ids": [
+        "archon-public"
+      ],
+      "x": 1,
+      "y": -2,
+      "z": 1
+    }
+  ],
+  "edges": [
+    {
+      "from": "archon-soulings",
+      "to": "aura-dynamics",
+      "type": "TEACHES"
+    },
+    {
+      "from": "archon-soulings",
+      "to": "aureglossa",
+      "type": "USES_CANON"
+    },
+    {
+      "from": "archon-soulings",
+      "to": "gestalt-seed",
+      "type": "CONNECTS_TO"
+    },
+    {
+      "from": "archon-soulings",
+      "to": "journal",
+      "type": "PUBLISHES"
+    },
+    {
+      "from": "aura-dynamics",
+      "to": "workshops",
+      "type": "SUPPORTS"
+    },
+    {
+      "from": "aureglossa",
+      "to": "gestalt-seed",
+      "type": "USES_CANON"
+    },
+    {
+      "from": "archon-soulings",
+      "to": "sessions",
+      "type": "OFFERS"
+    },
+    {
+      "from": "aureglossa",
+      "to": "gestalt-seed",
+      "type": "RECORDS_PROVENANCE"
+    },
+    {
+      "from": "aureglossa",
+      "to": "archon-soulings",
+      "type": "OFFERS_SERVICES"
+    }
+  ],
+  "sources": [
+    {
+      "id": "archon-public",
+      "kind": "public-site"
+    },
+    {
+      "id": "aureglossa-public",
+      "kind": "approved-public-corpus"
+    },
+    {
+      "id": "gestalt-public",
+      "kind": "public-protocol"
+    }
+  ],
+  "health": {
+    "status": "prototype",
+    "private_state_included": false,
+    "live_destinations_wired": false,
+    "aureglossa_alphabet": "source-backed-32",
+    "monetary_token_active": false,
+    "production_promotion": false
+  }
+}

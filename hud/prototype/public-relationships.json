@@ -1,0 +1,19 @@
+{
+ "version":"0.1","publicOnly":true,
+ "nodes":{
+  "aura":{"label":"Aura Dynamics","terms":["aura","boundaries","attention","connection","energy","field"]},
+  "aureglossa":{"label":"Aureglossa","terms":["language","words","ritual","canon","tharavel","kosmathra"]},
+  "services":{"label":"Sessions","terms":["clarity","change","hypnosis","deep work","exploration","guidance"]},
+  "workshops":{"label":"Workshops","terms":["class","teach","host","collaborate","practice","community"]},
+  "gestalt":{"label":"Gestalt","terms":["contribute","provenance","stone","archive","collaboration","build"]},
+  "journal":{"label":"Journal","terms":["stories","field notes","teaching","insights","podcast","writing"]}
+ },
+ "relationships":[
+  {"from":"aura","to":"workshops","type":"SUPPORTS","reason":"Aura Dynamics is taught experientially in workshops."},
+  {"from":"aura","to":"journal","type":"PUBLISHES_TO","reason":"Aura Dynamics teaching and field notes can be developed in the Journal."},
+  {"from":"aureglossa","to":"gestalt","type":"USES_CANON","reason":"Gestalt interfaces and records may use approved Aureglossa canon."},
+  {"from":"journal","to":"workshops","type":"EXTENDS","reason":"Published ideas can become shared teaching experiences."},
+  {"from":"gestalt","to":"journal","type":"RESPONDS_TO","reason":"Approved Stones may generate public reflections and project notes."},
+  {"from":"services","to":"aura","type":"EXTENDS","reason":"Sessions may use Aura Dynamics practices when appropriate and mutually chosen."}
+ ]
+}

@@ -1,0 +1,41 @@
+name: Project Constellation CI
+on:
+  push:
+    branches: [feature/public-project-constellation]
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hud/prototype/**'
+      - '.github/workflows/constellation-ci.yml'
+
+jobs:
+  browser-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Playwright
+        run: |
+          npm init -y
+          npm install --save-dev playwright
+          npx playwright install --with-deps chromium
+      - name: Validate public-facing copy
+        run: node tests/test-public-client-copy.mjs
+      - name: Run responsive and interaction checks
+        run: node hud/prototype/test-constellation.mjs
+      - name: Test isolated Nexus kinetic continuity study 04
+        run: node hud/prototype/experiments/test-living-constellation-04.mjs
+      - name: Check shared pocket living material across all worlds
+        run: node tests/test-pocket-living-material.mjs
+      - name: Check dimensional returns, portrait bounds and immediate Silence
+        run: node tests/test-living-release-gates.mjs
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: constellation-screenshots
+          path: hud/prototype/test-artifacts/*.png
+          if-no-files-found: ignore

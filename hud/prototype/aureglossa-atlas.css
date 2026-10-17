@@ -1,0 +1,50 @@
+/* Public Aureglossa Living Atlas. The original living word constellation remains intact. */
+#openAtlas{margin-top:22px;display:inline-flex;align-items:center;gap:8px;border:1px solid #dabb7780;background:#0b1624d9;color:#f5e8c6;border-radius:999px;min-height:48px;padding:10px 18px;font:13px/1.5 system-ui,sans-serif;cursor:pointer}
+#openAtlas:hover{border-color:#dabb77;background:#172637}
+#openAtlas:focus-visible,.atlas-close:focus-visible,.atlas-tab:focus-visible{outline:3px solid #7ce2d3;outline-offset:3px}
+#aureglossaAtlas{width:min(1100px,96vw);max-height:min(88vh,940px);margin:auto;padding:0;border:1px solid #c6ad7d72;border-radius:22px;background:#070e17;color:#e9e6d9;box-shadow:0 0 130px #7ce2d322,0 25px 95px #000b;overflow:hidden}
+#aureglossaAtlas::backdrop{background:#020407db;backdrop-filter:blur(12px)}
+.atlas-head{padding:18px 24px;border-bottom:1px solid #c6ad7d3d;display:flex;align-items:center;justify-content:space-between;gap:15px;background:linear-gradient(110deg,#14212c,#0a101a)}
+.atlas-head strong{font:16px Georgia,serif;letter-spacing:.15em;color:#f5e4bc}
+.atlas-head small{display:block;font:10px/1.6 system-ui,sans-serif;letter-spacing:.14em;color:#9fbbbd;margin-top:4px}
+.atlas-close{border:1px solid #c6ad7d55;border-radius:999px;color:#e8dfce;background:#121d29;padding:8px 13px;min-height:44px;cursor:pointer;font:12px system-ui,sans-serif}
+.atlas-layout{display:grid;grid-template-columns:180px minmax(0,1fr);min-height:0;max-height:calc(88vh - 85px)}
+.atlas-tabs{display:flex;flex-direction:column;gap:4px;padding:18px 12px;border-right:1px solid #c6ad7d26;overflow:auto}
+.atlas-tab{padding:12px;text-align:left;border:1px solid transparent;border-radius:9px;color:#b8c5c5;background:transparent;cursor:pointer;min-height:44px;font:12px/1.5 system-ui,sans-serif}
+.atlas-tab[aria-selected=true]{border-color:#bda46b65;background:linear-gradient(110deg,#d8c08719,#6bd4c510);color:#fff1d4}
+.atlas-body{padding:22px 32px 38px;overflow:auto;max-height:calc(88vh - 85px);font:14px/1.8 system-ui,sans-serif;color:#c0cecc;scrollbar-color:#8a9d98 transparent}
+.atlas-body h2{font:clamp(25px,3vw,38px)/1.2 Georgia,serif;letter-spacing:.05em;color:#f1e8d5;margin:12px 0}
+.atlas-body h3{font:19px/1.4 Georgia,serif;color:#e6d5b1;margin:28px 0 9px}
+.atlas-body h4{font:14px/1.4 Georgia,serif;color:#e3d7c0;margin:10px 0}
+.atlas-body p{margin:9px 0 17px;max-width:750px}
+.atlas-body b{font-weight:600;color:#e6ebdc}
+.atlas-eyebrow{color:#91e4d5;font:10px system-ui,sans-serif;letter-spacing:.2em}
+.atlas-lead{font-size:15px;color:#b5d0cd;max-width:680px}
+.atlas-flow{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:22px 0}
+.atlas-flow span{padding:11px 14px;border-radius:12px;border:1px solid #8ac4ba65;background:#11212a;color:#d9f0e6;font-size:12px}
+.atlas-flow span:not(:last-child):after{content:'→';color:#e6d1a4;position:relative;left:16px;margin-right:10px}
+.atlas-entry-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:11px;margin:14px 0}
+.atlas-entry{border:1px solid #a7d9d133;border-radius:12px;padding:14px 16px;background:linear-gradient(125deg,#10212b,#101422);display:flex;flex-direction:column;gap:5px}
+.atlas-entry strong{font:19px Georgia,serif;color:#e9d6a9}
+.atlas-entry span{font-size:12px;line-height:1.6}
+.atlas-family{border-bottom:1px solid #d8bd8530;padding:9px 0 18px}
+.atlas-chips{display:flex;gap:8px;flex-wrap:wrap}
+.atlas-chips span{border:1px solid #8dd3cb3a;border-radius:99px;padding:7px 11px;background:#0d1b25;font:12px/1.5 system-ui,sans-serif;color:#bcded8}
+.atlas-motto{padding:26px 12px;text-align:center;font:clamp(22px,4vw,35px) Georgia,serif;letter-spacing:.1em;color:#f3e1af;text-shadow:0 0 24px #ebd1a84d}
+.atlas-motto small{display:block;font:12px/1.7 system-ui,sans-serif;letter-spacing:.04em;color:#a6d6d0;margin-top:14px}
+.atlas-pattern{display:inline-flex;gap:14px;align-items:center;padding:14px 18px;border-radius:15px;border:1px solid #e2ca9055;color:#e5e4d9;background:#0e1d26;font:18px Georgia,serif}
+.atlas-pattern span{color:#8cddcc}
+.atlas-caution{border-left:2px solid #c4a6f3;padding:12px 18px;background:#a68ef40b;color:#c8bdd9}
+.atlas-live{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+@media(max-width:700px){
+#aureglossaAtlas{width:100vw;max-height:100dvh;height:100dvh;border-radius:0;border:0}
+.atlas-head{padding:16px 18px}
+.atlas-layout{display:flex;flex-direction:column;max-height:calc(100dvh - 76px);height:calc(100dvh - 76px)}
+.atlas-tabs{flex-direction:row;flex:none;gap:3px;padding:10px;overflow-x:auto;border-right:0;border-bottom:1px solid #c6ad7d30}
+.atlas-tab{flex:none;white-space:nowrap;padding:9px 12px}
+.atlas-body{max-height:none;min-height:0;flex:1;padding:19px 20px 50px}
+.atlas-flow{gap:6px}
+.atlas-flow span{padding:7px;font-size:10px}
+.atlas-flow span:not(:last-child):after{left:8px;margin-right:5px}
+}
+@media(prefers-reduced-motion:reduce){#aureglossaAtlas *{animation:none!important;transition:none!important}}
