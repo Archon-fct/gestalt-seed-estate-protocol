@@ -98,7 +98,7 @@ function renderRing(){
   });
   const style=document.createElement("style");
   style.textContent=`
-    .glyphring{pointer-events:none}
+    .glyphring{pointer-events:none;z-index:3} /* Raised above the main pane so the 32 real alphabet controls receive touch; non-control ring remains click-through. */
     .glyphring .canon-letter{pointer-events:auto;position:absolute;left:50%;top:50%;width:40px;height:40px;margin:-20px;border-radius:50%;border:1px solid #7ce2d155;background:#08111edc;color:#eee7d8;font:16px/1 Georgia,serif;display:grid;place-items:center;cursor:pointer;transform:rotate(calc((360deg / var(--n)) * var(--i))) translateY(calc(-1 * min(35vw,365px))) rotate(calc((-360deg / var(--n)) * var(--i)));box-shadow:0 0 16px #7ce2d11c;transition:box-shadow .25s,transform .25s}
     .glyphring .canon-letter:hover,.glyphring .canon-letter:focus-visible{outline:2px solid #7ce2d3;outline-offset:2px;box-shadow:0 0 26px #7ce2d155,0 0 18px #e0bd7330;z-index:3}
     @media(max-width:980px){.glyphring{position:absolute;top:375px;width:min(92vw,620px);height:min(92vw,620px)}.glyphring .canon-letter{width:34px;height:34px;margin:-17px;font-size:13px;transform:rotate(calc((360deg / var(--n)) * var(--i))) translateY(calc(-1 * min(42vw,280px))) rotate(calc((-360deg / var(--n)) * var(--i)))}}
