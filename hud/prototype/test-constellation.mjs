@@ -289,6 +289,14 @@ const conv=await browser.newPage({viewport:{width:390,height:900}});const convEr
 
 
 const tongue=await browser.newPage({viewport:{width:390,height:900}});const tongueErrors=[];tongue.on('pageerror',e=>tongueErrors.push(String(e)));await tongue.goto('file://' + path.join(root,'hud/prototype/living-tongue.html'));if((await tongue.locator('.word').count())!==6)failures.push('tongue: expected six prototype language nodes');await tongue.locator('[data-word="tharavel"]').click();if((await tongue.locator('#canon').textContent())!=='ADOPTED')failures.push('tongue: Tharavel canon status mismatch');if(!(await tongue.locator('#note').textContent()).includes('Do not split'))failures.push('tongue: Tharavel audit warning missing');await tongue.locator('#origin').click();if(!(await tongue.locator('#note').textContent()).includes('THARAVEL_KOSMATHRA_AUDIT'))failures.push('tongue: provenance gesture failed');if((await tongue.locator('.canon-letter').count())!==32)failures.push('tongue: expected 32 source-backed alphabet controls');
+// Alphabet controls must receive genuine pointer events above the decorative field.
+const glyphHit=await tongue.locator('.canon-letter').first().evaluate(el=>{
+  el.scrollIntoView({block:'nearest'});
+  const r=el.getBoundingClientRect();
+  const hit=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);
+  return {hit:hit===el||el.contains(hit),element:hit?.className||hit?.tagName};
+});
+if(!glyphHit.hit)failures.push('tongue: alphabet control blocked by '+String(glyphHit.element));
 await tongue.locator('.canon-letter').first().click();
 if(!(await tongue.locator('#title').textContent()).includes('Ahra'))failures.push('tongue: alphabet interaction did not expose Ahra');
 if(!(await tongue.locator('#canon').textContent()).includes('SOURCE-BACKED'))failures.push('tongue: alphabet canon boundary missing');
