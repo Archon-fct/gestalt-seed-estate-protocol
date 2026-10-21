@@ -36,6 +36,8 @@ try{
    assert.equal(await page.locator('#sigilChamber').isVisible(),true);
    assert.match(await page.locator('#chamberTitle').textContent(),/Gardener/);
    await page.screenshot({path:path.join(out,'chamber-'+width+'.png'),fullPage:true});
+   await page.locator('#inspectLens').click();
+   assert.match(await page.locator('#sealFeedback').textContent(),/refracts/);
    await page.locator('[data-ask=guard]').click();
    assert.match(await page.locator('#personaVoice').textContent(),/possibilities/);
    for(const [ring,count] of [[0,2],[1,5],[2,1]]){
