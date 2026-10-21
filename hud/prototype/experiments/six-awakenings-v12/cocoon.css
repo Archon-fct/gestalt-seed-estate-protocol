@@ -61,3 +61,12 @@
 .chamber-vessel.unlocked .mechanism-eye{box-shadow:inset 0 0 32px #fff4c4,0 0 70px var(--chamber-accent);animation:slowBreath 3s infinite alternate}
 @media(max-width:780px){.chamber-grid{grid-template-columns:1fr;padding:0 16px 18px;gap:2px}.chamber-head{padding:20px 18px 8px}.mechanism{width:min(65vw,270px);margin:0 auto}.dial-outer .dial-mark:nth-child(n){--radius:100px}.dial-middle .dial-mark:nth-child(n){--radius:74px}.dial-inner .dial-mark:nth-child(n){--radius:45px}.dial-mark{font-size:14px}.mechanism-eye{font-size:27px}.voice-card{min-height:unset;padding:12px}.voice-card p{font-size:16px}.chamber-questions{margin:9px 0}.chamber-vessel{max-height:96dvh}.chamber-footer{padding:10px 14px}.chamber-head h2{font-size:25px}.chamber-kicker{letter-spacing:1.4px}}
 @media(prefers-reduced-motion:reduce){.chamber-vessel,.dial,.mechanism-glow,.mechanism-eye,.mechanism-eye span{animation:none!important;transition:none!important}}
+
+/* Inspectable lens and genuinely draggable seal rings; never warp the stage. */
+.dial{cursor:grab;touch-action:none}
+.dial:active{cursor:grabbing}
+.mechanism-eye{cursor:pointer;z-index:3;min-width:44px;min-height:44px}
+.mechanism-eye:focus-visible{outline:2px solid #ffe9bf;outline-offset:5px}
+.lens-inspected .mechanism-eye{box-shadow:inset 0 0 35px #fff1c8,0 0 55px var(--chamber-accent)}
+.chamber-open{overflow:hidden}
+@media(prefers-reduced-motion:reduce){.lens-inspected .mechanism-eye{animation:none}}
