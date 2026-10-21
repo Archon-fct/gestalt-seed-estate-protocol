@@ -1,5 +1,7 @@
 # Inner Sanctum — Living Material Visual Review v1.1
 
+> **2026-10-21 release hold:** the public Wix page now serves 1.2.0, not this PR's 1.0 baseline. Do not overwrite it with this candidate. Two checkout-display safeguards have been added to this isolated branch as 1.1.1-review; 20 DOM-simulation checks pass, but this is not hosted candidate or Safari evidence. See [the current release review](INNER_SANCTUM_RELEASE_REVIEW_2026-10-21.md). The October 20 record below is preserved as history.
+
 Date: 2026-10-20  
 Status: **SOURCE CANDIDATE / NOT DEPLOYED / NOT VISUALLY ACCEPTED**  
 Workstream: public Inner Sanctum Packages presentation only.  
@@ -45,3 +47,4 @@ The owner reported that Inner Sanctum felt visually lackluster and inconsistent 
 Owner reviews the HTML visual study and decides whether the stronger auric/woven chamber direction is closer to the approved Living Nexus. Then run a true hosted candidate preflight against existing Wix Packages source.
 
 THARAVEL ~ KOSMATHRA ~ ✦
+

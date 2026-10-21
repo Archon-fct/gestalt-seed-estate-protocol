@@ -6,7 +6,7 @@
   if (window[KEY]) return;
   window[KEY] = true;
   const PATH = '/pricing-plans/plans-pricing';
-  const VERSION = 'inner-sanctum-packages-1.1.0-visual-review';
+  const VERSION = 'inner-sanctum-packages-1.1.1-review';
   const NAMES = ['Package of 10', 'Package of 20', 'Familiar #1', 'Familiar #2', 'Speciality Familiar'];
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const root = document.documentElement;
@@ -16,6 +16,7 @@
   const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c]));
   const currentPath = () => location.pathname.replace(/\/$/, '') || '/';
   const eligible = () => currentPath() === PATH && root.classList.contains('as-public');
+  const planSignature = plans => JSON.stringify(plans.map(({button, ...plan}) => plan));
   function readPlans() {
     const nodes = [...document.querySelectorAll('#PAGES_CONTAINER [data-hook="plan"]')];
     if (nodes.length !== NAMES.length) return null;
@@ -45,7 +46,8 @@
   function checkout(index, control) {
     if (selected || !eligible()) return;
     const plans = readPlans(), plan = plans?.[index];
-    if (!plan) { originalPlans(); return; }
+    // A fresh button lookup must not silently accept terms that changed since rendering.
+    if (!plan || planSignature(plans) !== signature) { originalPlans(); return; }
     selected = true;
     control.disabled = true;
     control.textContent = 'Opening secure checkout…';
@@ -207,7 +209,7 @@
 }
 `;
   function planCard(plan, index) {
-    return `<article class="plan"><h3>${escape(plan.name)}</h3><div class="price">${escape(plan.currency + plan.amount)}${plan.recurrence ? ' / month' : ''}</div><p>${escape(plan.tagline)}</p><details><summary>What’s included</summary><ul>${plan.benefits.map(b => `<li>${escape(b)}</li>`).join('')}</ul></details><button class="action" type="button" data-plan="${index}" aria-label="Review and purchase ${escape(plan.name)}">Review &amp; purchase ↗</button></article>`;
+    return `<article class="plan"><h3>${escape(plan.name)}</h3><div class="price">${escape(plan.currency + plan.amount)}${plan.recurrence ? ' · ' + escape(plan.recurrence) : ''}</div><p>${escape(plan.tagline)}</p><details><summary>What’s included</summary><ul>${plan.benefits.map(b => `<li>${escape(b)}</li>`).join('')}</ul></details><button class="action" type="button" data-plan="${index}" aria-label="Review and purchase ${escape(plan.name)}">Review &amp; purchase ↗</button></article>`;
   }
   function mount(plans) {
     const native = document.getElementById('PAGES_CONTAINER');
@@ -241,7 +243,7 @@
     document.head.append(sheet);
     banner.before(host);
     root.classList.add('as-sanctum-active');
-    signature = JSON.stringify(plans.map(({button, ...p}) => p));
+    signature = planSignature(plans);
     syncMotion();
   }
   function syncMotion() {
@@ -268,7 +270,7 @@
     retryAt = Date.now() + 1000;
     const plans = readPlans();
     if (!plans) { if (host) clearView(); return; }
-    const next = JSON.stringify(plans.map(({button, ...p}) => p));
+    const next = planSignature(plans);
     if (host && next !== signature) clearView();
     if (!host) mount(plans);
   }
@@ -282,3 +284,4 @@
   setInterval(safeRefresh, 250);
   safeRefresh();
 })();
+
