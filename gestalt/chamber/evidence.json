@@ -1,0 +1,119 @@
+{
+  "date": "2026-10-21",
+  "status": "REVIEW_ONLY",
+  "productionModified": false,
+  "sourceProduction": "https://headless-hhhpqkoywfr-archonsoulings-140e.wix-site-host.com/",
+  "preview": "https://headless-mfewrcffiie-archonsoulings-140e.wix-site-host.com/gestalt/chamber-20261021/index.html",
+  "browser": "Cloud Chromium",
+  "responsive": [
+    {
+      "width": 390,
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "overflow": false,
+      "realmCount": 10,
+      "smallTargets": [],
+      "platformSmallTargets": [
+        "wixheadless-banner-close"
+      ],
+      "overlappingRealmBounds": [],
+      "scope": "Actual Chromium iframe layout; not physical-device acceptance"
+    },
+    {
+      "width": 820,
+      "clientWidth": 805,
+      "scrollWidth": 805,
+      "overflow": false,
+      "realmCount": 10,
+      "smallTargets": [],
+      "platformSmallTargets": [
+        "wixheadless-banner-close"
+      ],
+      "overlappingRealmBounds": [],
+      "scope": "Actual Chromium iframe layout; not physical-device acceptance"
+    },
+    {
+      "width": 1280,
+      "clientWidth": 1265,
+      "scrollWidth": 1265,
+      "overflow": false,
+      "realmCount": 10,
+      "smallTargets": [],
+      "platformSmallTargets": [
+        "wixheadless-banner-close"
+      ],
+      "overlappingRealmBounds": [],
+      "scope": "Actual Chromium iframe layout; not physical-device acceptance"
+    }
+  ],
+  "deployment": {
+    "published": {
+      "uploadId": "8f1b1823-b293-4675-b850-64d274b99c65",
+      "siteUrl": "https://headless-mfewrcffiie-archonsoulings-140e.wix-site-host.com"
+    },
+    "originalFileCount": 73,
+    "changedOriginals": [],
+    "checks": [
+      {
+        "path": "gestalt/chamber-20261021/chamber.css",
+        "exact": true
+      },
+      {
+        "path": "gestalt/chamber-20261021/chamber.mjs",
+        "exact": true
+      },
+      {
+        "path": "gestalt/chamber-20261021/field.mjs",
+        "exact": true
+      },
+      {
+        "path": "gestalt/chamber-20261021/index.html",
+        "exact": false
+      },
+      {
+        "path": "gestalt/chamber-20261021/realms.json",
+        "exact": true
+      },
+      {
+        "path": "gestalt/chamber-20261021/realms.mjs",
+        "exact": true
+      },
+      {
+        "path": "gestalt/chamber-20261021/review.html",
+        "exact": false
+      }
+    ]
+  },
+  "correction": {
+    "published": {
+      "uploadId": "9e694f82-68ff-4c66-981b-f5795c9ae364",
+      "siteUrl": "https://headless-mfewrcffiie-archonsoulings-140e.wix-site-host.com"
+    },
+    "changedOtherFiles": [],
+    "checks": [
+      {
+        "path": "gestalt/chamber-20261021/chamber.css",
+        "matchesAuthoredContent": true
+      },
+      {
+        "path": "gestalt/chamber-20261021/review.html",
+        "matchesAuthoredContent": true
+      }
+    ]
+  },
+  "limitations": [
+    "Safari and physical devices not tested",
+    "OS reduced-motion behavior inspected in source, not toggled live",
+    "Actual sound quality and volume not measured",
+    "Destination mappings checked; not every external destination followed",
+    "No full accessibility or performance audit"
+  ],
+  "checks": [
+    "Ten realm selections updated title/status/description/destination and exactly one pressed seal",
+    "ArrowRight, Home, End and Enter on read-record verified",
+    "Escape closed iris and returned focus",
+    "Stillness persisted across reload; sound remained off",
+    "Computed transition duration 0s with Stillness",
+    "Original field.mjs, realms.mjs and realms.json unchanged"
+  ]
+}
