@@ -1,0 +1,63 @@
+/* Six Awakenings v1.2 — additive procedural study. Original v0.10 controls remain authoritative. */
+#cocoonAuras{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;mix-blend-mode:screen;opacity:.94}
+.world.active::before{border-color:#ffe5b3;box-shadow:0 0 25px #e9d3ffb0,inset 0 0 26px #f8d9b45e}
+.sigil-chamber{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:clamp(12px,2vw,26px);isolation:isolate}
+.sigil-chamber.hidden{display:none!important}
+.chamber-scrim{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 48%,#172037b9 0%,#02040de9 75%);backdrop-filter:blur(17px)}
+.chamber-vessel{--chamber-accent:#bda6f5;position:relative;z-index:1;width:min(1080px,100%);max-height:min(94dvh,1000px);overflow:auto;overscroll-behavior:contain;color:#f8ebd7;border:1px solid color-mix(in srgb,var(--chamber-accent),transparent 44%);border-radius:28px;background:radial-gradient(ellipse at 52% 30%,color-mix(in srgb,var(--chamber-accent),transparent 91%),transparent 56%),linear-gradient(145deg,#121a2aeF,#060912F9 64%,#0c101dFA);box-shadow:0 0 0 1px #f5d7a419,inset 0 0 90px #9c8ac31a,0 35px 100px #000f,0 0 80px color-mix(in srgb,var(--chamber-accent),transparent 84%);transform-style:preserve-3d;animation:chamberArrive .75s cubic-bezier(.18,.78,.23,1) both}
+.chamber-vessel::before{content:"";position:absolute;inset:13px;border:1px solid #f5deb328;border-radius:20px;pointer-events:none}
+.chamber-vessel::after{content:"";position:absolute;left:8%;right:8%;top:0;height:1px;background:linear-gradient(90deg,transparent,#fff1c4b5,transparent);box-shadow:0 0 18px #f4dbac88;pointer-events:none}
+@keyframes chamberArrive{from{opacity:0;transform:translateY(20px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+.chamber-head{display:flex;justify-content:space-between;gap:16px;align-items:start;padding:28px 32px 4px}
+.chamber-kicker{display:block;font:10px/1.5 Arial,sans-serif;letter-spacing:2.3px;text-transform:uppercase;color:color-mix(in srgb,var(--chamber-accent),#f4dfb5 45%)}
+.chamber-head h2{margin:9px 0 4px;font:normal clamp(26px,3.2vw,42px)/1.15 Georgia,serif;letter-spacing:3px;text-shadow:0 0 25px color-mix(in srgb,var(--chamber-accent),transparent 65%)}
+.chamber-head p{font:italic 15px/1.6 Georgia,serif;color:#bfc7d8;margin:0}
+.chamber-close{min-width:44px;min-height:44px;border-radius:50%;background:#121d2b;border:1px solid #d5bd9580;color:#f8e9cc}
+.chamber-grid{display:grid;grid-template-columns:minmax(290px,1.1fr) minmax(285px,1fr);gap:18px;align-items:center;padding:0 28px 24px}
+.mechanism{position:relative;isolation:isolate;width:min(100%,500px);aspect-ratio:1;justify-self:center;display:grid;place-items:center;transform-style:preserve-3d;perspective:900px;--mx:0deg;--my:0deg;transform:rotateX(var(--mx)) rotateY(var(--my));transition:transform .25s ease-out;touch-action:pan-y}
+.mechanism::before{content:"";position:absolute;inset:5%;border-radius:50%;background:radial-gradient(circle,#f8d6ad0a 0%,#b99cfa0a 23%,#070d1c33 47%,transparent 72%);box-shadow:0 0 90px var(--chamber-accent);opacity:.34;pointer-events:none}
+.mechanism-glow{position:absolute;inset:8%;border-radius:50%;background:repeating-conic-gradient(from 0deg,#e5caa31b 0deg,transparent 1deg,transparent 17deg,#bca3f525 18deg,transparent 19deg,transparent 30deg);mask-image:radial-gradient(circle,transparent 33%,black 42%,black 67%,transparent 77%);filter:drop-shadow(0 0 13px #dfc5b766);animation:slowBreath 9s ease-in-out infinite alternate}
+@keyframes slowBreath{from{opacity:.45;transform:scale(.985)}to{opacity:.8;transform:scale(1.02)}}
+.dial{position:absolute;display:grid;place-items:center;border-radius:50%;transform:rotate(var(--turn));transition:transform .72s cubic-bezier(.17,.76,.25,1);box-shadow:0 0 18px color-mix(in srgb,var(--chamber-accent),transparent 82%),inset 0 0 22px #f3dbad17;border:1px solid color-mix(in srgb,var(--chamber-accent),#e9ce9e 50%);background:radial-gradient(circle,transparent 65%,#c8aaf20a 73%,transparent 80%)}
+.dial::before{content:"";position:absolute;inset:8px;border:1px dashed #f5ddae30;border-radius:50%}
+.dial::after{content:"";position:absolute;inset:-8px;border:1px solid #e8cfa420;border-radius:50%;box-shadow:0 0 16px #fff1b311}
+.dial-outer{width:86%;height:86%;border-width:2px;filter:drop-shadow(0 0 12px color-mix(in srgb,var(--chamber-accent),transparent 55%))}
+.dial-middle{width:64%;height:64%;border-color:#f1d9ae9e}
+.dial-inner{width:42%;height:42%;border-color:var(--chamber-accent);box-shadow:0 0 28px color-mix(in srgb,var(--chamber-accent),transparent 62%)}
+.dial-mark{position:absolute;left:50%;top:50%;font:clamp(15px,2.4vw,23px) Georgia,serif;color:#f5dfb5;text-shadow:0 0 13px var(--chamber-accent)}
+.dial-mark:nth-child(1){transform:translate(-50%,-50%) rotate(0deg) translateY(-170px) rotate(0deg)}
+.dial-mark:nth-child(2){transform:translate(-50%,-50%) rotate(60deg) translateY(-170px) rotate(-60deg)}
+.dial-mark:nth-child(3){transform:translate(-50%,-50%) rotate(120deg) translateY(-170px) rotate(-120deg)}
+.dial-mark:nth-child(4){transform:translate(-50%,-50%) rotate(180deg) translateY(-170px) rotate(-180deg)}
+.dial-mark:nth-child(5){transform:translate(-50%,-50%) rotate(240deg) translateY(-170px) rotate(-240deg)}
+.dial-mark:nth-child(6){transform:translate(-50%,-50%) rotate(300deg) translateY(-170px) rotate(-300deg)}
+.dial-middle .dial-mark:nth-child(n){--radius:124px}
+.dial-inner .dial-mark:nth-child(n){--radius:77px}
+.dial-outer .dial-mark:nth-child(n){--radius:170px}
+.dial .dial-mark:nth-child(1){transform:translate(-50%,-50%) rotate(0deg) translateY(calc(-1 * var(--radius))) rotate(0deg)}
+.dial .dial-mark:nth-child(2){transform:translate(-50%,-50%) rotate(60deg) translateY(calc(-1 * var(--radius))) rotate(-60deg)}
+.dial .dial-mark:nth-child(3){transform:translate(-50%,-50%) rotate(120deg) translateY(calc(-1 * var(--radius))) rotate(-120deg)}
+.dial .dial-mark:nth-child(4){transform:translate(-50%,-50%) rotate(180deg) translateY(calc(-1 * var(--radius))) rotate(-180deg)}
+.dial .dial-mark:nth-child(5){transform:translate(-50%,-50%) rotate(240deg) translateY(calc(-1 * var(--radius))) rotate(-240deg)}
+.dial .dial-mark:nth-child(6){transform:translate(-50%,-50%) rotate(300deg) translateY(calc(-1 * var(--radius))) rotate(-300deg)}
+.mechanism-eye{position:absolute;width:22%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;font-size:50px;color:#fff2d4;background:radial-gradient(circle at 45% 35%,#f4e2b03a,#34274422 55%,#060913d9 78%);border:1px solid #ffe7ba90;box-shadow:inset 0 0 22px var(--chamber-accent),0 0 40px color-mix(in srgb,var(--chamber-accent),transparent 45%)}
+.mechanism-eye span{animation:slowBreath 7s ease-in-out infinite alternate}
+.chamber-interact{min-width:0}
+.voice-card{padding:16px 18px;background:linear-gradient(120deg,#d7b9f20b,#f2dbaf08);border:1px solid #e3cba42b;border-radius:16px;min-height:120px}
+.voice-card p{font:italic clamp(16px,1.8vw,20px)/1.5 Georgia,serif;color:#eee4df;margin:12px 0 0}
+.chamber-questions{display:flex;gap:7px;flex-wrap:wrap;margin:13px 0 17px}
+.chamber-questions button,.seal-control button,.align-seal,.chamber-actions a{border:1px solid #dbc8a65e;background:#111c2d;color:#f2e4d2;border-radius:10px;padding:11px 12px;font:12px/1.3 Arial,sans-serif;min-height:44px}
+.chamber-questions button:hover,.seal-control button:hover{border-color:var(--chamber-accent);background:#1c2b3e}
+.seal-controls{display:grid;gap:8px}
+.seal-control{display:grid;grid-template-columns:minmax(84px,1fr) 44px 44px 44px;align-items:center;gap:8px;border-bottom:1px solid #d9c8a21c;padding:4px 0}
+.seal-control>span{font:12px Arial,sans-serif;color:#c5c9d5}
+.seal-control output{text-align:center;color:var(--chamber-accent);font-size:21px}
+.seal-control button{font-size:20px;padding:4px}
+.seal-feedback{font:13px/1.5 Arial,sans-serif;min-height:38px;color:#e4d5c4}
+.chamber-actions{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.align-seal{background:linear-gradient(110deg,#cdb48b,#ae91d4);color:#090b14;font-weight:bold;border:0;padding:13px 19px}
+.chamber-actions a{display:inline-flex;align-items:center;text-decoration:none}
+.chamber-footer{border-top:1px solid #e9d6ad21;padding:13px 30px 18px;text-align:center;color:#aeb8c5;font:10px/1.6 Arial,sans-serif;letter-spacing:.7px}
+.chamber-vessel.unlocked .mechanism-eye{box-shadow:inset 0 0 32px #fff4c4,0 0 70px var(--chamber-accent);animation:slowBreath 3s infinite alternate}
+@media(max-width:780px){.chamber-grid{grid-template-columns:1fr;padding:0 16px 18px;gap:2px}.chamber-head{padding:20px 18px 8px}.mechanism{width:min(65vw,270px);margin:0 auto}.dial-outer .dial-mark:nth-child(n){--radius:100px}.dial-middle .dial-mark:nth-child(n){--radius:74px}.dial-inner .dial-mark:nth-child(n){--radius:45px}.dial-mark{font-size:14px}.mechanism-eye{font-size:27px}.voice-card{min-height:unset;padding:12px}.voice-card p{font-size:16px}.chamber-questions{margin:9px 0}.chamber-vessel{max-height:96dvh}.chamber-footer{padding:10px 14px}.chamber-head h2{font-size:25px}.chamber-kicker{letter-spacing:1.4px}}
+@media(prefers-reduced-motion:reduce){.chamber-vessel,.dial,.mechanism-glow,.mechanism-eye,.mechanism-eye span{animation:none!important;transition:none!important}}
