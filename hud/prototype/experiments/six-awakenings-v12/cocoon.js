@@ -78,6 +78,7 @@ chamber.addEventListener('click',e=>{if(e.target.closest('[data-close-chamber]')
  const ask=e.target.closest('[data-ask]');if(ask){speak(ask.dataset.ask);return;}
  const turn=e.target.closest('[data-ring]');if(turn){rotate(Number(turn.dataset.ring),Number(turn.dataset.dir));return;}
 });
+const mechanism=$('mechanism');
 $('chamberClose').addEventListener('click',closeChamber);$('alignSeal').addEventListener('click',align);
 $('inspectLens').addEventListener('click',()=>{
  if(!current)return;
@@ -112,7 +113,7 @@ window.addEventListener('keydown',e=>{
   else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
  }
 },true);
-const mechanism=$('mechanism');mechanism.addEventListener('pointermove',e=>{
+mechanism.addEventListener('pointermove',e=>{
  if(matchMedia('(prefers-reduced-motion:reduce)').matches||app.state.still)return;
  const b=mechanism.getBoundingClientRect(),x=(e.clientX-b.left)/b.width-.5,y=(e.clientY-b.top)/b.height-.5;
  mechanism.style.setProperty('--mx',(-y*7).toFixed(2)+'deg');mechanism.style.setProperty('--my',(x*7).toFixed(2)+'deg');
