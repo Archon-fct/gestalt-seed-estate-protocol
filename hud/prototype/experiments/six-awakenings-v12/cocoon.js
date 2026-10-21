@@ -137,6 +137,39 @@ function rgba(hex,a){const h=hex.slice(1);return 'rgba('+parseInt(h.slice(0,2),1
 function pathPoint(a,b,off,u,t,phase){const dx=b.x-a.x,dy=b.y-a.y,L=Math.max(1,Math.hypot(dx,dy)),nx=-dy/L,ny=dx/L;
  const wave=Math.sin(u*9+phase+t*.33)*off*Math.sin(Math.PI*u);
  return{x:a.x+dx*u+nx*wave,y:a.y+dy*u+ny*wave};}
+// Shared translucent anatomy: each cocoon remains physically attached to
+// the Nexus by overlapping organic sheets and caustics, not a straight spoke.
+function weaveMembrane(a,b,n,t,active){
+ const dx=b.x-a.x,dy=b.y-a.y,L=Math.max(1,Math.hypot(dx,dy)),nx=-dy/L,ny=dx/L;
+ for(let layer=0;layer<(low?3:5);layer++){
+  const phase=n.phase+layer*1.71,spread=(22+layer*11)*(active?1.18:1);
+  const left=[],right=[];
+  for(let k=0;k<=24;k++){
+   const u=k/24,env=Math.pow(Math.sin(Math.PI*u),.76);
+   const drift=Math.sin(u*8+phase+t*.24)*env*(3+layer*.7);
+   const curve=Math.sin(u*Math.PI*1.3+phase)*spread*.42*env;
+   const midX=a.x+dx*u+nx*(curve+drift),midY=a.y+dy*u+ny*(curve+drift);
+   const width=env*spread*(.42+layer*.095)*(1+.15*Math.sin(u*11+phase+t*.18));
+   left.push({x:midX+nx*width,y:midY+ny*width});
+   right.push({x:midX-nx*width*.8,y:midY-ny*width*.8});
+  }
+  const grad=ctx.createLinearGradient(a.x-nx*spread,a.y-ny*spread,b.x+nx*spread,b.y+ny*spread);
+  grad.addColorStop(0,rgba('#f6ddb2',.012));
+  grad.addColorStop(.34,rgba(n.c,active?.115:.065));
+  grad.addColorStop(.69,rgba('#b2d9ec',.068));
+  grad.addColorStop(1,rgba('#f3d7b4',.012));
+  ctx.beginPath();ctx.moveTo(left[0].x,left[0].y);
+  for(let k=1;k<left.length;k++)ctx.lineTo(left[k].x,left[k].y);
+  for(let k=right.length-1;k>=0;k--)ctx.lineTo(right[k].x,right[k].y);
+  ctx.closePath();ctx.fillStyle=grad;ctx.fill();
+  for(const [edge,opacity] of [[left,.28],[right,.13]]){
+   ctx.beginPath();ctx.moveTo(edge[0].x,edge[0].y);
+   for(let k=1;k<edge.length;k++)ctx.lineTo(edge[k].x,edge[k].y);
+   ctx.strokeStyle=rgba(layer%2?n.c:'#f8dfb8',opacity*(active?1.45:1));
+   ctx.lineWidth=layer%2?1.1:.65;ctx.stroke();
+  }
+ }
+}
 function render(){
  if(!ctx)return;ctx.clearRect(0,0,W,H);ctx.globalCompositeOperation='screen';
  const frozen=app.state.still||document.hidden,t=elapsed,focus=app.state.selected;
@@ -144,6 +177,7 @@ function render(){
  for(const n of nodes){
   const active=focus===n.id||current===n.id,boost=active?1.55:1;
   const a={x:768,y:475},b={x:n.x,y:n.y},dx=b.x-a.x,dy=b.y-a.y;
+  weaveMembrane(a,b,n,t,active);
   for(let strand=0;strand<(low?9:16);strand++){
    const phase=n.phase+strand*.67,off=(8+strand*1.8)*((strand%2)?1:-1);
    ctx.beginPath();
