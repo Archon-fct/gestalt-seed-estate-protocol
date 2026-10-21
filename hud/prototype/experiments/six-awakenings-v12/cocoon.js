@@ -68,7 +68,10 @@ function rotate(i,dir){if(!current)return;ring[i]=(ring[i]+dir+6)%6;applyRing();
  const dial=$('dial'+i);dial.classList.remove('pulse');void dial.offsetWidth;dial.classList.add('pulse');
  $('sealFeedback').textContent='The '+['outer','middle','inner'][i]+' seal turns. Listen for the pattern.';}
 function align(){if(!current)return;const p=personas[current];const solved=ring.every((n,i)=>n===p.seal[i]);
- if(solved){unlocked.add(current);vessel.classList.add('unlocked');voice.textContent=p.solved;$('sealFeedback').textContent='✦ The three seals resonate. The world is open.';}
+ if(solved){unlocked.add(current);vessel.classList.add('unlocked');voice.textContent=p.solved;
+ $('sealFeedback').textContent=unlocked.size===6?'✦ All six awakenings resonate. The Meeting Field remembers this moment for this visit.':'✦ The three seals resonate. The world is open.';
+ if(unlocked.size===6)app.announce('The six cocoons have awakened together. No private data was saved.');
+}
  else{$('sealFeedback').textContent='The geometry is not yet aligned. Each sign has a place; ask for a clue.';}
 }
 chamber.addEventListener('click',e=>{if(e.target.closest('[data-close-chamber]')){closeChamber();return;}
@@ -76,6 +79,30 @@ chamber.addEventListener('click',e=>{if(e.target.closest('[data-close-chamber]')
  const turn=e.target.closest('[data-ring]');if(turn){rotate(Number(turn.dataset.ring),Number(turn.dataset.dir));return;}
 });
 $('chamberClose').addEventListener('click',closeChamber);$('alignSeal').addEventListener('click',align);
+$('inspectLens').addEventListener('click',()=>{
+ if(!current)return;
+ $('sealFeedback').textContent='The lens refracts three signs. '+personas[current].clue;
+ $('mechanism').classList.remove('lens-inspected');void $('mechanism').offsetWidth;$('mechanism').classList.add('lens-inspected');
+});
+let dialDrag=null;
+function angleAt(e){
+ const b=mechanism.getBoundingClientRect();
+ return Math.atan2(e.clientY-(b.top+b.height/2),e.clientX-(b.left+b.width/2));
+}
+mechanism.addEventListener('pointerdown',e=>{
+ const dial=e.target.closest('.dial');if(!dial||!current)return;
+ const index=Number(dial.id.replace('dial',''));if(!Number.isInteger(index)||index<0||index>2)return;
+ dialDrag={pointer:e.pointerId,index,angle:angleAt(e)};
+ mechanism.setPointerCapture?.(e.pointerId);
+});
+mechanism.addEventListener('pointerup',e=>{
+ if(!dialDrag||dialDrag.pointer!==e.pointerId)return;
+ const delta=angleAt(e)-dialDrag.angle;
+ const normalized=Math.atan2(Math.sin(delta),Math.cos(delta));
+ const steps=Math.round(normalized/(Math.PI/3));
+ rotate(dialDrag.index,steps||1);dialDrag=null;
+});
+mechanism.addEventListener('pointercancel',()=>{dialDrag=null;});
 window.addEventListener('keydown',e=>{
  if(chamber.classList.contains('hidden'))return;
  if(e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();closeChamber();return;}
