@@ -1,0 +1,11 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Living Nexus — integration review</title><style>body{margin:0;background:#070c17;color:#eee7d8;font:15px Georgia,serif}header,footer{padding:14px 22px}header h1{font-size:20px;font-weight:normal;margin:0}header p{font:12px Arial,sans-serif;margin:6px 0}a{color:#c4eadd}main{max-width:1536px;margin:auto}footer{font:13px Arial,sans-serif}</style><script src="archon-living-nexus.js" defer></script></head><body>
+<header><h1>Archon Soulings · Living Nexus</h1><p>Page-scoped integration review — not the published main-site release.</p></header>
+<main><archon-living-nexus id="livingNexus"></archon-living-nexus></main>
+<footer><a id="host-link" href="https://www.archonsoulings.com/">Existing Archon Soulings website</a><span id="host-marker"> · Host navigation remains independent.</span></footer>
+<script>
+const element=document.querySelector('archon-living-nexus');
+const base=location.origin+location.pathname;element.setAttribute('route-base',base);
+const route=()=>element.setAttribute('world',new URL(location.href).searchParams.get('world')||'nexus');
+route();window.addEventListener('popstate',route);
+element.addEventListener('nexus-route',event=>{const url=new URL(base);if(event.detail.world!=='nexus')url.searchParams.set('world',event.detail.world);history.pushState({},'',url);});
+</script></body></html>

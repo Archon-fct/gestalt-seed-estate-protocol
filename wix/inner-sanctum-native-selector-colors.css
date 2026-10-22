@@ -1,0 +1,116 @@
+/* Inner Sanctum native selector colors 1.0.0.
+   Color-only, page-ID-scoped companion to inner-sanctum-packages-live.js.
+   Keeps Wix's original plan controls, layout, prices, and checkout untouched. */
+html.as-public #SITE_PAGES #x5jw3 {
+  color-scheme: dark;
+  color: #f3eee4 !important;
+  background: radial-gradient(ellipse at 52% 20%, #243451 0%, #12162d 32%, #070b17 74%) !important;
+}
+html.as-public #SITE_PAGES #x5jw3 :is([data-testid="page-bg"], [data-testid="colorUnderlay"], [data-testid="screenWidthContainerBg"], [data-testid="screenWidthContainerBgCenter"]) {
+  background: transparent !important;
+}
+html.as-public #SITE_PAGES #x5jw3 :is(.wixui-section, .wixui-column-strip) {
+  --bg: 7,11,23;
+  --alpha-bg: 0;
+  --bg-overlay-color: transparent;
+}
+html.as-public #SITE_PAGES #x5jw3 [data-hook="PackagePicker-wrapper"] {
+  background: transparent !important;
+  color: #f3eee4 !important;
+}
+html.as-public #SITE_PAGES #x5jw3 [data-hook="plan"] {
+  background: linear-gradient(135deg, #192238c9, #0a0e20e8) !important;
+  color: #f3eee4 !important;
+  border-color: #8ad9cd44 !important;
+  box-shadow: inset 0 0 45px #80c9cc0c, 0 15px 60px #0004 !important;
+}
+html.as-public #SITE_PAGES #x5jw3 [data-hook="plan"] > div,
+html.as-public #SITE_PAGES #x5jw3 [data-hook="plan"] > div > div,
+html.as-public #SITE_PAGES #x5jw3 [data-hook="plan"] > div > div > div {
+  background: transparent !important;
+  color: inherit !important;
+}
+html.as-public #SITE_PAGES #x5jw3 [data-hook="plan-title"],
+html.as-public #SITE_PAGES #x5jw3 [data-hook="plan-title"] * {
+  color: #f2ddb1 !important;
+}
+html.as-public #SITE_PAGES #x5jw3 :is([data-hook="plan-price"], [data-hook="price-amount"], [data-hook="price-currency"], [data-hook="plan-price-screen-reader"]) {
+  color: #e8c98e !important;
+}
+html.as-public #SITE_PAGES #x5jw3 :is([data-hook="plan-tagline"], [data-hook="plan-recurrence"], [data-hook="plan-duration"]) {
+  color: #c8cbd2 !important;
+}
+html.as-public #SITE_PAGES #x5jw3 [data-hook="plan-tagline"] * {
+  color: inherit !important;
+}
+html.as-public #SITE_PAGES #x5jw3 [data-hook="benefits"] {
+  background: #0a1223ba !important;
+  color: #f3eee4 !important;
+  border-color: #8ad9cd44 !important;
+}
+html.as-public #SITE_PAGES #x5jw3 [data-hook="benefit"] {
+  color: #f3eee4 !important;
+  border-color: #8ad9cd26 !important;
+}
+html.as-public #SITE_PAGES #x5jw3 [data-hook="benefit"] svg,
+html.as-public #SITE_PAGES #x5jw3 [data-hook="benefit"] svg * {
+  color: #8ad9cd !important;
+  fill: #8ad9cd !important;
+}
+html.as-public #SITE_PAGES #x5jw3 [data-hook="plan-cta"] {
+  background: #d2b8781a !important;
+  color: #f3eee4 !important;
+  border-color: #e8c98eaa !important;
+  box-shadow: inset 0 0 0 1px #e8c98eaa !important;
+}
+html.as-public #SITE_PAGES #x5jw3 [data-hook="plan-cta"] * {
+  color: inherit !important;
+}
+html.as-public #SITE_PAGES #x5jw3 [data-hook="plan-cta"]:hover {
+  background: #d2b87833 !important;
+  box-shadow: inset 0 0 0 1px #e8c98e !important;
+}
+html.as-public #SITE_PAGES #x5jw3 [data-hook="plan-cta"]:focus-visible {
+  outline: 3px solid #8ad9cd !important;
+  outline-offset: 4px;
+}
+html.as-public #SITE_PAGES #x5jw3 [data-hook="plan-cta"]:is(:disabled, [aria-disabled="true"]) {
+  background: #1a2134 !important;
+  color: #c8cbd2 !important;
+  box-shadow: inset 0 0 0 1px #8ad9cd44 !important;
+}
+html.as-public #SITE_PAGES #x5jw3 .wixui-rich-text,
+html.as-public #SITE_PAGES #x5jw3 [data-hook="PackagePicker-wrapper"] > p {
+  color: #c8cbd2 !important;
+}
+html.as-public #SITE_PAGES #x5jw3 .wixui-rich-text a {
+  color: #8ad9cd !important;
+}
+/* The surrounding banner is themed only while this native Packages page exists.
+   No new route observer, global theme replacement, or event handler is installed. */
+html.as-public #SITE_PAGES:has(#x5jw3) {
+  background: #070b17 !important;
+}
+html.as-public #masterPage:has(#x5jw3) #as-public-banner {
+  background: radial-gradient(ellipse at 52% 100%, #243451 0%, #12162d 48%, #070b17 100%) !important;
+  color: #f3eee4 !important;
+  border-color: #d9c48b55 !important;
+}
+html.as-public #masterPage:has(#x5jw3) #as-public-banner h1 {
+  color: #f6e5bc !important;
+}
+html.as-public #masterPage:has(#x5jw3) #as-public-banner p {
+  color: #c8cbd2 !important;
+}
+html.as-public #masterPage:has(#x5jw3) #as-public-banner .as-eyebrow {
+  color: #8ad9cd !important;
+}
+html.as-public #masterPage:has(#x5jw3) #as-public-banner .as-eyebrow:before {
+  background: #8ad9cd !important;
+}
+html.as-public #masterPage:has(#x5jw3) #as-public-banner .as-button {
+  background: #d2b8781a !important;
+  color: #f3eee4 !important;
+  border-color: #e8c98eaa !important;
+  box-shadow: none !important;
+}

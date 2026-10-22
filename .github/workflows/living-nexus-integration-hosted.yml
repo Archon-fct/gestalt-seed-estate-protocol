@@ -1,0 +1,83 @@
+name: Living Nexus Integration Hosted Verification
+on:
+  push:
+    branches: [feature/public-project-constellation]
+    paths: ['.github/workflows/living-nexus-integration-hosted.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: living-nexus-integration-hosted
+  cancel-in-progress: false
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NEXUS_BUILD_DIR: integration-build
+      NEXUS_REPORT_DIR: hosted-integration-evidence
+      NEXUS_ENGINES: chromium,webkit
+      NEXUS_BASE_URL: https://headless-mfewrcffiie-archonsoulings-140e.wix-site-host.com/integration/living-nexus.html
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 315b27632703da9ce83c0dcb950e97d013dcb746
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify exact hosted integration bytes and every preceding runtime asset
+        run: |
+          mkdir -p hosted-integration-evidence
+          cat > verify-integration-hosted.mjs <<'JS'
+          import fs from 'node:fs/promises';
+          import assert from 'node:assert/strict';
+          import {createHash} from 'node:crypto';
+          import {canonicalHostedBytes} from './tests/wix-html-transport.mjs';
+          const base='https://headless-mfewrcffiie-archonsoulings-140e.wix-site-host.com/';
+          const hash=b=>createHash('sha256').update(b).digest('hex');
+          const results=[];
+          async function get(file){const r=await fetch(new URL(file,base),{signal:AbortSignal.timeout(30000)});assert.equal(r.status,200,file);return Buffer.from(await r.arrayBuffer());}
+          try {
+            const original=JSON.parse(await get('release.json'));
+            assert.equal(original.sourceCommit,'e11b280cf060a82ac9308e7b1f1d52bca6e76449');
+            for(const [file,digest] of Object.entries(original.files)){
+              const bytes=canonicalHostedBytes(await get(file),file);assert.equal(hash(bytes),digest,file);
+              results.push({file,status:'PASS',sha256:digest});
+            }
+            const manifest=JSON.parse(await get('integration/integration-manifest.json'));
+            assert.equal(manifest.sourceCommit,'315b27632703da9ce83c0dcb950e97d013dcb746');
+            assert.equal(manifest.productionInstalled,false);
+            assert.equal(manifest.componentSHA256,'0d1e00d491a16cd80f75ea26612c5c004d9eccc04c4564411a2189c0653cf866');
+            const component=await get('integration/archon-living-nexus.js');assert.equal(hash(component),manifest.componentSHA256);
+            results.push({file:'integration/archon-living-nexus.js',status:'PASS',sha256:hash(component)});
+            const html=canonicalHostedBytes(await get('integration/living-nexus.html'),'integration/living-nexus.html');
+            assert.equal(hash(html),hash(await fs.readFile('wix/integration/review.html')));
+            results.push({file:'integration/living-nexus.html',status:'PASS',sha256:hash(html)});
+          } catch(error) {results.push({status:'FAIL',error:String(error.stack)});process.exitCode=1;}
+          await fs.writeFile('hosted-integration-evidence/integrity.json',JSON.stringify({results,passed:results.filter(r=>r.status==='PASS').length,failed:results.filter(r=>r.status==='FAIL').length},null,2));
+          console.log(JSON.stringify(results));
+          // This is only an HTTP presence probe, explicitly not a production acceptance test.
+          try {const r=await fetch('https://www.archonsoulings.com/living-nexus',{signal:AbortSignal.timeout(30000)});await fs.writeFile('hosted-integration-evidence/production-presence.json',JSON.stringify({url:r.url,httpStatus:r.status,productionInstalledByThisJob:false,productionBrowserAccepted:false}));}
+          catch(e){await fs.writeFile('hosted-integration-evidence/production-presence.json',JSON.stringify({error:String(e),productionBrowserAccepted:false}));}
+          JS
+          node verify-integration-hosted.mjs
+      - name: Install pinned browser verification dependencies
+        run: |
+          python -m pip install pytest==9.0.2 playwright==1.57.0
+          python -m playwright install --with-deps chromium webkit
+      - name: Exercise actual hosted integration without sending email or booking anything
+        run: |
+          set -o pipefail
+          python -m pytest tests/integration/test_element.py -q --tb=short --junitxml=hosted-integration-evidence/hosted-browsers.xml | tee hosted-integration-evidence/hosted-browsers.log
+      - name: Preserve served evidence and actual screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: living-nexus-hosted-integration-${{ github.sha }}
+          path: hosted-integration-evidence/
+          retention-days: 14
+          if-no-files-found: error

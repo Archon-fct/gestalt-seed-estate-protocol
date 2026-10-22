@@ -1,0 +1,84 @@
+name: Living Nexus Bounded Repair
+on:
+  push:
+    branches: [feature/public-project-constellation]
+    paths: ['.github/workflows/living-nexus-bounded-repair.yml']
+permissions:
+  contents: write
+concurrency:
+  group: living-nexus-bounded-repair
+  cancel-in-progress: false
+jobs:
+  repair:
+    if: github.repository == 'Archon-fct/gestalt-seed-estate-protocol'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+      - name: Apply only the reviewed hash-locked source changes
+        run: python3 scripts/repair-pending-crossing-2026-10-11.py
+      - name: Capture the currently hosted preview for rollback
+        run: python3 scripts/package-living-nexus-release.py --capture-preview --output repair-evidence/preview-before.zip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install existing pinned browser dependency
+        run: |
+          npm install --no-save --package-lock=false playwright@1.57.0
+          npx playwright install --with-deps chromium webkit
+      - name: Prove the race and its correction in both engines
+        env:
+          BEFORE_INDEX: repair-evidence/index-before.html
+        run: node tests/test-nexus-crossing-cancel.mjs
+      - name: Verify strict HTML transport and release safety
+        run: |
+          node --test tests/test-wix-html-transport.mjs
+          python3 tests/test-living-nexus-release-package.py -v
+      - name: Run the unchanged complete constellation suite
+        run: |
+          set -o pipefail
+          node hud/prototype/test-constellation.mjs 2>&1 | tee repair-evidence/constellation.log
+      - name: Run the committed inquiry and visual regression suite
+        env:
+          BASELINE_ROOT: .convergence-baseline
+          REPORT_DIR: repair-evidence/convergence
+        run: |
+          set -o pipefail
+          mkdir -p .convergence-baseline
+          for file in convergence.html living-pocket-material.css living-pocket-material.js; do
+            git show "7c3703f2ffe8dfe1d15ace82da43333f64ffa28b:hud/prototype/$file" > ".convergence-baseline/$file"
+          done
+          node tests/test-convergence-journey.mjs 2>&1 | tee repair-evidence/convergence.log
+      - name: Commit exactly the tested repair without overwriting concurrent changes
+        run: |
+          set -euo pipefail
+          branch=feature/public-project-constellation
+          remote_sha=$(git ls-remote origin "refs/heads/$branch" | cut -f1)
+          test "$remote_sha" = "$GITHUB_SHA"
+          git add hud/prototype/index.html scripts/package-living-nexus-release.py tests/test-living-nexus-hosted-bundle.mjs
+          python3 - <<'PY'
+          import subprocess
+          expected={'hud/prototype/index.html','scripts/package-living-nexus-release.py','tests/test-living-nexus-hosted-bundle.mjs'}
+          actual=set(subprocess.check_output(['git','diff','--cached','--name-only'],text=True).splitlines())
+          assert actual==expected,(actual,expected)
+          PY
+          git diff --cached > repair-evidence/tested-repair.patch
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'fix: cancel pending Nexus crossings and verify exact Wix transport insertion'
+          git push origin "HEAD:refs/heads/$branch"
+          git rev-parse HEAD > repair-evidence/SOURCE_SHA.txt
+      - name: Package the exact committed runtime after all checks pass
+        run: |
+          sha=$(cat repair-evidence/SOURCE_SHA.txt)
+          git archive --format=zip --output=repair-evidence/source-snapshot.zip "$sha"
+          python3 scripts/package-living-nexus-release.py --preserve-snapshot repair-evidence/preview-before.zip --output repair-evidence/living-nexus-runtime.zip --source-sha "$sha"
+      - name: Preserve actual results and rollback without publishing a website
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: living-nexus-bounded-repair-${{ github.sha }}
+          path: repair-evidence/
+          retention-days: 14
+          if-no-files-found: error

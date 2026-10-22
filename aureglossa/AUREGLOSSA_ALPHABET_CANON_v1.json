@@ -1,0 +1,249 @@
+{
+  "schema": "archon.aureglossa.alphabet/1.0",
+  "title": "Aureglossa 32-Letter Alphabet",
+  "language": "Aureglossa",
+  "count": 32,
+  "status": "SOURCE_BACKED_CANON_BASELINE",
+  "master_lineage": {
+    "name": "Aureglossa Canonical Master",
+    "version": "1.0",
+    "canon_date": "2026-09-21"
+  },
+  "source_baseline": {
+    "name": "Aureglossa Language Pack",
+    "version": "0.3",
+    "updated": "2025-08-10"
+  },
+  "scope": "Letter forms, canonical letter names, recorded phonetic values, and pack notes only.",
+  "exclusions": [
+    "Does not restore conflicting legacy v0.3 productive grammar.",
+    "Does not claim custom glyph artwork that is not present in the source.",
+    "Does not assert historical etymology for constructed letter names."
+  ],
+  "alphabet": [
+    {
+      "index": 1,
+      "letter": "A",
+      "name": "Ahra",
+      "ipa": "a",
+      "notes": "ah as in father"
+    },
+    {
+      "index": 2,
+      "letter": "Æ",
+      "name": "Aetha",
+      "ipa": "ae",
+      "notes": "diphthong eye-eh"
+    },
+    {
+      "index": 3,
+      "letter": "B",
+      "name": "Bera",
+      "ipa": "b",
+      "notes": ""
+    },
+    {
+      "index": 4,
+      "letter": "C",
+      "name": "Kora",
+      "ipa": "k ~ t͡ʃ",
+      "notes": "k normally; ch before E/I"
+    },
+    {
+      "index": 5,
+      "letter": "D",
+      "name": "Dara",
+      "ipa": "d",
+      "notes": ""
+    },
+    {
+      "index": 6,
+      "letter": "E",
+      "name": "Etha",
+      "ipa": "e",
+      "notes": "eh as in met"
+    },
+    {
+      "index": 7,
+      "letter": "F",
+      "name": "Phora",
+      "ipa": "f",
+      "notes": ""
+    },
+    {
+      "index": 8,
+      "letter": "G",
+      "name": "Gura",
+      "ipa": "g",
+      "notes": ""
+    },
+    {
+      "index": 9,
+      "letter": "H",
+      "name": "Hael",
+      "ipa": "h",
+      "notes": ""
+    },
+    {
+      "index": 10,
+      "letter": "I",
+      "name": "Isar",
+      "ipa": "i",
+      "notes": "ee as in machine"
+    },
+    {
+      "index": 11,
+      "letter": "J",
+      "name": "Jora",
+      "ipa": "ʒ",
+      "notes": "zh as in vision"
+    },
+    {
+      "index": 12,
+      "letter": "K",
+      "name": "Kael",
+      "ipa": "k",
+      "notes": "hard k"
+    },
+    {
+      "index": 13,
+      "letter": "L",
+      "name": "Lura",
+      "ipa": "l",
+      "notes": ""
+    },
+    {
+      "index": 14,
+      "letter": "M",
+      "name": "Mora",
+      "ipa": "m",
+      "notes": ""
+    },
+    {
+      "index": 15,
+      "letter": "N",
+      "name": "Nara",
+      "ipa": "n",
+      "notes": ""
+    },
+    {
+      "index": 16,
+      "letter": "O",
+      "name": "Oran",
+      "ipa": "o",
+      "notes": "oh as in holy"
+    },
+    {
+      "index": 17,
+      "letter": "Ω",
+      "name": "Omae",
+      "ipa": "oː",
+      "notes": "long sacred oh"
+    },
+    {
+      "index": 18,
+      "letter": "P",
+      "name": "Phera",
+      "ipa": "p",
+      "notes": ""
+    },
+    {
+      "index": 19,
+      "letter": "Q",
+      "name": "Quora",
+      "ipa": "kw",
+      "notes": ""
+    },
+    {
+      "index": 20,
+      "letter": "R",
+      "name": "Raha",
+      "ipa": "r̄",
+      "notes": "trilled"
+    },
+    {
+      "index": 21,
+      "letter": "S",
+      "name": "Sara",
+      "ipa": "s",
+      "notes": ""
+    },
+    {
+      "index": 22,
+      "letter": "T",
+      "name": "Tara",
+      "ipa": "t",
+      "notes": ""
+    },
+    {
+      "index": 23,
+      "letter": "U",
+      "name": "Urum",
+      "ipa": "u",
+      "notes": "oo as in truth"
+    },
+    {
+      "index": 24,
+      "letter": "V",
+      "name": "Vael",
+      "ipa": "v",
+      "notes": ""
+    },
+    {
+      "index": 25,
+      "letter": "W",
+      "name": "Waen",
+      "ipa": "w",
+      "notes": ""
+    },
+    {
+      "index": 26,
+      "letter": "X",
+      "name": "Xara",
+      "ipa": "ks ~ ʃ",
+      "notes": "ks normally; sh in some positions"
+    },
+    {
+      "index": 27,
+      "letter": "Y",
+      "name": "Yara",
+      "ipa": "j",
+      "notes": "y"
+    },
+    {
+      "index": 28,
+      "letter": "Z",
+      "name": "Zara",
+      "ipa": "z",
+      "notes": ""
+    },
+    {
+      "index": 29,
+      "letter": "Θ",
+      "name": "Thura",
+      "ipa": "θ",
+      "notes": "soft th"
+    },
+    {
+      "index": 30,
+      "letter": "Ψ",
+      "name": "Psyra",
+      "ipa": "ps",
+      "notes": ""
+    },
+    {
+      "index": 31,
+      "letter": "Φ",
+      "name": "Phaios",
+      "ipa": "pʰ",
+      "notes": "aspirated ph"
+    },
+    {
+      "index": 32,
+      "letter": "Χ",
+      "name": "Khara",
+      "ipa": "kʰ",
+      "notes": "aspirated kh"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+name: Living Nexus Hosted Operational Gate
+on:
+  push:
+    branches: [feature/public-project-constellation]
+    paths: ['.github/workflows/living-nexus-hosted-operational.yml', 'tests/test-living-nexus-hosted-bundle.mjs']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: living-nexus-hosted-operational
+  cancel-in-progress: false
+jobs:
+  hosted:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      EXPECTED_SOURCE_SHA: e11b280cf060a82ac9308e7b1f1d52bca6e76449
+      REPORT_DIR: hosted-operational-evidence
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned browser engines
+        run: |
+          npm install --no-save --package-lock=false playwright@1.57.0
+          npx playwright install --with-deps chromium webkit
+      - name: Verify actual served bytes and visitor journeys without sending data
+        run: node tests/test-living-nexus-hosted-bundle.mjs
+      - name: Preserve hosted screenshots and results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: living-nexus-hosted-${{ github.sha }}
+          path: hosted-operational-evidence/
+          retention-days: 14
+          if-no-files-found: error
