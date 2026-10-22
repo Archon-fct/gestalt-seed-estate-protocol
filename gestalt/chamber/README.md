@@ -6,7 +6,7 @@ Review candidate prepared 21 October 2026. This is a presentation layer for the 
 
 ## Experience
 
-- Open the engraved iris to reveal the existing living auric field.
+- The living auric field swirls gently on arrival. Open the engraved iris for the brighter reveal.
 - Select any of the ten realm seals to read its record and follow its original destination.
 - Use the direct realm selector or keyboard without solving a puzzle.
 - Sound starts off. Explicit activation enables short generated crystal tones; Silence, Stillness, Escape or leaving the page stops them.

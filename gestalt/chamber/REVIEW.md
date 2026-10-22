@@ -47,3 +47,17 @@ At 390 px, the rotated decorative mechanism originally caused document width 394
 Owner visual judgment is still required, especially whether the level of cinematic depth satisfies the intended direction. Actual iPhone/iPad Safari, touch behavior, system reduced-motion switching, screen-reader narration, full Tab sequence, small-screen label legibility, measured contrast, performance and audio quality remain unverified. No physical device or Safari pass is claimed.
 
 Production promotion must be separately reviewed. Neither these checks nor a future successful automated run constitutes owner approval.
+
+## Motion correction after owner review — 21 October 2026, Mountain time
+
+The owner approved the appearance but reported no movement on iPad Safari. Their screenshot showed the closed iris. Source inspection found an explicit presentation-layer pause, `still: () => still() || !open`, which froze the original renderer whenever the iris was closed. This was deliberate in the first implementation but did not meet the expected living arrival experience.
+
+Removed the closed-iris pause while preserving user Stillness, system reduced motion, background-page and offscreen suspension. Increased the closed field opacity from 0.20 to 0.38 so the gentle swirling is visible; the open field remains 0.83. Added a version query to CSS and the chamber module so a refreshed page loads the correction. No geometry, realm data, renderer implementation or destination changed.
+
+The same hosted review path was updated. Snapshot read-back verified all three authored changes and reported zero changes to other preview files. The exact original renderer and realm data remain unchanged.
+
+Actual Chromium test after deployment: with the iris closed and Stillness off, two 660 × 660 screenshots differed in 44,790 pixels by more than three channel values (mean absolute channel difference 0.86286). With Stillness on, the corresponding two screenshots were pixel-identical (zero difference). Opening and closing the iris still updated its state correctly. This is direct rendered-motion evidence, not merely a source check; it is not a frame-rate benchmark. `node --check` passed for the updated module.
+
+Physical iPad Safari has not been retested by the agent. System reduced motion still intentionally suppresses animation. This correction does not change production approval status or imply an accessibility/performance acceptance pass.
+
+To roll back only this correction, restore the three candidate files from commit `14d86ed626da41cb2c155586826338fd932017d7` under the same hosted prefix, using a fresh complete preview snapshot to preserve unrelated work.

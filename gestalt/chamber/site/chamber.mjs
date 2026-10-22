@@ -17,7 +17,8 @@ const positions = REALMS.map((_, i) => i === 0 ? { x: 50, y: 50 } : {
 });
 const field = mountField(canvas, {
   selection: () => selected,
-  still: () => still() || !open,
+  // The closed iris conceals the field; it must not freeze its living motion.
+  still,
   targets: () => positions.map(p => ({ x: canvas.clientWidth * p.x / 100, y: canvas.clientHeight * p.y / 100 }))
 });
 
