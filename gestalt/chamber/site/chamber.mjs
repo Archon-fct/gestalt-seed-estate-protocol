@@ -1,4 +1,4 @@
-import { mountField } from './field.mjs';
+import { mountChamberField } from './chamber-field.mjs?v=20261023';
 import { REALMS } from './realms.mjs';
 
 // Cinematic presentation only. Realm data and external destinations are unchanged.
@@ -15,7 +15,8 @@ const positions = REALMS.map((_, i) => i === 0 ? { x: 50, y: 50 } : {
   x: 50 + 40 * Math.cos(-Math.PI / 2 + (i - 1) * Math.PI * 2 / 9),
   y: 50 + 40 * Math.sin(-Math.PI / 2 + (i - 1) * Math.PI * 2 / 9)
 });
-const field = mountField(canvas, {
+const field = mountChamberField(canvas, {
+  opened: () => open,
   selection: () => selected,
   // The closed iris conceals the field; it must not freeze its living motion.
   still,
@@ -113,6 +114,7 @@ REALMS.forEach((n,i) => {
 
 function syncStillness() {
   document.body.dataset.still = String(still());
+  document.documentElement.style.scrollBehavior = still() ? 'auto' : 'smooth';
   stillButton.setAttribute('aria-pressed',String(still()));
   stillButton.textContent = media.matches ? 'Stillness · system' : storedStill ? 'Stillness on' : 'Stillness';
   stillButton.disabled = media.matches;
@@ -127,7 +129,8 @@ stillButton.addEventListener('click',()=>{
   try { localStorage.setItem('gestalt.platinum.still',storedStill ? '1' : '0'); } catch {}
   syncStillness();
 });
-media.addEventListener('change',syncStillness);
+if (media.addEventListener) media.addEventListener('change',syncStillness);
+else media.addListener(syncStillness);
 hatch.addEventListener('click',()=>setOpen(!open));
 picker.addEventListener('change',()=>select(Number(picker.value)));
 $('#inspect').addEventListener('click',()=>{
@@ -155,3 +158,4 @@ soundButton.addEventListener('click',async()=>{
 document.addEventListener('visibilitychange',()=>{ if(document.hidden) silence(); });
 window.addEventListener('pagehide',()=>silence());
 select(0,{reveal:false,audible:false}); syncStillness(); setOpen(false,false);
+

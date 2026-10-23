@@ -20,7 +20,7 @@ The production entrance and Soul & Stone contribution portal were not modified. 
 
 ## Files and review
 
-- `site/`: seven files deployed under the isolated preview path.
+- `site/`: eight files deployed under the isolated preview path.
 - `baseline/`: rollback/reference snapshot; not deployed by this change.
 - `REVIEW.md`: actual browser observations, source checks and remaining acceptance gaps.
 - `evidence.json`: responsive measurements and deployment receipts.
@@ -34,6 +34,11 @@ The live preview is unlinked and marked `noindex,nofollow`; it is publicly acces
 
 Production promotion requires owner visual acceptance and actual Safari/device checks. A green source or browser check does not authorize replacement of the public entrance.
 
-To withdraw this preview, take a fresh snapshot of its Wix preview site, remove only the seven files beneath `gestalt/chamber-20261021/`, and redeploy all remaining current files. Do not restore an old whole-site ZIP over unrelated changes. Production needs no rollback because it was not changed.
+To withdraw this preview, take a fresh snapshot of its Wix preview site, remove only the eight files beneath `gestalt/chamber-20261021/`, and redeploy all remaining current files. Do not restore an old whole-site ZIP over unrelated changes. Production needs no rollback because it was not changed.
 
 Inspiration reference: https://www.fireproofgames.com/games/the-room
+
+
+## October 23 refinement
+
+See [the latest review](REVIEW-20261023.md) for the chamber-only compositor, rendered checks, callback timing limitations and remaining Safari/device acceptance. The original renderer and realm records remain unchanged; the new controller lives in `site/chamber-field.mjs`. The responsive review adds a two-second canvas motion diagnostic.
