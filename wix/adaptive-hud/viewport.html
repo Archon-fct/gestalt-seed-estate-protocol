@@ -1,0 +1,75 @@
+<style id="as-adaptive-hud-20261023">
+/* Layout only: retain the current field iframe, renderer and navigation. */
+html.as-nexus-home #as-living-nexus-production{max-width:none;width:100%;min-width:0}
+#as-living-nexus-production .ln-viewport-tools{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;padding:6px max(12px,env(safe-area-inset-right,0px)) 6px max(12px,env(safe-area-inset-left,0px));background:#08101b;border-bottom:1px solid #d7bf8e24}
+.ln-viewport-tools button{font:13px/1.4 Arial,sans-serif;min-height:44px;min-width:44px;padding:10px 16px;border:1px solid #d7bf8e66;border-radius:24px;background:#15202e;color:#eee7d8;cursor:pointer}
+.ln-viewport-tools button:focus-visible{outline:3px solid #b3e4dc;outline-offset:2px}
+@media(min-width:1000px){
+ html.as-nexus-home #as-living-nexus-production .ln-intro{padding:10px 24px;gap:16px}
+ html.as-nexus-home #as-living-nexus-production .ln-intro-copy{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 24px;align-items:center;flex:1;min-width:0;max-width:none}
+ html.as-nexus-home #as-living-nexus-production .ln-intro-copy h1{grid-column:1}
+ html.as-nexus-home #as-living-nexus-production .ln-intro-copy p{margin:0}
+ html.as-nexus-home #as-living-nexus-production .ln-action-row{grid-column:2;grid-row:1/4;margin:0;flex-wrap:wrap}
+ html.as-nexus-home #livingNexusProduction{height:max(580px,calc(100dvh - 210px));min-height:580px}
+}
+/* Tall phones and unfolded windows use the available height, with a readable floor. */
+@media(max-width:999px){html.as-nexus-home #livingNexusProduction{height:max(600px,calc(100dvh - 170px));min-height:600px}}
+html.ln-hud-expanded,html.ln-hud-expanded body{overflow:hidden!important}
+html.ln-hud-expanded [data-ln-viewport-ancestor]{transform:none!important;filter:none!important;perspective:none!important;contain:none!important;overflow:visible!important}
+html.ln-hud-expanded #as-living-nexus-production{position:fixed!important;inset:0!important;width:100%!important;height:100vh!important;height:var(--ln-viewport-height,100dvh)!important;max-height:none!important;max-width:none!important;margin:0!important;padding:0!important;z-index:100010!important;display:flex!important;flex-direction:column!important;background:#05070e}
+html.ln-hud-expanded #as-living-nexus-production>.ln-intro,html.ln-hud-expanded #as-living-nexus-production>.ln-paths,html.ln-hud-expanded #as-living-nexus-production>.ln-loading-note{display:none!important}
+html.ln-hud-expanded .ln-viewport-tools{flex:none;padding-top:max(6px,env(safe-area-inset-top,0px))}
+html.ln-hud-expanded #as-living-nexus-production>.ln-environment{flex:1;min-height:0!important;overflow:auto;width:100%;padding:0 env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px);box-sizing:border-box}
+html.ln-hud-expanded #livingNexusProduction{width:100%!important;height:100%!important;min-height:560px!important;max-height:none!important;display:block}
+html.ln-hud-expanded #as-living-nexus-production[data-world="sessions"] #livingNexusProduction{min-height:880px!important}
+@media(max-width:740px){html.ln-hud-expanded #as-living-nexus-production[data-world="sessions"] #livingNexusProduction{min-height:1160px!important}}
+@media(max-width:360px){html.ln-hud-expanded #as-living-nexus-production[data-world="sessions"] #livingNexusProduction{min-height:1260px!important}}
+@media(horizontal-viewport-segments:2){html.ln-hud-expanded #as-living-nexus-production{width:env(viewport-segment-width 0 0)!important;left:env(viewport-segment-left 0 0)!important;right:auto!important}}
+@media(vertical-viewport-segments:2){html.ln-hud-expanded #as-living-nexus-production{height:env(viewport-segment-height 0 0)!important;top:env(viewport-segment-top 0 0)!important;bottom:auto!important}}
+@media(max-width:380px){#as-living-nexus-production .ln-intro{flex-wrap:wrap;gap:8px}#as-living-nexus-production .ln-intro p{max-width:100%;text-align:left}#as-living-nexus-production .ln-action-row{flex-wrap:wrap}.ln-viewport-tools{justify-content:space-between}.ln-viewport-tools button{padding-inline:12px}}
+</style>
+<script>
+(()=>{
+ 'use strict';
+ if(window.__AS_ADAPTIVE_HUD_20261023)return;
+ window.__AS_ADAPTIVE_HUD_20261023=true;
+ const root=document.documentElement;
+ let section=null,button=null,expanded=false,queued=false,ancestors=[],inertNodes=[];
+ function allowed(){return root.classList.contains('as-nexus-home')&&!/^#(?:private-studio|veil-ledger|ilyr|archon-admin|gestalt)/i.test(location.hash)}
+ function viewport(){const v=window.visualViewport;if(expanded&&(!v||v.scale===1))root.style.setProperty('--ln-viewport-height',`${Math.round(v?v.height:innerHeight)}px`)}
+ function restore(){for(const [node,old]of inertNodes)node.inert=old;inertNodes=[];for(const node of ancestors)node.removeAttribute('data-ln-viewport-ancestor');ancestors=[]}
+ function setExpanded(next){
+  if(next===expanded)return;
+  expanded=next;
+  if(next){
+   for(let current=section;current&&current!==document.body;current=current.parentElement){
+    const parent=current.parentElement;if(!parent)break;
+    if(parent!==document.body){ancestors.push(parent);parent.setAttribute('data-ln-viewport-ancestor','')}
+    for(const sibling of parent.children){if(sibling===current||/^(SCRIPT|STYLE|LINK)$/.test(sibling.tagName))continue;inertNodes.push([sibling,sibling.inert]);sibling.inert=true}
+   }
+  }else{restore();root.style.removeProperty('--ln-viewport-height')}
+  root.classList.toggle('ln-hud-expanded',next);
+  if(button){button.textContent=next?'Exit expanded view':'Expand HUD';button.setAttribute('aria-expanded',String(next));button.focus({preventScroll:true})}
+  viewport();
+ }
+ function refresh(){
+  queued=false;
+  const found=allowed()&&document.getElementById('as-living-nexus-production');
+  if(!found){if(expanded)setExpanded(false);return}
+  const frame=found.querySelector('#livingNexusProduction');if(!frame)return;
+  if(section!==found){if(expanded)setExpanded(false);section=found;button=null}
+  if(!section.querySelector('.ln-viewport-tools')){
+   const bar=document.createElement('div');bar.className='ln-viewport-tools';bar.setAttribute('role','group');bar.setAttribute('aria-label','HUD display');
+   button=document.createElement('button');button.type='button';button.textContent='Expand HUD';button.setAttribute('aria-controls','livingNexusProduction');button.setAttribute('aria-expanded','false');button.addEventListener('click',()=>setExpanded(!expanded));
+   bar.append(button);const environment=section.querySelector('.ln-environment');if(!environment)return;environment.before(bar);
+  }
+  viewport();
+ }
+ function queue(){if(queued)return;queued=true;requestAnimationFrame(refresh)}
+ new MutationObserver(queue).observe(root,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
+ document.addEventListener('keydown',e=>{if(expanded&&e.key==='Escape'){e.preventDefault();setExpanded(false)}});
+ window.addEventListener('resize',queue);window.visualViewport?.addEventListener('resize',queue);
+ window.addEventListener('popstate',queue);window.addEventListener('hashchange',queue);window.addEventListener('pageshow',queue);
+ queue();
+})();
+</script>
