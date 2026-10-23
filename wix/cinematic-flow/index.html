@@ -1,0 +1,67 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Archon Soulings — Flow Review</title><meta name="theme-color" content="#05070e"><link rel="manifest" href="./manifest.json"><link rel="apple-touch-icon" href="./icon-192.png"><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#05070e}archon-living-nexus{display:block;width:100%;height:100svh;min-height:0}</style><script src="./archon-living-nexus.js" defer></script></head><body><archon-living-nexus id="nexus" route-base="https://www.archonsoulings.com/"></archon-living-nexus><script>
+(() => {
+  'use strict';
+  const el = document.getElementById('nexus');
+  const allowed = new Set(['nexus','aura','aureglossa','sessions','workshops','gestalt','journal','threshold']);
+  const origin = 'https://www.archonsoulings.com';
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const initial = new URL(location.href).searchParams.get('world');
+  el.setAttribute('world', allowed.has(initial) ? initial : 'nexus');
+  const tell = (type, world, extra = {}) => { if (parent !== window && allowed.has(world)) parent.postMessage({ type, world, ...extra }, origin); };
+  const world = () => allowed.has(el.pendingWorld) ? el.pendingWorld : el.getAttribute('world');
+  let configured = false, readyAcknowledged = false, hostStateReceived = false, hostVisible = parent === window, reportedStill = null;
+  const announce = () => {
+    // Keep readiness recoverable until the validated parent explicitly acknowledges it.
+    if (configured && el.dataset.ready === 'true' && !readyAcknowledged) tell('nexus:ready', world());
+  };
+  new MutationObserver(announce).observe(el, { attributes:true, attributeFilter:['data-ready'] });
+  customElements.whenDefined('archon-living-nexus').then(() => {
+    const nativeStill = el.setStill.bind(el), nativeVisibility = el.onVisibility;
+    // Preserve component lifecycle behavior while also respecting the top-level viewport.
+    el.onVisibility = () => {
+      const ownOffscreen = el.offscreen;
+      el.offscreen = ownOffscreen || !hostVisible;
+      try { nativeVisibility(); } finally { el.offscreen = ownOffscreen; }
+    };
+    document.removeEventListener('visibilitychange', nativeVisibility);
+    document.addEventListener('visibilitychange', el.onVisibility);
+    el.setStill = (value, fromFrame = false) => {
+      const requested = !!value, effective = requested || reduced.matches;
+      nativeStill(effective, fromFrame && effective === requested);
+      if (hostStateReceived && reportedStill !== el.still) {
+        reportedStill = el.still;
+        tell('nexus:motion', world(), { still: el.still });
+      }
+    };
+    configured = true;
+    el.onVisibility();
+    announce();
+  });
+  el.addEventListener('nexus-route', event => { if (allowed.has(event.detail?.world)) tell('nexus:route', event.detail.world); });
+  window.addEventListener('message', event => {
+    if (event.source !== parent || event.origin !== origin || !event.data || typeof event.data !== 'object' || !configured) return;
+    const data = event.data;
+    if (data.type === 'nexus:host-ready-request') announce();
+    const readyAck = data.type === 'nexus:host-ready-ack' && el.dataset.ready === 'true';
+    if (data.type === 'nexus:host-route' && allowed.has(data.world)) el.setAttribute('world', data.world);
+    if ((data.type === 'nexus:host-state' || readyAck) && allowed.has(data.world) && typeof data.still === 'boolean' && typeof data.visible === 'boolean') {
+      if (readyAck) readyAcknowledged = true;
+      hostStateReceived = true;
+      hostVisible = data.visible;
+      el.setStill(data.still);
+      el.onVisibility();
+    }
+    if (data.type === 'nexus:silence') el.silence();
+  });
+})();
+</script><script>
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});
+document.getElementById('nexus').addEventListener('nexus-route', e => {
+ document.getElementById('nexus').setAttribute('world', e.detail.world);
+ const url = new URL(location.href); url.searchParams.set('world', e.detail.world); history.pushState(null,'',url);
+});
+window.addEventListener('popstate', () => {
+ const world = new URL(location.href).searchParams.get('world') || 'nexus';
+ if (['nexus','aura','aureglossa','sessions','workshops','gestalt','journal','threshold'].includes(world)) document.getElementById('nexus').setAttribute('world',world);
+});
+</script></body></html>
