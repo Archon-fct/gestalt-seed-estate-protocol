@@ -1,0 +1,52 @@
+{
+  "deployment": {
+    "published": {
+      "uploadId": "b624b37d-b0fa-40b0-a8a7-a40020961e69",
+      "siteUrl": "https://headless-mfewrcffiie-archonsoulings-140e.wix-site-host.com"
+    },
+    "changedOtherFiles": [],
+    "checks": [
+      {
+        "path": "gestalt/chamber-20261021/chamber.mjs",
+        "authoredContentMatches": true
+      },
+      {
+        "path": "gestalt/chamber-20261021/chamber.css",
+        "authoredContentMatches": true
+      },
+      {
+        "path": "gestalt/chamber-20261021/index.html",
+        "authoredContentMatches": true
+      }
+    ],
+    "retainedFileCount": 81
+  },
+  "renderedChecks": [
+    {
+      "state": "Motion",
+      "width": 660,
+      "height": 660,
+      "meanAbsoluteChannelDifference": 0.862858891949801,
+      "pixelsChangedMoreThan3": 44790,
+      "totalPixels": 435600,
+      "pixelIdentical": false
+    },
+    {
+      "state": "Still",
+      "width": 660,
+      "height": 660,
+      "meanAbsoluteChannelDifference": 0,
+      "pixelsChangedMoreThan3": 0,
+      "totalPixels": 435600,
+      "pixelIdentical": true
+    }
+  ],
+  "date": "2026-10-21 America/Denver",
+  "reason": "Field was explicitly paused while iris closed",
+  "changedFiles": [
+    "site/chamber.mjs",
+    "site/chamber.css",
+    "site/index.html"
+  ],
+  "safariRetested": false
+}
