@@ -95,3 +95,15 @@ window.ASWelcomePaint=D;})();
  if(document.body)show();else addEventListener('DOMContentLoaded',show,{once:true});
 })();
 </script>
+<style id="as-balanced-arrival-20261027">
+#as-arrival.cf-arrival[open]{display:grid;grid-template-rows:auto 1fr auto;gap:20px;padding:clamp(20px,4vw,44px);padding-top:max(20px,env(safe-area-inset-top));padding-bottom:max(20px,env(safe-area-inset-bottom))}
+#as-arrival.cf-arrival header,#as-arrival.cf-arrival footer{width:100%;max-width:1100px;box-sizing:border-box}
+#as-arrival .cf-arrival-body{align-self:center;width:100%;max-width:640px;margin:0 auto;padding:12px 0;box-sizing:border-box}
+#as-arrival.cf-arrival canvas{width:min(39vh,360px,100%);margin:8px auto 14px}
+#as-arrival.cf-arrival h1{font-size:clamp(28px,3vw,38px);line-height:1.25;margin:0 0 12px}
+#as-arrival .cf-arrival-body>p{line-height:1.65;margin:8px auto;max-width:36ch}
+#as-arrival .cf-arrival-status{margin-top:18px;font-size:12px}
+#as-arrival .cf-kicker{letter-spacing:.2em}
+@media(max-width:520px){#as-arrival.cf-arrival[open]{gap:12px;padding-inline:22px}#as-arrival.cf-arrival canvas{width:min(34svh,300px,100%)}#as-arrival.cf-arrival h1{font-size:28px}#as-arrival.cf-arrival footer>span{letter-spacing:.08em}}
+@media(max-height:540px){#as-arrival.cf-arrival[open]{gap:8px}#as-arrival.cf-arrival canvas{width:min(30vh,180px)}#as-arrival .cf-arrival-body{padding:0}#as-arrival.cf-arrival h1{font-size:26px}}
+</style>
