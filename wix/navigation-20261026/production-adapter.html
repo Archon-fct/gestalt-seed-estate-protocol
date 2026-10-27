@@ -1,0 +1,196 @@
+<script>/* Living Nexus production adapter. Public presentation only; native Wix commerce
+   and account controls remain owned by Wix. Disable this embed to roll back. */
+(() => {
+  'use strict';
+  if (window.__AS_NEXUS_PRODUCTION_08) return;
+  window.__AS_NEXUS_PRODUCTION_08 = true;
+  const root = document.documentElement;
+  const worlds = new Set(['nexus', 'aura', 'aureglossa', 'sessions', 'workshops', 'gestalt', 'journal', 'threshold']);
+  const source = new URL(location.href).searchParams.get('gestaltPreview') === '20261021'
+    ? 'https://headless-mfewrcffiie-archonsoulings-140e.wix-site-host.com/living-nexus/gestalt-20261021-1ea41192409f/hosted-nexus.html'
+    : 'https://headless-mfewrcffiie-archonsoulings-140e.wix-site-host.com/living-nexus/v08/hosted-nexus.html';
+  const frameOrigin = new URL(source).origin;
+  let host = null, element = null, timer = 0, watchdog = 0, readinessPoll = 0, ready = false, failed = false;
+  const motionQuery = matchMedia('(prefers-reduced-motion: reduce)');
+  let savedStill = false;
+  try { savedStill = localStorage.getItem('as-calm-view') === '1'; } catch {}
+  let still = motionQuery.matches || savedStill || root.classList.contains('as-calm'), inViewport = false;
+  function updateMotionControl() {
+    const control = host?.querySelector('[data-ln-motion]');
+    if (!control) return;
+    control.setAttribute('aria-pressed', String(still));
+    control.textContent = motionQuery.matches ? 'Reduced motion (system)' : 'Reduced motion';
+    control.disabled = motionQuery.matches;
+  }
+  function setMotion(value, remember = false, publish = true) {
+    still = motionQuery.matches || value;
+    if (root.classList.contains('as-calm') !== still) root.classList.toggle('as-calm', still);
+    if (remember) {
+      savedStill = value;
+      try { localStorage.setItem('as-calm-view', value ? '1' : '0'); } catch {}
+    }
+    updateMotionControl();
+    if (publish) syncState();
+  }
+  const visibilityObserver = new IntersectionObserver(entries => {
+    for (const entry of entries) if (entry.target === element) {
+      inViewport = entry.isIntersecting && entry.intersectionRatio > 0;
+      syncState();
+    }
+  });
+  const path = () => location.pathname.replace(/\/$/, '') || '/';
+  const privateRoute = () => /^\/(?:studio-shell|account|members|my-account|my-bookings|my-orders|login|sign-up)(?:\/|$)/i.test(path()) || /^#(?:vault|private-studio|noxplatinum|nox|veil-ledger|ilyr|archon-admin|gestalt|k3-enroll|k3-login-check)/i.test(location.hash);
+  const transactional = () => /(?:^|\/)(?:checkout|cart|bookings-checkout|thank-you)(?:\/|$)/i.test(path());
+  const currentWorld = () => {
+    const value = new URL(location.href).searchParams.get('world');
+    return worlds.has(value) ? value : 'nexus';
+  };
+  // Retry only the bounded readiness exchange. An iframe load is not proof of readiness.
+  function requestReady() {
+    if (!element?.isConnected || ready || privateRoute() || transactional() || path() !== '/' || !root.classList.contains('as-public')) return;
+    element.contentWindow?.postMessage({ type: 'nexus:host-ready-request' }, frameOrigin);
+  }
+  function syncState() {
+    if (!element?.isConnected || !ready) return;
+    element.contentWindow?.postMessage({ type: 'nexus:host-state', world: currentWorld(), still, visible: inViewport && !document.hidden }, frameOrigin);
+  }
+  function syncWorld() {
+    if (!element?.isConnected || !ready) return;
+    const world = currentWorld();
+    element.contentWindow?.postMessage({ type: 'nexus:host-route', world }, frameOrigin);
+    host.dataset.world = world;
+  }
+  function removeHost() {
+    clearTimeout(watchdog); clearInterval(readinessPoll);
+    if (element?.isConnected) element.contentWindow?.postMessage({ type: 'nexus:silence' }, frameOrigin);
+    if (element) visibilityObserver.unobserve(element);
+    if (host?.isConnected) host.remove();
+    host = null; element = null; ready = false; inViewport = false;
+    if (root.classList.contains('as-nexus-home')) root.classList.remove('as-nexus-home');
+  }
+  async function reconcile() {
+    const enabled = !privateRoute() && !transactional() && root.classList.contains('as-public');
+    const currentStill = motionQuery.matches || root.classList.contains('as-calm');
+    if (still !== currentStill) { still = currentStill; updateMotionControl(); syncState(); }
+    if (root.classList.contains('as-nexus-live') !== enabled) root.classList.toggle('as-nexus-live', enabled);
+    if (!enabled || path() !== '/') { removeHost(); failed = false; return; }
+    if (failed) return;
+    const page = document.getElementById('as-public-page');
+    if (!page || page.hidden) return;
+    if (privateRoute() || path() !== '/' || !page.isConnected || page.hidden) return;
+    if (!host) {
+      host = document.createElement('section');
+      host.id = 'as-living-nexus-production';
+      host.setAttribute('aria-label', 'Living Nexus');
+      host.dataset.lnLoading = 'true';
+      host.innerHTML = "<div class=\"ln-intro\"><div class=\"ln-intro-copy\"><h1>Living Nexus</h1><p>One-to-one phone sessions with Drew for reflection, guided meditation, and spiritual exploration.</p><p class=\"ln-session-detail\">30 minutes · $100 USD | 60 minutes · $200 USD</p><nav class=\"ln-action-row\" aria-label=\"Session options\"><a class=\"ln-primary\" href=\"/book-online\">Book a session</a><a href=\"mailto:Drew@ArchonSoulings.com\">Ask about a free planning call</a></nav></div><button type=\"button\" class=\"ln-motion-control\" data-ln-motion aria-pressed=\"false\">Reduced motion</button></div><p class=\"ln-loading-note\" role=\"status\">The interactive field is loading. You can explore the links below while it opens.</p><div class=\"ln-environment\"></div><nav class=\"ln-paths\" aria-label=\"Direct paths\"><a href=\"/book-online\">View sessions &amp; availability</a><a href=\"/shop\">Browse the shop</a><a href=\"/?world=gestalt\" data-ln-world=\"gestalt\">Explore Gestalt Seed</a><a href=\"/single-project\">Classes &amp; speaking</a></nav>";
+      updateMotionControl();
+      host.querySelector('[data-ln-motion]').addEventListener('click', () => setMotion(!still, true));
+      element = document.createElement('iframe');
+      element.id = 'livingNexusProduction';
+      element.title = 'Living Nexus interactive field';
+      element.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+      element.addEventListener('load', requestReady);
+      element.src = source + '?v=20261020-visual12&world=' + encodeURIComponent(currentWorld());
+      host.querySelector('.ln-environment').append(element);
+      readinessPoll = setInterval(requestReady, 1000);
+      watchdog = setTimeout(() => {
+        if (ready) return;
+        failed = true;
+        clearInterval(readinessPoll);
+        if (element) { visibilityObserver.unobserve(element); element.remove(); }
+        element = null; inViewport = false;
+        host.querySelector('.ln-loading-note').textContent = 'The interactive field could not load. You can still use the links below.';
+      }, 20000);
+      host.addEventListener('click', event => {
+        if (!ready) return;
+        const link = event.target.closest?.('[data-ln-world]');
+        if (!link || event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
+        event.preventDefault();
+        const world = link.dataset.lnWorld;
+        if (worlds.has(world)) {
+          const url = new URL(location.href); url.searchParams.set('world', world);
+          if (url.href !== location.href) history.pushState(history.state, '', url);
+          syncWorld();
+        }
+      });
+    }
+    // Keep the legacy controller's banner -> page -> native adjacency intact.
+    // Inserting between banner and page creates a competing observer reorder loop.
+    const bottom = root.classList.contains('as-clear-navigation') && document.getElementById('SITE_FOOTER');
+    const anchor = document.getElementById('as-public-banner') || page;
+    if (bottom) {
+      if (bottom.nextElementSibling !== host) bottom.after(host);
+    } else if (!host.isConnected || host.nextElementSibling !== anchor) anchor.before(host);
+    visibilityObserver.observe(element);
+    if (ready && !root.classList.contains('as-nexus-home')) root.classList.add('as-nexus-home');
+    syncWorld();
+  }
+  window.addEventListener('message', event => {
+    if (!element?.isConnected || event.source !== element.contentWindow || event.origin !== frameOrigin || privateRoute() || transactional() || path() !== '/' || !root.classList.contains('as-public')) return;
+    const data = event.data;
+    if (!data || typeof data !== 'object' || !worlds.has(data.world)) return;
+    if (data.type === 'nexus:ready') {
+      ready = true; clearTimeout(watchdog); clearInterval(readinessPoll);
+      host.dataset.lnLoading = 'false';
+      host.querySelector('.ln-loading-note').hidden = true;
+      element.contentWindow.postMessage({ type: 'nexus:host-ready-ack', world: currentWorld(), still, visible: inViewport && !document.hidden }, frameOrigin);
+      if (!root.classList.contains('as-nexus-home')) root.classList.add('as-nexus-home');
+      syncState();
+      syncWorld();
+    } else if (data.type === 'nexus:motion' && typeof data.still === 'boolean') {
+      if (data.still !== still) setMotion(data.still, true, false);
+    } else if (data.type === 'nexus:route') {
+      const url = new URL(location.href);
+      if (data.world === 'nexus') url.searchParams.delete('world'); else url.searchParams.set('world', data.world);
+      if (url.href !== location.href) history.pushState(history.state, '', url);
+      syncWorld();
+    }
+  });
+  // Coalesce DOM churn without resetting the deadline on every Wix mutation.
+  // A trailing debounce can starve mounting while the page is still hydrating.
+  const schedule = () => {
+    if (timer) return;
+    timer = setTimeout(() => { timer = 0; reconcile(); }, 70);
+  };
+  const start = () => {
+    if (still) root.classList.add('as-calm');
+    motionQuery.addEventListener('change', () => setMotion(savedStill));
+    new MutationObserver(schedule).observe(document.body, { childList: true, subtree: true });
+    new MutationObserver(schedule).observe(root, { attributes: true, attributeFilter: ['class'] });
+    window.addEventListener('popstate', schedule);
+    window.addEventListener('hashchange', schedule);
+    window.addEventListener('pageshow', () => {
+      if (!ready && element?.isConnected) { clearInterval(readinessPoll); readinessPoll = setInterval(requestReady, 1000); requestReady(); }
+      schedule(); syncState();
+    });
+    document.addEventListener('visibilitychange', syncState);
+    window.addEventListener('pagehide', () => {
+      clearTimeout(timer); timer = 0; clearInterval(readinessPoll);
+      element?.contentWindow?.postMessage({ type: 'nexus:silence' }, frameOrigin);
+      element?.contentWindow?.postMessage({ type: 'nexus:host-state', world: currentWorld(), still, visible: false }, frameOrigin);
+    });
+    document.addEventListener('click', event => { if (event.target.closest?.('a[href]')) schedule(); });
+    reconcile();
+  };
+  if (document.body) start(); else document.addEventListener('DOMContentLoaded', start, { once: true });
+})();
+</script><style id="as-nexus-content-first-20261017">
+#as-living-nexus-production[data-ln-loading="true"] .ln-environment{display:none!important}
+#as-living-nexus-production .ln-loading-note{margin:0;padding:16px 24px;color:#b9c6cf;font:14px/1.6 Arial,sans-serif;background:#08101b}
+#as-living-nexus-production .ln-loading-note[hidden]{display:none!important}
+#as-living-nexus-production .ln-intro{align-items:flex-start;justify-content:space-between;gap:20px;padding:20px 24px}
+#as-living-nexus-production .ln-intro-copy{min-width:0;max-width:760px}
+#as-living-nexus-production .ln-intro p{margin:8px 0 0;max-width:680px;font-size:14px;line-height:1.5}
+#as-living-nexus-production .ln-intro .ln-session-detail{color:#dfd5bd;font-size:12px}
+#as-living-nexus-production .ln-action-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+#as-living-nexus-production .ln-action-row a,#as-living-nexus-production .ln-motion-control{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;min-height:44px;padding:10px 16px;border:1px solid #65749a;border-radius:999px;color:#eee7d8;background:#172138;text-decoration:none;font:13px/1.4 Arial,sans-serif;text-align:center}
+#as-living-nexus-production .ln-action-row .ln-primary{background:#eadbbc;color:#101827;border-color:#eadbbc;font-weight:700}
+#as-living-nexus-production .ln-motion-control{flex-shrink:0;cursor:pointer}
+#as-living-nexus-production .ln-motion-control[aria-pressed="true"]{background:#29424b;border-color:#a5c4c7}
+#as-living-nexus-production .ln-motion-control:disabled{opacity:1;cursor:default}
+#as-living-nexus-production .ln-action-row a:focus-visible,#as-living-nexus-production .ln-motion-control:focus-visible{outline:2px solid #b9efff;outline-offset:4px}
+@media(max-width:640px){#as-living-nexus-production .ln-intro{flex-direction:column;padding:18px;gap:14px}#as-living-nexus-production .ln-action-row{gap:8px}#as-living-nexus-production .ln-loading-note{padding:14px 18px}}
+</style>
+
+<style id="sanctum-host-layout-v12">#as-living-nexus-production[data-world="sessions"] .ln-intro{display:none}#as-living-nexus-production[data-world="sessions"] #livingNexusProduction{height:880px;min-height:0}@media(max-width:740px){#as-living-nexus-production[data-world="sessions"] #livingNexusProduction{height:1160px}}@media(max-width:360px){#as-living-nexus-production[data-world="sessions"] #livingNexusProduction{height:1260px}}</style>
