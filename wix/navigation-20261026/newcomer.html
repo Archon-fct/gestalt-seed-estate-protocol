@@ -1,0 +1,41 @@
+<script>
+(()=>{
+let queued=false;
+function refresh(){
+queued=false;
+const hero=document.querySelector('.as-nexus-home .as-hero-copy');
+if(hero&&!hero.dataset.clearWelcome){
+hero.dataset.clearWelcome='1';
+hero.querySelector('.as-eyebrow').textContent='Personal sessions with Drew';
+hero.querySelector('h1').innerHTML='Space to reflect, reconnect,<br><em>and find your next step.</em>';
+hero.querySelector('h1+p').textContent='Personal sessions combining guided meditation, reflective conversation, and spiritual exploration. You don’t need prior experience—or the right words—to begin.';
+hero.querySelector('.as-actions').innerHTML='<a class="as-button as-primary" href="/services">Explore sessions <span aria-hidden="true">↗</span></a><button type="button" class="as-quiet" data-as-start>Help me choose →</button>';
+const intro=document.createElement('p');intro.className='as-first-visit-note';intro.textContent='One-to-one by phone · 30 or 60 minutes · Your pace, your choice.';hero.querySelector('.as-actions').after(intro);
+const moment=document.createElement('button');moment.type='button';moment.className='as-quiet as-optional-welcome';moment.dataset.asReplay='';moment.textContent='Take a quiet moment';hero.append(moment);
+}
+const session=document.querySelector('.as-nexus-home .as-welcome');
+if(session&&!session.dataset.clearWelcome){
+session.dataset.clearWelcome='1';
+session.querySelector('.as-eyebrow').textContent='What a session is like';
+session.querySelector('h2').textContent='A conversation. Space to explore. A next step that fits you.';
+const p=document.createElement('p');p.textContent='We begin with what brings you here. Together, we can reflect, try a guided meditation, or explore your spiritual practice. You can ask questions and choose what you feel comfortable with.';session.querySelector('h2').after(p);
+const a=session.querySelector('a');a.href='/services';a.textContent='View sessions & prices ↗';
+}
+const field=document.querySelector('#as-living-nexus-production');
+if(field&&!field.querySelector('.as-explore-intro')){
+const p=document.createElement('p');p.className='as-explore-intro';p.textContent='Curious to explore further? The Living Nexus is an interactive way to discover the ideas, practices, and stories behind Archon Soulings. Choose a world, or use the navigation above at any time.';field.prepend(p);
+}
+}
+const queue=()=>{if(!queued){queued=true;requestAnimationFrame(refresh)}};
+new MutationObserver(queue).observe(document.documentElement,{childList:true,subtree:true});queue();
+})();
+</script>
+<style>
+.as-clear-navigation.as-nexus-home .as-hero-copy{max-width:900px}
+.as-clear-navigation.as-nexus-home .as-hero-copy h1{font-size:clamp(36px,5vw,64px);line-height:1.12}
+.as-clear-navigation.as-nexus-home .as-hero-copy h1+p{max-width:620px;margin-inline:auto}
+.as-clear-navigation .as-first-visit-note{font-size:13px;color:#b7bfd5;margin:20px auto}
+.as-clear-navigation .as-optional-welcome{margin-top:16px;min-height:44px}
+.as-clear-navigation .as-welcome>div>p:not(.as-eyebrow){max-width:44ch;line-height:1.75;margin:18px 0}
+.as-clear-navigation .as-explore-intro{max-width:720px;margin:24px auto;padding:0 24px;color:#b7bfd5;font:15px/1.7 system-ui;text-align:center}
+</style>

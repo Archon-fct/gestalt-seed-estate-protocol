@@ -1,0 +1,2 @@
+# New visitor clarity
+Owner approved homepage flow: what is offered, what a session is like, how to begin. Reuses current page and journey controls. Navigation revision 7; arrival revision 12 disables automatic welcome while preserving optional replay; new embed 2eaa07ee-bd61-4e28-b501-22b287e5a0a3 revision 1 provides copy and styling. No booking records or private modules modified. Physical Safari not tested.

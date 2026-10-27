@@ -6,8 +6,8 @@
   window.__AS_NAVIGATION_20261026 = true;
   const root = document.documentElement;
   root.classList.add('as-clear-navigation');
-  const links = [['Home','/'],['Sessions','/services'],['Aura Dynamics','/single-project'],['About Drew','/about-3'],['Journal','/blog'],['Shop','/shop']];
-  const extra = [['Packages','/pricing-plans/plans-pricing'],['Testimonials','/testimonials'],['Contact Drew','mailto:Drew@ArchonSoulings.com']];
+  const links = [['Home','/'],['Work With Me','/services'],['About Drew','/about-3'],['Journal','/blog'],['Contact','mailto:Drew@ArchonSoulings.com'],['Shop','/shop']];
+  const extra = [['Aura Dynamics · Classes','/single-project'],['Packages','/pricing-plans/plans-pricing'],['Testimonials','/testimonials'],['Contact Drew','mailto:Drew@ArchonSoulings.com']];
   const nav = (items, label, className) => {
     const el = document.createElement('nav'); el.className = className; el.setAttribute('aria-label',label);
     for (const [name,href] of items) {const a=document.createElement('a'); a.href=href; if(href.startsWith('/')&&new URL(location.href).searchParams.get('navigationReview')==='20261026'){const u=new URL(href,location.origin);u.searchParams.set('navigationReview','20261026');a.href=u.href;} a.textContent=name; el.append(a);}
