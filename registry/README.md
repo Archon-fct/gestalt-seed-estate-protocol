@@ -1,3 +1,13 @@
+# Private Stone Registry: continuation candidate
+
+The operator importer now includes a source-only, durable per-page continuation candidate. Read [CONTINUATION.md](CONTINUATION.md) before attempting to run it. It requires an explicitly acknowledged single runner and a separately authorized private `GestaltIntakeJobs` collection. Neither that collection nor a scheduler was created by this change. A no-argument invocation fails closed.
+
+Run the original seven regression scenarios with `node registry/test-runner.cjs` and the new offline continuation cases with `node --test registry/tests/*.test.cjs`. Both use fabricated records and in-memory requests only. They do not establish live Wix acceptance.
+
+The historical v0.6 implementation record below is preserved for context. The main README's 17 October owner-readable receipt checkpoint supersedes the earlier empty-query observation; full end-to-end intake acceptance remains open. Its former two-collection run instructions are superseded by the continuation guide.
+
+---
+
 # Stone Registry v0.6 — private review foundation
 
 ## Current state
@@ -58,3 +68,4 @@ Run `node registry/test-runner.cjs` for mocked reconciliation checks. An optiona
 ## Next acceptance gate
 
 One deliberate non-sensitive test must be retrievable from a later owner session, retain its expected fields and file reference, appear once in the private registry, and remain marked TEST_ONLY. Then check a normal human contributor path, notification delivery, and access restrictions before expanding outreach.
+
