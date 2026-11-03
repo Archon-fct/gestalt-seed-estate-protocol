@@ -1,0 +1,28 @@
+{
+  "kind": "review-specification-not-a-deployment-request",
+  "collectionId": "GestaltIntakeJobs",
+  "jobId": "soul-stone-intake-v1",
+  "purpose": "Private continuation state for the authorized Soul & Stone intake importer",
+  "requiresSeparateAuthorizedProvisioning": true,
+  "permissionRequirements": {
+    "legacyCollection": {"read":"ADMIN","insert":"ADMIN","update":"ADMIN","remove":"ADMIN"},
+    "dataPermissions": {"itemRead":"PRIVILEGED","itemInsert":"PRIVILEGED","itemUpdate":"PRIVILEGED","itemRemove":"PRIVILEGED","specialPermissions":[]}
+  },
+  "fields": {
+    "jobVersion": {"type":"NUMBER","expected":1},
+    "configSha256": {"type":"TEXT","format":"64 lowercase hexadecimal characters"},
+    "sequence": {"type":"NUMBER","constraint":"nonnegative safe integer"},
+    "generation": {"type":"NUMBER","constraint":"nonnegative safe integer"},
+    "state": {"type":"TEXT","values":["READY","MORE","COMPLETE"]},
+    "cursor": {"type":"TEXT","nullable":true,"maxCharacters":16000,"private":true},
+    "pagesInSweep": {"type":"NUMBER","minimum":0,"maximum":1000},
+    "cursorHashes": {"type":"ARRAY","maxItems":1000,"items":"64 lowercase hexadecimal characters"}
+  },
+  "restrictions": [
+    "One authorized runner only; acknowledgement is not a lock",
+    "No submission payloads, credentials, or secrets in this record",
+    "No automatic publication, notification, canon changes, or scheduling",
+    "No automatic permission changes or grants",
+    "Admin editable; not a tamper-proof or immutable checkpoint"
+  ]
+}
