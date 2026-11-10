@@ -15,3 +15,8 @@ body[data-still=true] *,body[data-still=true] *::before,body[data-still=true] *:
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
 @media(forced-colors:active){.mechanism,.seed-light,#field,.underlight,.light-shaft,.stage-shadow{display:none}.realm,#hatch-toggle,header nav button,.primary{border:1px solid ButtonText;background:Canvas;color:ButtonText;box-shadow:none}.realm[aria-pressed=true]{outline:2px solid Highlight}.record{border:1px solid CanvasText;padding:12px}}
 
+
+.seed-fissures{position:absolute;inset:35% 38%;width:24%;height:30%;z-index:2;pointer-events:none;color:#e0c690;opacity:.46;fill:#eed39c08;stroke:currentColor;stroke-width:.6;filter:drop-shadow(0 0 10px #eed39c70)}
+.seed-fissures .fissure{fill:none;stroke-width:1.05;stroke-dasharray:1;stroke-dashoffset:1}
+body[data-open=true] .seed-fissures{opacity:.24;transition:opacity .7s .9s}
+body[data-open=true] .seed-fissures .fissure{stroke-dashoffset:0;transition:stroke-dashoffset .54s .30s ease-out}

@@ -50,10 +50,11 @@ function silence(message = 'Sound is off.') {
 function chime(index = selected, opening = false) {
   if (!soundOn || !audio || audio.state !== 'running' || still() || document.hidden) return;
   const now = audio.currentTime, base = [164.81,196,220,246.94,293.66][index % 5];
-  [1, 2.001, 3.002].forEach((ratio, i) => {
+  const notes = opening ? [[1,0,.63],[3/2,.30,.68]] : [[4/3,0,.40],[1,.26,.61]];
+  notes.forEach(([ratio, offset, duration], i) => {
     const osc = audio.createOscillator(), gain = audio.createGain();
     osc.type = 'sine'; osc.frequency.value = base * ratio;
-    const start = now + i * .035, end = start + (opening ? 1.6 : .85);
+    const start = now + offset, end = start + duration;
     gain.gain.setValueAtTime(0,start);
     gain.gain.linearRampToValueAtTime(.018 / (i + 1), start + .018);
     gain.gain.exponentialRampToValueAtTime(.0001, end);
@@ -72,7 +73,7 @@ function setOpen(value, audible = true) {
   hatch.querySelector('small').textContent = open ? 'The archive is open' : 'Touch to unfold';
   $('#map-hint').textContent = open ? 'Ten realms. Each one keeps its story.' : 'Turn a seal. Reveal its origin.';
   field.refresh();
-  if (audible) chime(selected, true);
+  if (audible && open) chime(selected, true);
 }
 
 function select(index, { reveal = true, audible = true } = {}) {
